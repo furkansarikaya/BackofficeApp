@@ -36,9 +36,16 @@ body {
     z-index: 100;
 }
 
+/* Sidebar Header Düzeni Güncellendi */
 .sidebar-header {
     padding: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-header > div:last-child {
+    margin-left: 0.5rem;
 }
 
 .sidebar-toggler {
@@ -70,7 +77,25 @@ body {
     color: #fff;
     border-radius: 50%;
     font-size: 1.2rem;
-    margin-right: 0.5rem;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.user-info {
+    flex-grow: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.user-info div {
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.user-info small {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
 }
 
 /* ================= */

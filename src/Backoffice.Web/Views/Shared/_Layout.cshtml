@@ -63,8 +63,8 @@
             <div class="user-avatar">
                 <i class="fas fa-user"></i>
             </div>
-            <div>
-                <h6>@CurrentUserService.UserName</h6>
+            <div class="user-info">
+                <div>@CurrentUserService.UserName</div>
                 <small>@(User.IsInRole("Administrator") ? "Yönetici" : "Kullanıcı")</small>
             </div>
         </div>

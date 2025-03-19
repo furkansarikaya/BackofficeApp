@@ -11,7 +11,99 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mobil cihazlarda sidebar kapatma ve diğer responsive işlemler
     setupMobileResponsive();
+
+    // Aktif menüyü açık tut, diğerlerini kapat
+    setupActiveMenu();
 });
+
+// Aktif menüyü açık tut, diğerlerini kapat
+function setupActiveMenu() {
+    // Önce aktif olan menü öğelerini bulalım
+    const activeMenuItems = document.querySelectorAll('.nav-link.active');
+
+    // Aktif öğe varsa, onun tüm üst menülerini açalım
+    if (activeMenuItems.length > 0) {
+        activeMenuItems.forEach(activeItem => {
+            // Aktif öğenin tüm üst menülerini açık hale getir
+            ensureParentMenusOpen(activeItem);
+        });
+    }
+
+    // Aktif olmayan ve açık durumda olan menüleri kapat
+    closeNonActiveMenus();
+}
+
+// Aktif öğenin tüm üst menülerini açık duruma getir
+function ensureParentMenusOpen(activeItem) {
+    // Önce aktif öğenin en yakın üst menüsünü bulalım
+    let parentSubmenu = activeItem.closest('.submenu, .section-submenu');
+
+    while (parentSubmenu) {
+        // Bu alt menünün bağlı olduğu menü öğesini bulalım (collapse trigger)
+        const parentMenuId = parentSubmenu.id;
+        if (parentMenuId) {
+            const parentMenuItem = document.querySelector(`[href="#${parentMenuId}"]`);
+
+            if (parentMenuItem) {
+                // Üst menüyü açık olarak işaretle
+                parentMenuItem.setAttribute('aria-expanded', 'true');
+
+                // Collapse sınıfını da ekleyelim
+                parentSubmenu.classList.add('show');
+
+                // Bir sonraki üst menüye geçelim
+                parentSubmenu = parentMenuItem.closest('.submenu, .section-submenu');
+            } else {
+                break;
+            }
+        } else {
+            break;
+        }
+    }
+
+    // Eğer aktif öğe bir bölüm başlığı altında ise, o bölümü de açık hale getir
+    const parentSectionSubmenu = activeItem.closest('.section-submenu');
+    if (parentSectionSubmenu) {
+        const sectionId = parentSectionSubmenu.id.replace('section-', '');
+        if (sectionId) {
+            const sectionHeader = document.querySelector(`[href="#section-${sectionId}"]`);
+            if (sectionHeader) {
+                sectionHeader.setAttribute('aria-expanded', 'true');
+                parentSectionSubmenu.classList.add('show');
+            }
+        }
+    }
+}
+
+// Aktif olmayan ve açık durumda olan menüleri kapat
+function closeNonActiveMenus() {
+    // Açık durumdaki tüm collapsible öğeleri bul
+    const expandedMenus = document.querySelectorAll('.collapsible-menu-item[aria-expanded="true"]');
+
+    expandedMenus.forEach(item => {
+        const targetId = item.getAttribute('href');
+        if (!targetId) return;
+
+        const targetElement = document.querySelector(targetId);
+        if (!targetElement) return;
+
+        // Eğer bu menü aktif bir menü öğesi içermiyorsa kapat
+        const hasActiveChild = targetElement.querySelector('.nav-link.active') !== null;
+
+        if (!hasActiveChild && !item.classList.contains('active')) {
+            // Menüyü kapat
+            const bsCollapse = bootstrap.Collapse.getInstance(targetElement);
+            if (bsCollapse) {
+                bsCollapse.hide();
+            } else {
+                // Eğer bootstrap instance yoksa, manuel olarak kapat
+                targetElement.classList.remove('show');
+            }
+            // aria-expanded durumunu güncelle
+            item.setAttribute('aria-expanded', 'false');
+        }
+    });
+}
 
 // Sidebar toggle butonu işlevselliğini ayarla
 function setupSidebarToggle() {

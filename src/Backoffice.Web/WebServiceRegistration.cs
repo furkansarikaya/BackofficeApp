@@ -19,7 +19,11 @@ public class WebServiceRegistration : IServiceRegistration
         services.AddScoped<ExceptionFilter>();
         
         // MVC yapılandırması
-        services.AddControllersWithViews(options => { options.Filters.Add<ExceptionFilter>(); });
+        services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<ExceptionFilter>();
+            })
+            .AddRazorRuntimeCompilation();
         
         // Cookie yapılandırması
         services.ConfigureApplicationCookie(options =>
