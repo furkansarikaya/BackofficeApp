@@ -10,4 +10,5 @@ public interface ICurrentUserService
     bool IsAuthenticated { get; }
     bool IsInRole(string role);
     bool HasPermission(string permission);
+    string GetClientIp { get; }
 }

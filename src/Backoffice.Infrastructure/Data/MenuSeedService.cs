@@ -96,6 +96,16 @@ public class MenuSeedService(
                             DisplayOrder = 901,
                             RequiredPermissionCode = "Menus.List",
                             IsActive = true
+                        },
+                        new MenuItem
+                        {
+                            Name = "IP Filtreleme",
+                            Icon = "fas fa-shield-alt",
+                            Controller = "IpFilter",
+                            Action = "Index",
+                            DisplayOrder = 902,
+                            RequiredPermissionCode = "IpFilters.List",
+                            IsActive = true
                         }
                     }
                 },

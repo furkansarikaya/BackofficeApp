@@ -26,4 +26,36 @@ public class CurrentUserService(
                // Asenkron metodu senkron çağırmak için Wait/Result kullanımı
                identityService.HasPermissionAsync(UserId, permission).GetAwaiter().GetResult();
     }
+
+    public string GetClientIp
+    {
+        get
+        {
+
+            var httpContext = httpContextAccessor.HttpContext;
+            if (httpContext == null)
+                return "0.0.0.0";
+
+            // 1. Proxy arkası kontrolü (X-Forwarded-For)
+            var ip = httpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+
+            if (string.IsNullOrEmpty(ip))
+            {
+                // 2. Alternatif Proxy başlığı (Nginx, AWS gibi sistemlerde olabilir)
+                ip = httpContext.Request.Headers["X-Real-IP"].FirstOrDefault();
+            }
+
+            if (string.IsNullOrEmpty(ip))
+            {
+                // 3. Doğrudan bağlanan istemci IP'si
+                ip = httpContext.Connection.RemoteIpAddress?.ToString();
+            }
+
+            if (string.IsNullOrEmpty(ip))
+                return "0.0.0.0";
+
+            // 4. Eğer IPv6 loopback (::1) ise, bunu IPv4 loopback (127.0.0.1) olarak değiştir
+            return ip == "::1" ? "0.0.0.0" : ip;
+        }
+    }
 }

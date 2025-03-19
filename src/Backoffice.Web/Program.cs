@@ -1,6 +1,7 @@
 using Backoffice.Web.Services;
 using Backoffice.Infrastructure.Data;
 using Backoffice.Web.Extensions;
+using Backoffice.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<Program>>();
@@ -23,6 +24,8 @@ else
 logger.LogInformation("HSTS ayarları yapıldı.");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseIpFiltering();
 
 app.UseRouting();
 logger.LogInformation("Routing ayarları yapıldı.");

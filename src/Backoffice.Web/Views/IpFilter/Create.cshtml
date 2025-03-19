@@ -1,0 +1,68 @@
+@model IpFilterFormViewModel
+@{
+    ViewData["Title"] = "Yeni IP Filtresi";
+}
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="IpAddress" class="form-label">IP Adresi</label>
+                        <input asp-for="IpAddress" class="form-control" placeholder="Örn: 192.168.1.1 veya 192.168.1.0/24" />
+                        <span asp-validation-for="IpAddress" class="text-danger"></span>
+                        <small class="text-muted">
+                            Tek bir IP adresi için: 192.168.1.1<br />
+                            CIDR notasyonu için: 192.168.1.0/24 (192.168.1.0-192.168.1.255 aralığı)
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="FilterType" class="form-label">Filtre Tipi</label>
+                        <select asp-for="FilterType" class="form-select">
+                            <option value="@FilterType.Allow">İzin Ver</option>
+                            <option value="@FilterType.Deny">Engelle</option>
+                        </select>
+                        <span asp-validation-for="FilterType" class="text-danger"></span>
+                        <small class="text-muted">
+                            İzin Ver: Sadece belirtilen IP'lere erişim izni verir<br />
+                            Engelle: Belirtilen IP'lerin erişimini engeller
+                        </small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Açıklama</label>
+                <input asp-for="Description" class="form-control" placeholder="Örn: Şirket Ofisi" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            
+            <div class="form-check mb-3">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label">Aktif</label>
+                <div>
+                    <small class="text-muted">Filtre aktif olduğunda kurallar uygulanır, pasif olduğunda göz ardı edilir</small>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> İptal
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Kaydet
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -20,6 +20,7 @@ public class ApplicationServiceRegistration : IServiceRegistration
         
         // Services
         services.AddScoped<IMenuService, MenuService>();
+        services.AddScoped<IIpFilterService, IpFilterService>();
     }
 
     public int Order => 2;

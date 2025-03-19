@@ -1,6 +1,8 @@
 using AutoMapper;
 using Backoffice.Application.DTOs.Menu;
+using Backoffice.Application.DTOs.Security;
 using Backoffice.Domain.Entities.Menu;
+using Backoffice.Domain.Entities.Security;
 
 namespace Backoffice.Application.Common.Mappings;
 
@@ -15,5 +17,10 @@ public class MappingProfile : Profile
 
         // CreateUpdateMenuItemDto -> MenuItem
         CreateMap<CreateUpdateMenuItemDto, MenuItem>();
+        
+        //IpFilter -> IpFilterDto
+        CreateMap<IpFilter, IpFilterDto>();
+        // CreateUpdateIpFilterDto -> IpFilter
+        CreateMap<CreateUpdateIpFilterDto, IpFilter>();
     }
 }

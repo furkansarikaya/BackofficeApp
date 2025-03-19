@@ -1,0 +1,189 @@
+@model IpFilterListViewModel
+@{
+    ViewData["Title"] = "IP Filtreleme";
+}
+
+@section PageActions {
+    <div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Yeni IP Filtresi
+        </a>
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="mb-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="IP adresi veya açıklama..."
+                               name="searchTerm" value="@Model.SearchTerm">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="fas fa-search"></i> Ara
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        @if (Model.IpFilters == null || !Model.IpFilters.Items.Any())
+        {
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i> IP filtresi bulunamadı.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>IP Adresi</th>
+                        <th>Açıklama</th>
+                        <th>Filtre Tipi</th>
+                        <th>Durum</th>
+                        <th>Oluşturulma Tarihi</th>
+                        <th>İşlemler</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var ipFilter in Model.IpFilters.Items)
+                    {
+                        <tr>
+                            <td>@ipFilter.IpAddress</td>
+                            <td>@ipFilter.Description</td>
+                            <td>
+                                @if (ipFilter.FilterType == FilterType.Allow)
+                                {
+                                    <span class="badge bg-success">İzin Ver</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Engelle</span>
+                                }
+                            </td>
+                            <td>
+                                @if (ipFilter.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Pasif</span>
+                                }
+                            </td>
+                            <td>@ipFilter.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="@ipFilter.Id" class="btn btn-sm btn-warning" title="Düzenle">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form asp-action="ToggleStatus" asp-route-id="@ipFilter.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm @(ipFilter.IsActive ? "btn-secondary" : "btn-success")" 
+                                                title="@(ipFilter.IsActive ? "Pasif Yap" : "Aktif Yap")">
+                                            <i class="fas @(ipFilter.IsActive ? "fa-toggle-off" : "fa-toggle-on")"></i>
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-sm btn-danger" title="Sil"
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                            data-id="@ipFilter.Id" data-ip="@ipFilter.IpAddress">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div>
+                    Toplam: <span class="fw-bold">@Model.IpFilters.TotalCount</span> IP filtresi
+                </div>
+
+                @if (Model.IpFilters.TotalPages > 1)
+                {
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0">
+                            <li class="page-item @(!Model.IpFilters.HasPreviousPage ? "disabled" : "")">
+                                <a class="page-link" asp-action="Index"
+                                   asp-route-pageNumber="@(Model.IpFilters.PageIndex - 1)"
+                                   asp-route-searchTerm="@Model.SearchTerm">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+
+                            @for (int i = 1; i <= Model.IpFilters.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == Model.IpFilters.PageIndex ? "active" : "")">
+                                    <a class="page-link" asp-action="Index"
+                                       asp-route-pageNumber="@i"
+                                       asp-route-searchTerm="@Model.SearchTerm">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="page-item @(!Model.IpFilters.HasNextPage ? "disabled" : "")">
+                                <a class="page-link" asp-action="Index"
+                                   asp-route-pageNumber="@(Model.IpFilters.PageIndex + 1)"
+                                   asp-route-searchTerm="@Model.SearchTerm">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Silme Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">IP Filtresi Silme</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <span id="ipAddress"></span> IP adresini silmek istediğinize emin misiniz?
+                </p>
+                <p class="text-danger">
+                    <i class="fas fa-exclamation-triangle"></i> Bu işlem geri alınamaz.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" method="post" id="deleteForm">
+                    <input type="hidden" name="id" id="ipFilterId" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Delete modal için IP filtresi bilgilerini ayarla
+        var deleteModal = document.getElementById('deleteModal');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var id = button.getAttribute('data-id');
+                var ip = button.getAttribute('data-ip');
+                
+                var modalIpAddress = document.getElementById('ipAddress');
+                var modalIpFilterId = document.getElementById('ipFilterId');
+                
+                modalIpAddress.textContent = ip;
+                modalIpFilterId.value = id;
+            });
+        }
+    </script>
+}
