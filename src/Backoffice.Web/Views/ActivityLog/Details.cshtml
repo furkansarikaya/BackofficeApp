@@ -1,0 +1,148 @@
+@using System.Text.Json
+@model Backoffice.Web.ViewModels.Auditing.ActivityLogDetailViewModel
+@{
+    ViewData["Title"] = "Aktivite Detayı";
+
+    var timestamp = Model.ActivityLog.Timestamp.ToLocalTime();
+}
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">Aktivite #@Model.ActivityLog.Id</h5>
+        <span class="text-muted">@timestamp.ToString("dd.MM.yyyy HH:mm:ss")</span>
+    </div>
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h6 class="text-muted mb-3">Temel Bilgiler</h6>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th style="width: 30%">Kategori</th>
+                        <td>@Model.ActivityLog.Category</td>
+                    </tr>
+                    <tr>
+                        <th>İşlem Tipi</th>
+                        <td>
+                            @{
+                                var badgeClass = "bg-secondary";
+
+                                if (Model.ActivityLog.ActivityType.Contains("Create")) badgeClass = "bg-success";
+                                else if (Model.ActivityLog.ActivityType.Contains("Update")) badgeClass = "bg-primary";
+                                else if (Model.ActivityLog.ActivityType.Contains("Delete")) badgeClass = "bg-danger";
+                                else if (Model.ActivityLog.ActivityType.Contains("Login")) badgeClass = "bg-info";
+                                else if (Model.ActivityLog.ActivityType.Contains("Failed")) badgeClass = "bg-warning";
+                            }
+
+                            <span class="badge @badgeClass">@Model.ActivityLog.ActivityType</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Kullanıcı</th>
+                        <td>
+                            <a asp-action="UserActivities" asp-route-userId="@Model.ActivityLog.UserId">
+                                @Model.ActivityLog.UserName (@Model.ActivityLog.UserId)
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Varlık</th>
+                        <td>
+                            @if (!string.IsNullOrEmpty(Model.ActivityLog.EntityType) && !string.IsNullOrEmpty(Model.ActivityLog.EntityId))
+                            {
+                                <a asp-action="EntityActivities"
+                                   asp-route-entityType="@Model.ActivityLog.EntityType"
+                                   asp-route-entityId="@Model.ActivityLog.EntityId">
+                                    @Model.ActivityLog.EntityType (@Model.ActivityLog.EntityId)
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>IP Adresi</th>
+                        <td>@Model.ActivityLog.IpAddress</td>
+                    </tr>
+                    <tr>
+                        <th>Tarayıcı</th>
+                        <td>
+                            @if (!string.IsNullOrEmpty(Model.ActivityLog.UserAgent))
+                            {
+                                @Model.ActivityLog.UserAgent
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <h6 class="text-muted mb-3">Detaylar</h6>
+                @if (Model.DetailsObject != null)
+                {
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            @if (Model.DetailsObject is Dictionary<string, object> dict)
+                            {
+                                <div class="accordion" id="detailsAccordion">
+                                    @{
+                                        var counter = 0;
+                                        foreach (var pair in dict)
+                                        {
+                                            counter++;
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="heading@(counter)">
+                                                    <button class="accordion-button @(counter > 1 ? "collapsed" : "")"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#collapse@(counter)"
+                                                            aria-expanded="@(counter == 1 ? "true" : "false")"
+                                                            aria-controls="collapse@(counter)">
+                                                        @pair.Key
+                                                    </button>
+                                                </h2>
+                                                <div id="collapse@(counter)"
+                                                     class="accordion-collapse collapse @(counter == 1 ? "show" : "")"
+                                                     aria-labelledby="heading@(counter)"
+                                                     data-bs-parent="#detailsAccordion">
+                                                    <div class="accordion-body">
+                                                        <pre
+                                                            class="mb-0"><code>@JsonSerializer.Serialize(pair.Value, new JsonSerializerOptions { WriteIndented = true })</code></pre>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <pre
+                                    class="mb-0"><code>@(Model.DetailsObject is string ? Model.DetailsObject : JsonSerializer.Serialize(Model.DetailsObject, new JsonSerializerOptions { WriteIndented = true }))</code></pre>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Bu aktivite için detay bilgisi bulunmamaktadır.
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+            </a>
+        </div>
+    </div>
+</div>

@@ -20,7 +20,7 @@ public class GenericRepository<T,TKey> : IGenericRepository<T,TKey>
         _dbSet = DbContext.Set<T>();
     }
 
-    public virtual async Task<T?> GetByIdAsync(int id)
+    public virtual async Task<T?> GetByIdAsync(TKey id)
     {
         return await _dbSet.FindAsync(id);
     }

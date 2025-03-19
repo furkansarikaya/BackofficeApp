@@ -30,7 +30,7 @@ public abstract class GenericService<TEntity, TKey, TDto, TCreateUpdateDto> : IG
         Repository = UnitOfWork.Repository<TEntity, TKey>();
     }
 
-    public virtual async Task<TDto?> GetByIdAsync(int id)
+    public virtual async Task<TDto?> GetByIdAsync(TKey id)
     {
         var entity = await Repository.GetByIdAsync(id);
 
@@ -93,16 +93,16 @@ public abstract class GenericService<TEntity, TKey, TDto, TCreateUpdateDto> : IG
     {
         // Id değerini al (reflection kullanarak)
         var idProperty = typeof(TCreateUpdateDto).GetProperty("Id");
-        var id = (int?)idProperty?.GetValue(updateDto);
+        var id = (TKey?)idProperty?.GetValue(updateDto);
 
         if (id == null)
             throw new ArgumentException("Id cannot be null for update operation");
 
         // Mevcut entity'yi getir
-        var entity = await Repository.GetByIdAsync(id.Value);
+        var entity = await Repository.GetByIdAsync(id);
 
         if (entity == null)
-            throw new EntityNotFoundException(typeof(TEntity).Name, id.Value);
+            throw new EntityNotFoundException(typeof(TEntity).Name, id);
 
         // DTO'dan entity'ye değerleri eşle
         Mapper.Map(updateDto, entity);
@@ -112,7 +112,7 @@ public abstract class GenericService<TEntity, TKey, TDto, TCreateUpdateDto> : IG
         await UnitOfWork.SaveChangesAsync();
     }
 
-    public virtual async Task DeleteAsync(int id)
+    public virtual async Task DeleteAsync(TKey id)
     {
         var entity = await Repository.GetByIdAsync(id);
 

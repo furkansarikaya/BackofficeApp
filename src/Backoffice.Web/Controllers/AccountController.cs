@@ -1,3 +1,8 @@
+using System.Text.Json;
+using Backoffice.Application.Common.Interfaces;
+using Backoffice.Application.DTOs.Auditing;
+using Backoffice.Application.Services.Interfaces;
+using Backoffice.Domain.Constants;
 using Backoffice.Infrastructure.Identity;
 using Backoffice.Web.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +14,9 @@ namespace Backoffice.Web.Controllers;
 public class AccountController(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager,
-    ILogger<AccountController> logger)
+    ILogger<AccountController> logger,
+    IActivityLogService activityLogService,
+    ICurrentUserService currentUserService)
     : Controller
 {
     [HttpGet]
@@ -41,6 +48,14 @@ public class AccountController(
             {
                 user.LastLoginAt = DateTime.UtcNow;
                 await userManager.UpdateAsync(user);
+                
+                await activityLogService.LogActivityAsync(new CreateActivityLogDto
+                {
+                    Category = ActivityCategories.Authentication,
+                    ActivityType = ActivityTypes.Login,
+                    EntityType = "ApplicationUser",
+                    EntityId = user.Id
+                });
             }
                 
             if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
@@ -54,10 +69,34 @@ public class AccountController(
         if (result.IsLockedOut)
         {
             logger.LogWarning("Kullanıcı hesabı kilitlendi: {Email}", model.Email);
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+                await activityLogService.LogActivityAsync(new CreateActivityLogDto
+                {
+                    Category = ActivityCategories.Authentication,
+                    ActivityType = ActivityTypes.FailedLogin,
+                    EntityType = "ApplicationUser",
+                    EntityId = user.Id,
+                    Details = JsonSerializer.Serialize(new { Reason = "Account locked out" })
+                });
+
             return RedirectToAction(nameof(Lockout));
         }
             
         ModelState.AddModelError(string.Empty, "Geçersiz giriş denemesi.");
+        
+        var failedUser = await userManager.FindByEmailAsync(model.Email);
+        if (failedUser != null)
+        {
+            await activityLogService.LogActivityAsync(new CreateActivityLogDto
+            {
+                Category = ActivityCategories.Authentication,
+                ActivityType = ActivityTypes.FailedLogin,
+                EntityType = "ApplicationUser",
+                EntityId = failedUser.Id,
+                Details = JsonSerializer.Serialize(new { Reason = "Invalid credentials" })
+            });
+        }
 
         return View(model);
     }
@@ -73,8 +112,16 @@ public class AccountController(
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
+        var userId = currentUserService.UserId;
         await signInManager.SignOutAsync();
         logger.LogInformation("Kullanıcı çıkış yaptı.");
+        await activityLogService.LogActivityAsync(new CreateActivityLogDto
+        {
+            Category = ActivityCategories.Authentication,
+            ActivityType = ActivityTypes.Logout,
+            EntityType = "ApplicationUser",
+            EntityId = userId
+        });
         return RedirectToAction("Login");
     }
 

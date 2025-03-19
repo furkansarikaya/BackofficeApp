@@ -11,4 +11,6 @@ public interface ICurrentUserService
     bool IsInRole(string role);
     bool HasPermission(string permission);
     string GetClientIp { get; }
+    string GetUserAgent{ get; }
+    string GetReferer {get; }
 }

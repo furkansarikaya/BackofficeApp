@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using Backoffice.Domain.Entities.Auditing;
 using Backoffice.Domain.Entities.Menu;
 using Backoffice.Domain.Entities.Security;
 using Backoffice.Infrastructure.Data.Interceptors;
@@ -17,6 +18,7 @@ public class ApplicationDbContext(
     public DbSet<RolePermission> RolePermissions { get; set; } = null!;
     public DbSet<MenuItem> MenuItems { get; set; } = null!;
     public DbSet<IpFilter> IpFilters { get; set; } = null!;
+    public DbSet<ActivityLog> ActivityLogs { get; set; } = null!;
 
     
     protected override void OnModelCreating(ModelBuilder builder)

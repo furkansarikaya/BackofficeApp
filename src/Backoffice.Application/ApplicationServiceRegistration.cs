@@ -21,6 +21,7 @@ public class ApplicationServiceRegistration : IServiceRegistration
         // Services
         services.AddScoped<IMenuService, MenuService>();
         services.AddScoped<IIpFilterService, IpFilterService>();
+        services.AddScoped<IActivityLogService, ActivityLogService>();
     }
 
     public int Order => 2;

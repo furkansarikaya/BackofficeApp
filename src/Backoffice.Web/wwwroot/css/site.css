@@ -159,18 +159,47 @@ body {
 }
 
 /* Alt Menüler */
+/* Alt Menüler için yinelemeli stiller */
 .sidebar-menu .submenu {
-    padding-left: 20px;
+    padding-left: 10px;
     margin-top: 0;
     background-color: rgba(0, 0, 0, 0.15);
     border-left: 2px solid rgba(255, 255, 255, 0.1);
     margin-left: 10px;
 }
 
+.sidebar-menu .submenu .submenu {
+    background-color: rgba(0, 0, 0, 0.2); /* Her seviye için biraz daha koyu arka plan */
+}
+
+.sidebar-menu .submenu .submenu .submenu {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.sidebar-menu .submenu .submenu .submenu .submenu {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Her seviye için içeriden başlatma */
 .sidebar-menu .submenu .nav-link {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem 0.5rem 1.5rem;
     font-size: 0.9rem;
     margin: 0.1rem 0.5rem;
+}
+
+.sidebar-menu .submenu .submenu .nav-link {
+    padding-left: 2rem;
+    font-size: 0.85rem;
+}
+
+.sidebar-menu .submenu .submenu .submenu .nav-link {
+    padding-left: 2.5rem;
+    font-size: 0.8rem;
+}
+
+.sidebar-menu .submenu .submenu .submenu .submenu .nav-link {
+    padding-left: 3rem;
+    font-size: 0.75rem;
 }
 
 /* Bölüm Başlıkları */

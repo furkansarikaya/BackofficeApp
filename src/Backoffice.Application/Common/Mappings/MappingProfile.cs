@@ -1,6 +1,8 @@
 using AutoMapper;
+using Backoffice.Application.DTOs.Auditing;
 using Backoffice.Application.DTOs.Menu;
 using Backoffice.Application.DTOs.Security;
+using Backoffice.Domain.Entities.Auditing;
 using Backoffice.Domain.Entities.Menu;
 using Backoffice.Domain.Entities.Security;
 
@@ -22,5 +24,8 @@ public class MappingProfile : Profile
         CreateMap<IpFilter, IpFilterDto>();
         // CreateUpdateIpFilterDto -> IpFilter
         CreateMap<CreateUpdateIpFilterDto, IpFilter>();
+        
+        //ActivityLog -> ActivityLogDto
+        CreateMap<ActivityLog, ActivityLogDto>();
     }
 }

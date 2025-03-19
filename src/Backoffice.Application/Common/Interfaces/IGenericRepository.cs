@@ -11,7 +11,7 @@ namespace Backoffice.Application.Common.Interfaces;
 public interface IGenericRepository<T,TKey> where T : BaseEntity<TKey> where TKey : IEquatable<TKey>
 {
     // Temel CRUD Operasyonları
-    Task<T?> GetByIdAsync(int id);
+    Task<T?> GetByIdAsync(TKey id);
     Task<IReadOnlyList<T>> GetAllAsync();
     Task<T> AddAsync(T entity);
     Task UpdateAsync(T entity);

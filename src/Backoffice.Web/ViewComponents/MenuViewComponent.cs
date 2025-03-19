@@ -42,28 +42,18 @@ public class MenuViewComponent(
         // First identify which section contains the current page
         var activeSectionFound = false;
         
-        foreach (var item in menuItems)
+        foreach (var item in from item in menuItems where item.IsSectionHeader let sectionHasCurrentPage = CheckSectionForCurrentPage(item.Children, currentController, currentAction) where sectionHasCurrentPage select item)
         {
-            if (item.IsSectionHeader)
-            {
-                bool sectionHasCurrentPage = CheckSectionForCurrentPage(item.Children, currentController, currentAction);
-                if (sectionHasCurrentPage)
-                {
-                    item.IsExpanded = true;
-                    activeSectionFound = true;
-                }
-            }
+            item.IsExpanded = true;
+            activeSectionFound = true;
         }
         
         // If no section contains the current page, expand all sections by default
         if (!activeSectionFound)
         {
-            foreach (var item in menuItems)
+            foreach (var item in menuItems.Where(item => item.IsSectionHeader))
             {
-                if (item.IsSectionHeader)
-                {
-                    item.IsExpanded = true;
-                }
+                item.IsExpanded = true;
             }
         }
         
@@ -71,7 +61,7 @@ public class MenuViewComponent(
         ProcessMenuItemsRecursive(menuItems, currentController, currentAction);
     }
     
-    private bool CheckSectionForCurrentPage(List<MenuViewModel> items, string? currentController, string? currentAction)
+    private static bool CheckSectionForCurrentPage(List<MenuViewModel> items, string? currentController, string? currentAction)
     {
         foreach (var item in items)
         {
@@ -81,7 +71,7 @@ public class MenuViewComponent(
                 return true;
             }
             
-            if (item.Children.Any() && CheckSectionForCurrentPage(item.Children, currentController, currentAction))
+            if (item.Children.Count != 0 && CheckSectionForCurrentPage(item.Children, currentController, currentAction))
             {
                 return true;
             }
@@ -90,7 +80,7 @@ public class MenuViewComponent(
         return false;
     }
     
-    private bool ProcessMenuItemsRecursive(List<MenuViewModel> menuItems, string? currentController, string? currentAction)
+    private static bool ProcessMenuItemsRecursive(List<MenuViewModel> menuItems, string? currentController, string? currentAction)
     {
         var hasCurrentPage = false;
         
@@ -110,17 +100,13 @@ public class MenuViewComponent(
             }
             
             // Process children recursively
-            if (item.Children.Any())
-            {
-                var childHasCurrentPage = ProcessMenuItemsRecursive(item.Children, currentController, currentAction);
+            if (item.Children.Count == 0) continue;
+            var childHasCurrentPage = ProcessMenuItemsRecursive(item.Children, currentController, currentAction);
                 
-                // If any child is current, this item is also expanded
-                if (childHasCurrentPage)
-                {
-                    item.IsExpanded = true;
-                    hasCurrentPage = true;
-                }
-            }
+            // If any child is current, this item is also expanded
+            if (!childHasCurrentPage) continue;
+            item.IsExpanded = true;
+            hasCurrentPage = true;
         }
         
         return hasCurrentPage;

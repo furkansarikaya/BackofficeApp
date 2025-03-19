@@ -58,4 +58,7 @@ public class CurrentUserService(
             return ip == "::1" ? "0.0.0.0" : ip;
         }
     }
+
+    public string GetUserAgent => httpContextAccessor.HttpContext?.Request.Headers["User-Agent"].ToString() ?? "Unknown";
+    public string GetReferer => httpContextAccessor.HttpContext?.Request.Headers["Referer"].ToString() ?? "Unknown";
 }

@@ -1,7 +1,9 @@
 using Backoffice.Application.DTOs.Security;
 using Backoffice.Application.Services.Interfaces;
+using Backoffice.Domain.Constants;
 using Backoffice.Domain.Enums;
 using Backoffice.Web.Attributes;
+using Backoffice.Web.Filters;
 using Backoffice.Web.ViewModels.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,6 +43,7 @@ public class IpFilterController(IIpFilterService ipFilterService) : BaseControll
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Create)]
+    [LogActivity(ActivityCategories.IpFilterManagement, ActivityTypes.Create, true)]
     public async Task<IActionResult> Create(IpFilterFormViewModel viewModel)
     {
         if (ModelState.IsValid)
@@ -98,6 +101,7 @@ public class IpFilterController(IIpFilterService ipFilterService) : BaseControll
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Update)]
+    [LogActivity(ActivityCategories.IpFilterManagement, ActivityTypes.Update, true)]
     public async Task<IActionResult> Edit(int id, IpFilterFormViewModel viewModel)
     {
         if (id != viewModel.Id)
@@ -138,6 +142,7 @@ public class IpFilterController(IIpFilterService ipFilterService) : BaseControll
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Delete)]
+    [LogActivity(ActivityCategories.IpFilterManagement, ActivityTypes.Delete, true)]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await ipFilterService.DeleteIpFilterAsync(id);
@@ -161,6 +166,7 @@ public class IpFilterController(IIpFilterService ipFilterService) : BaseControll
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Update)]
+    [LogActivity(ActivityCategories.IpFilterManagement, ActivityTypes.Update, true)]
     public async Task<IActionResult> ToggleStatus(int id)
     {
         var result = await ipFilterService.ToggleIpFilterStatusAsync(id);

@@ -1,7 +1,9 @@
 using Backoffice.Application.Common.Models;
+using Backoffice.Domain.Constants;
 using Backoffice.Domain.Enums;
 using Backoffice.Infrastructure.Identity;
 using Backoffice.Web.Attributes;
+using Backoffice.Web.Filters;
 using Backoffice.Web.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -133,6 +135,7 @@ public class UserController(
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Create)]
+    [LogActivity(ActivityCategories.UserManagement, ActivityTypes.Create, true)]
     public async Task<IActionResult> Create(UserCreateViewModel viewModel)
     {
         if (ModelState.IsValid)
@@ -207,6 +210,7 @@ public class UserController(
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Update)]
+    [LogActivity(ActivityCategories.UserManagement, ActivityTypes.Update, true)]
     public async Task<IActionResult> Edit(string id, UserEditViewModel viewModel)
     {
         if (id != viewModel.Id)
@@ -302,6 +306,7 @@ public class UserController(
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Update)]
+    [LogActivity(ActivityCategories.UserManagement, ActivityTypes.Update, true)]
     public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
     {
         if (ModelState.IsValid)
@@ -338,6 +343,7 @@ public class UserController(
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Update)]
+    [LogActivity(ActivityCategories.UserManagement, ActivityTypes.Update, true)]
     public async Task<IActionResult> ToggleActive(string id)
     {
         var user = await userManager.FindByIdAsync(id);
@@ -378,6 +384,7 @@ public class UserController(
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Delete)]
+    [LogActivity(ActivityCategories.UserManagement, ActivityTypes.Delete, true)]
     public async Task<IActionResult> Delete(string id)
     {
         var user = await userManager.FindByIdAsync(id);

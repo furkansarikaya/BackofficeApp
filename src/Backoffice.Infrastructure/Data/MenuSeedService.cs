@@ -106,6 +106,16 @@ public class MenuSeedService(
                             DisplayOrder = 902,
                             RequiredPermissionCode = "IpFilters.List",
                             IsActive = true
+                        },
+                        new MenuItem
+                        {
+                            Name = "Aktivite Günlüğü",
+                            Icon = "fas fa-history",
+                            Controller = "ActivityLog",
+                            Action = "Index",
+                            DisplayOrder = 903,
+                            RequiredPermissionCode = "ActivityLogs.View",
+                            IsActive = true
                         }
                     }
                 },

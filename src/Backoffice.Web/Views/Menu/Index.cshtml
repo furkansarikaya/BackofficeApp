@@ -1,11 +1,7 @@
 @model Backoffice.Web.ViewModels.Menu.MenuListViewModel
-
 @{
     ViewData["Title"] = "Menü Yönetimi";
-}
-
-@functions {
-
+    
     List<FlatMenuItem> GetFlatMenuList(List<MenuViewModel> items, int level = 0)
     {
         var result = new List<FlatMenuItem>();
@@ -23,7 +19,8 @@
                 RequiredPermissionCode = item.RequiredPermissionCode,
                 IsSectionHeader = item.IsSectionHeader,
                 IsActive = item.IsActive,
-                Level = level
+                Level = level,
+                FullPath = item.FullPath
             });
             if (item.Children.Any())
             {
@@ -33,6 +30,7 @@
         return result;
     }
 }
+
 @section PageActions {
     <div>
         <a asp-action="Create" class="btn btn-primary">
@@ -56,7 +54,7 @@
                     <thead>
                         <tr>
                             <th>Sıra</th>
-                            <th>Ad</th>
+                            <th>Tam Yol</th>
                             <th>Tür</th>
                             <th>Yönlendirme</th>
                             <th>İzin</th>
@@ -75,7 +73,14 @@
                                         {
                                             <i class="@item.Icon me-2"></i>
                                         }
-                                        @item.Name
+                                        @if (!string.IsNullOrEmpty(item.FullPath))
+                                        {
+                                            @item.FullPath
+                                        }
+                                        else
+                                        {
+                                            @item.Name
+                                        }
                                     </span>
                                 </td>
                                 <td>

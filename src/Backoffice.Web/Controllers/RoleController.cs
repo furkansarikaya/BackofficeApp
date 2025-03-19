@@ -1,9 +1,11 @@
 using System.Security.Claims;
 using Backoffice.Application.Common.Interfaces;
+using Backoffice.Domain.Constants;
 using Backoffice.Domain.Enums;
 using Backoffice.Infrastructure.Data;
 using Backoffice.Infrastructure.Identity;
 using Backoffice.Web.Attributes;
+using Backoffice.Web.Filters;
 using Backoffice.Web.ViewModels.Role;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +44,7 @@ public class RoleController(
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Create)]
+    [LogActivity(ActivityCategories.RoleManagement, ActivityTypes.Create, true)]
     public async Task<IActionResult> Create(RoleFormViewModel viewModel)
     {
         if (!ModelState.IsValid) return View(viewModel);
@@ -93,6 +96,7 @@ public class RoleController(
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Update)]
+    [LogActivity(ActivityCategories.RoleManagement, ActivityTypes.Update, true)]
     public async Task<IActionResult> Edit(string id, RoleFormViewModel viewModel)
     {
         if (id != viewModel.Id)
@@ -188,6 +192,7 @@ public class RoleController(
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Update)]
+    [LogActivity(ActivityCategories.RoleManagement, ActivityTypes.Update, true)]
     public async Task<IActionResult> Permissions(RolePermissionsViewModel viewModel)
     {
         var role = await roleManager.FindByIdAsync(viewModel.RoleId);
@@ -252,6 +257,7 @@ public class RoleController(
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Permission(PermissionType.Delete)]
+    [LogActivity(ActivityCategories.RoleManagement, ActivityTypes.Delete, true)]
     public async Task<IActionResult> Delete(string id)
     {
         var role = await roleManager.FindByIdAsync(id);

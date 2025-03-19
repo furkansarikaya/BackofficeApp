@@ -13,4 +13,6 @@ public class FlatMenuItem
     public bool IsSectionHeader { get; set; }
     public bool IsActive { get; set; }
     public int Level { get; set; }
+    public string FullPath { get; set; } = string.Empty;
+
 }
