@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Backoffice.Application.Common.Interfaces;
 using Backoffice.Domain.Enums;
 using Backoffice.Infrastructure.Data;
 using Backoffice.Infrastructure.Identity;
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Backoffice.Web.Controllers;
 
 public class RoleController(
-    ApplicationDbContext dbContext,
+    IUnitOfWork unitOfWork,
     RoleManager<ApplicationRole> roleManager,
     ILogger<RoleController> logger)
     : BaseController
@@ -147,7 +148,7 @@ public class RoleController(
         }
 
         // Tüm izinleri al
-        var allPermissions = await dbContext.Permissions.ToListAsync();
+        var allPermissions = await unitOfWork.Repository<Permission, int>().GetWithIncludesAsync();
         
         // Controller gruplarına göre sırala
         var groupedPermissions = allPermissions

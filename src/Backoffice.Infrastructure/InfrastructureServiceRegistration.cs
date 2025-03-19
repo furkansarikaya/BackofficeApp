@@ -48,11 +48,13 @@ public class InfrastructureServiceRegistration : IServiceRegistration
         // Repository ve UnitOfWork
         services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
 
         // Diğer servisler
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IDateTimeService, DateTimeService>();
+        services.AddScoped<MenuSeedService>();
     }
 
     public int Order => 1;

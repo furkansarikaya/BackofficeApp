@@ -12,6 +12,9 @@ public class WebServiceRegistration : IServiceRegistration
         // Permission seed service
         services.AddScoped<PermissionSeedService>();
         
+        //AutoMapper
+        services.AddAutoMapper(cf => cf.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
+        
         // Filtreler
         services.AddScoped<ExceptionFilter>();
         

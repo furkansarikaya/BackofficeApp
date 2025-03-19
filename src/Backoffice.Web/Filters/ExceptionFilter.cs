@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Backoffice.Domain.Exceptions;
 using Backoffice.Web.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Backoffice.Web.Filters;
@@ -66,7 +67,10 @@ public class ExceptionFilter(
         {
             ViewName = "Error",
             StatusCode = 500,
-            ViewData = { Model = errorViewModel }
+            ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
+            {
+                Model = errorViewModel
+            }
         };
         
         context.Result = errorResult;

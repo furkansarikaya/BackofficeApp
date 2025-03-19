@@ -51,7 +51,7 @@ public class GenericRepository<T,TKey> : IGenericRepository<T,TKey>
         return await DbContext.SaveChangesAsync();
     }
 
-    public virtual async Task<IReadOnlyList<T>> GetAsync(
+    public virtual async Task<IReadOnlyList<T>> GetWithIncludeStringAsync(
         Expression<Func<T, bool>>? predicate = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
         string? includeString = null,
@@ -69,7 +69,7 @@ public class GenericRepository<T,TKey> : IGenericRepository<T,TKey>
         return await query.ToListAsync();
     }
 
-    public virtual async Task<IReadOnlyList<T>> GetAsync(
+    public virtual async Task<IReadOnlyList<T>> GetWithIncludesAsync(
         Expression<Func<T, bool>>? predicate = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
         List<Expression<Func<T, object>>>? includes = null,

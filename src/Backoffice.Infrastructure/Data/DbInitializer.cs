@@ -79,6 +79,10 @@ public static class DbInitializer
 
             // Kullanıcıları oluştur
             await SeedUsersAsync(userManager, roleManager, logger);
+            
+            // Menü öğelerini oluştur
+            var menuSeedService = services.GetRequiredService<MenuSeedService>();
+            await menuSeedService.SeedMenuItemsAsync();
 
             logger.LogInformation("Veritabanı başarıyla başlatıldı.");
         }
@@ -162,27 +166,16 @@ public static class DbInitializer
         {
             case "Editor":
                 // Düzenleme izinleri (silme hariç)
-                permissions.AddRange(new[]
-                {
-                    "Categories.List",
-                    "Categories.View",
-                    "Categories.Create",
-                    "Categories.Update",
-                    "Products.List",
-                    "Products.View",
-                    "Products.Create",
-                    "Products.Update"
-                });
                 break;
 
             case "Viewer":
                 // Sadece görüntüleme izinleri
                 permissions.AddRange(new[]
                 {
-                    "Categories.List",
-                    "Categories.View",
-                    "Products.List",
-                    "Products.View"
+                    "Role.List",
+                    "Role.View",
+                    "User.List",
+                    "User.View"
                 });
                 break;
         }

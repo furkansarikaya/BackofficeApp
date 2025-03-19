@@ -27,4 +27,14 @@
       <ProjectReference Include="..\Backoffice.Infrastructure\Backoffice.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Shared\Home\Error.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\Home\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Home\Error.cshtml" />
+      <AdditionalFiles Include="Views\Home\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

@@ -1,0 +1,38 @@
+@model List<MenuViewModel>
+
+@foreach (var menuItem in Model)
+{
+    @if (menuItem.HasChildren)
+    {
+        <li class="nav-item">
+            <a href="#@menuItem.ChildrenHtmlId" 
+               class="nav-link collapsible-menu-item @(menuItem.IsCurrentPage ? "active" : "")" 
+               data-bs-toggle="collapse" 
+               aria-expanded="@(menuItem.IsExpanded ? "true" : "false")">
+                @if (!string.IsNullOrEmpty(menuItem.Icon))
+                {
+                    <i class="@menuItem.Icon menu-icon"></i>
+                }
+                <span class="menu-text">@menuItem.Name</span>
+                <i class="fas fa-chevron-down ms-auto menu-arrow"></i>
+            </a>
+            <div class="collapse @(menuItem.IsExpanded ? "show" : "")" id="@menuItem.ChildrenHtmlId">
+                <ul class="nav flex-column submenu">
+                    @await Html.PartialAsync("_CollapsibleMenuItems", menuItem.Children)
+                </ul>
+            </div>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a href="@menuItem.GetUrl()" class="nav-link @(menuItem.IsCurrentPage ? "active" : "")">
+                @if (!string.IsNullOrEmpty(menuItem.Icon))
+                {
+                    <i class="@menuItem.Icon menu-icon"></i>
+                }
+                <span class="menu-text">@menuItem.Name</span>
+            </a>
+        </li>
+    }
+}

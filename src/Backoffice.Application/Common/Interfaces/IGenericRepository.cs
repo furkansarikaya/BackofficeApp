@@ -19,13 +19,13 @@ public interface IGenericRepository<T,TKey> where T : BaseEntity<TKey> where TKe
     Task<int> SaveChangesAsync();
 
     // Gelişmiş Sorgulama
-    Task<IReadOnlyList<T>> GetAsync(
+    Task<IReadOnlyList<T>> GetWithIncludeStringAsync(
         Expression<Func<T, bool>>? predicate = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
         string? includeString = null,
         bool disableTracking = true);
 
-    Task<IReadOnlyList<T>> GetAsync(
+    Task<IReadOnlyList<T>> GetWithIncludesAsync(
         Expression<Func<T, bool>>? predicate = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
         List<Expression<Func<T, object>>>? includes = null,

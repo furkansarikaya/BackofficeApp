@@ -1,5 +1,7 @@
 using System.Reflection;
 using Backoffice.Application.Common.Interfaces;
+using Backoffice.Application.Services.Implementation;
+using Backoffice.Application.Services.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,8 +19,7 @@ public class ApplicationServiceRegistration : IServiceRegistration
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         
         // Services
-        // services.AddScoped<ICategoryService, CategoryService>();
-        // TODO: Add other services
+        services.AddScoped<IMenuService, MenuService>();
     }
 
     public int Order => 2;
