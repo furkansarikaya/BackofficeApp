@@ -1,0 +1,51 @@
+@using Backoffice.Application.Common.Enums
+@{
+    var successMessages = TempData[$"Notification.{NotificationType.Success}"] as string[];
+    var errorMessages = TempData[$"Notification.{NotificationType.Error}"] as string[];
+    var warningMessages = TempData[$"Notification.{NotificationType.Warning}"] as string[];
+    var infoMessages = TempData[$"Notification.{NotificationType.Info}"] as string[];
+}
+
+@if (successMessages?.Any() == true)
+{
+    foreach (var message in successMessages)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i> @message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
+
+@if (errorMessages?.Any() == true)
+{
+    foreach (var message in errorMessages)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-times-circle me-2"></i> @message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
+
+@if (warningMessages?.Any() == true)
+{
+    foreach (var message in warningMessages)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i> @message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
+
+@if (infoMessages?.Any() == true)
+{
+    foreach (var message in infoMessages)
+    {
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <i class="fas fa-info-circle me-2"></i> @message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}

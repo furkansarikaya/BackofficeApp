@@ -1,0 +1,145 @@
+@model Backoffice.Web.ViewModels.Role.RolePermissionsViewModel
+@{
+    ViewData["Title"] = "Rol İzinleri";
+}
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center bg-light">
+        <h5 class="card-title mb-0">@Model.RoleName - İzin Yönetimi</h5>
+        <span class="badge bg-primary">@Model.ControllerGroups.SelectMany(g => g.Permissions).Count(p => p.IsSelected) İzin Seçili</span>
+    </div>
+    <div class="card-body">
+        @if (Model.RoleName == "Administrator")
+        {
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i> Administrator rolü tüm izinlere otomatik olarak sahiptir ve değiştirilemez.
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Geri
+                </a>
+            </div>
+        }
+        else
+        {
+            <form asp-action="Permissions" method="post">
+                <input type="hidden" asp-for="RoleId" />
+                <input type="hidden" asp-for="RoleName" />
+                
+                <p class="mb-4">
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <small class="text-muted">@Model.Description</small>
+                    }
+                </p>
+                
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="selectAll">Tümünü Seç</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAll">Tümünü Kaldır</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    @for (int groupIndex = 0; groupIndex < Model.ControllerGroups.Count; groupIndex++)
+                    {
+                        var group = Model.ControllerGroups[groupIndex];
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header d-flex justify-content-between align-items-center permission-group-header" data-group="@group.ControllerName">
+                                    <h6 class="mb-0">@group.ControllerName</h6>
+                                    <input type="hidden" name="ControllerGroups[@groupIndex].ControllerName" value="@group.ControllerName" />
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input group-select" id="group_@group.ControllerName"
+                                               data-group="@group.ControllerName"
+                                               @(group.Permissions.All(p => p.IsSelected) ? "checked" : "") />
+                                        <label class="form-check-label" for="group_@group.ControllerName">Tümünü Seç</label>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        @for (int i = 0; i < group.Permissions.Count; i++)
+                                        {
+                                            var permission = group.Permissions[i];
+                                            <div class="col-6">
+                                                <div class="form-check mb-2">
+                                                    <input type="hidden" name="ControllerGroups[@groupIndex].Permissions[@i].Id" value="@permission.Id" />
+                                                    <input type="hidden" name="ControllerGroups[@groupIndex].Permissions[@i].Code" value="@permission.Code" />
+                                                    <input type="hidden" name="ControllerGroups[@groupIndex].Permissions[@i].Description" value="@permission.Description" />
+
+                                                    <input type="checkbox" class="form-check-input permission-checkbox"
+                                                           name="ControllerGroups[@groupIndex].Permissions[@i].IsSelected"
+                                                           id="permission_@permission.Id"
+                                                           value="true"
+                                                           data-group="@group.ControllerName"
+                                                           @(permission.IsSelected ? "checked" : "") />
+
+                                                    <label class="form-check-label" for="permission_@permission.Id">
+                                                        @permission.Description
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Geri
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Değişiklikleri Kaydet
+                    </button>
+                </div>
+            </form>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Tümünü seç/kaldır butonları
+            $('#selectAll').click(function() {
+                $('.permission-checkbox').prop('checked', true);
+                updateGroupCheckboxes();
+            });
+            
+            $('#deselectAll').click(function() {
+                $('.permission-checkbox').prop('checked', false);
+                updateGroupCheckboxes();
+            });
+            
+            // Grup başlığı tıklandığında tüm izinleri seç/kaldır
+            $('.group-select').change(function() {
+                var group = $(this).data('group');
+                var isChecked = $(this).prop('checked');
+                
+                $('input.permission-checkbox[data-group="' + group + '"]').prop('checked', isChecked);
+            });
+            
+            // İzin checkboxları değiştiğinde grup checkboxını güncelle
+            $('.permission-checkbox').change(function() {
+                updateGroupCheckboxes();
+            });
+            
+            // Grup checkbox durumlarını güncelle
+            function updateGroupCheckboxes() {
+                $('.group-select').each(function() {
+                    var group = $(this).data('group');
+                    var totalPermissions = $('input.permission-checkbox[data-group="' + group + '"]').length;
+                    var checkedPermissions = $('input.permission-checkbox[data-group="' + group + '"]:checked').length;
+                    
+                    $(this).prop('checked', totalPermissions === checkedPermissions);
+                });
+            }
+        });
+    </script>
+}

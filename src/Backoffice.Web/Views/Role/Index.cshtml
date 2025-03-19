@@ -1,0 +1,117 @@
+@model Backoffice.Web.ViewModels.Role.RoleListViewModel
+@{
+    ViewData["Title"] = "Rol Yönetimi";
+}
+
+@section PageActions {
+    <div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Yeni Rol
+        </a>
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        @if (!Model.Roles.Any())
+        {
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i> Sistemde henüz rol tanımlanmamıştır.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Rol Adı</th>
+                            <th>Açıklama</th>
+                            <th>Oluşturulma Tarihi</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var role in Model.Roles)
+                        {
+                            <tr>
+                                <td>@role.Name</td>
+                                <td>@role.Description</td>
+                                <td>@role.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>
+                                    <div class="btn-group">
+                                        @if (role.Name != "Administrator")
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@role.Id" class="btn btn-sm btn-warning" title="Düzenle">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a asp-action="Permissions" asp-route-id="@role.Id" class="btn btn-sm btn-info" title="İzinler">
+                                                <i class="fas fa-key"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-danger" title="Sil" 
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                                    data-role-id="@role.Id" data-role-name="@role.Name">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">Administrator rolü üzerinde işlem yapılamaz</span>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Silme Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Rol Silme</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <span id="roleName"></span> rolünü silmek istediğinize emin misiniz?
+                </p>
+                <p class="text-danger">
+                    <i class="fas fa-exclamation-triangle"></i> Bu işlem geri alınamaz.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" method="post" id="deleteForm">
+                    <input type="hidden" name="id" id="roleId" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Delete modal için rol bilgilerini ayarla
+        var deleteModal = document.getElementById('deleteModal');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var roleId = button.getAttribute('data-role-id');
+                var roleName = button.getAttribute('data-role-name');
+                
+                var modalRoleName = document.getElementById('roleName');
+                var modalRoleId = document.getElementById('roleId');
+                
+                modalRoleName.textContent = roleName;
+                modalRoleId.value = roleId;
+            });
+        }
+    </script>
+}

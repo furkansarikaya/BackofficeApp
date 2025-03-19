@@ -1,0 +1,60 @@
+@model Backoffice.Web.ViewModels.Account.LoginViewModel
+@{
+    ViewData["Title"] = "Giriş";
+    Layout = "_AuthLayout"; // Authentication-specific layout
+}
+
+<div class="card shadow-lg border-0">
+    <div class="card-header bg-transparent pb-5">
+        <div class="text-center mt-2 mb-3">
+            <h1 class="h3">Backoffice Giriş</h1>
+        </div>
+    </div>
+    <div class="card-body px-lg-5 py-lg-5">
+        <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">E-posta</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    <input asp-for="Email" class="form-control" placeholder="E-posta adresiniz" />
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <label asp-for="Password" class="form-label">Şifre</label>
+                    <a href="#" class="small text-muted">Şifremi Unuttum</a>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input asp-for="Password" class="form-control" placeholder="Şifreniz" />
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3 form-check">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label">Beni Hatırla</label>
+            </div>
+            
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary w-100 mt-4">
+                    <i class="fas fa-sign-in-alt me-2"></i> Giriş Yap
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <p class="text-muted">
+        © @DateTime.Now.Year Backoffice Uygulaması. Tüm hakları saklıdır.
+    </p>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
