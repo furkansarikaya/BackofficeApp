@@ -46,21 +46,6 @@ public class MenuService(
         return mapper.Map<List<MenuItemDto>>(rootItems);
     }
 
-    private void LoadChildren(List<MenuItem> items, ILookup<int?, MenuItem> lookup)
-    {
-        foreach (var item in items)
-        {
-            var children = lookup[item.Id].ToList();
-            item.Children = children;
-
-            // Recursively load deeper levels
-            if (children.Any())
-            {
-                LoadChildren(children, lookup);
-            }
-        }
-    }
-
     public async Task<List<MenuItemDto>> GetUserMenuAsync()
     {
         var repository = unitOfWork.Repository<MenuItem, int>();
@@ -364,6 +349,21 @@ public class MenuService(
             if (children.Count != 0)
             {
                 BuildCompleteMenuHierarchy(children, allActiveItems);
+            }
+        }
+    }
+
+    private static void LoadChildren(List<MenuItem> items, ILookup<int?, MenuItem> lookup)
+    {
+        foreach (var item in items)
+        {
+            var children = lookup[item.Id].ToList();
+            item.Children = children;
+
+            // Recursively load deeper levels
+            if (children.Count != 0)
+            {
+                LoadChildren(children, lookup);
             }
         }
     }

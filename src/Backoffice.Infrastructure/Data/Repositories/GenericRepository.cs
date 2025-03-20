@@ -25,9 +25,13 @@ public class GenericRepository<T,TKey> : IGenericRepository<T,TKey>
         return await _dbSet.FindAsync(id);
     }
 
-    public virtual async Task<IReadOnlyList<T>> GetAllAsync()
+    public virtual async Task<IReadOnlyList<T>> GetAllAsync(bool disableTracking = true)
     {
-        return await _dbSet.ToListAsync();
+        IQueryable<T> query = _dbSet;
+        
+        if (disableTracking) 
+            query = query.AsNoTracking();
+        return await query.ToListAsync();
     }
 
     public virtual async Task<T> AddAsync(T entity)
