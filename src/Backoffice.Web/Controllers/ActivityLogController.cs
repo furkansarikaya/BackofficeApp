@@ -176,6 +176,7 @@ public class ActivityLogController(
     }
     
     // GET: /ActivityLog/UserActivitiesPartial?userId=abc123
+    [Permission(PermissionType.View)]
     [HttpGet]
     public async Task<IActionResult> UserActivitiesPartial(string userId)
     {

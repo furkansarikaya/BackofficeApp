@@ -37,7 +37,16 @@ public class PermissionFilter(string permissionCode) : IAsyncActionFilter
         // İzin kontrolü
         if (!currentUserService.HasPermission(permissionCode))
         {
-            context.Result = new ForbidResult();
+            if (context.HttpContext.Request.Headers.XRequestedWith == "XMLHttpRequest")
+            {
+                context.Result = new PartialViewResult
+                {
+                    ViewName = "~/Views/Account/AccessDenied.cshtml",
+                };
+            }
+            else
+                context.Result = new ForbidResult();
+
             return;
         }
         
