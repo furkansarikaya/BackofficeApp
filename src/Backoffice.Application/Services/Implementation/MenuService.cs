@@ -1,10 +1,10 @@
-using System.Linq.Expressions;
 using AutoMapper;
 using Backoffice.Application.Common.Interfaces;
 using Backoffice.Application.Common.Models;
 using Backoffice.Application.DTOs.Menu;
 using Backoffice.Application.Services.Interfaces;
 using Backoffice.Domain.Entities.Menu;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Backoffice.Application.Services.Implementation;
@@ -14,22 +14,21 @@ public class MenuService(
     IMapper mapper,
     ICurrentUserService currentUserService,
     ILogger<MenuService> logger)
-    : GenericService<MenuItem, int, MenuItemDto, CreateUpdateMenuItemDto>(unitOfWork, mapper)
-        ,IMenuService
+    : IMenuService
 {
     public async Task<List<MenuItemDto>> GetAllMenuItemsAsync()
     {
-        var repository = UnitOfWork.Repository<MenuItem, int>();
+        var repository = unitOfWork.Repository<MenuItem, int>();
         var menuItems = await repository.GetWithIncludesAsync(
             orderBy: q => q.OrderBy(m => m.DisplayOrder)
         );
 
-        return Mapper.Map<List<MenuItemDto>>(menuItems);
+        return mapper.Map<List<MenuItemDto>>(menuItems);
     }
 
     public async Task<List<MenuItemDto>> GetMenuHierarchyAsync()
     {
-        var repository = UnitOfWork.Repository<MenuItem, int>();
+        var repository = unitOfWork.Repository<MenuItem, int>();
 
         // Get all menu items without includes to avoid shallow loading
         var allItems = await repository.GetWithIncludesAsync(
@@ -44,12 +43,12 @@ public class MenuService(
         LoadChildren(rootItems, lookup);
 
         // Map to DTOs
-        return Mapper.Map<List<MenuItemDto>>(rootItems);
+        return mapper.Map<List<MenuItemDto>>(rootItems);
     }
 
     public async Task<List<MenuItemDto>> GetUserMenuAsync()
     {
-        var repository = UnitOfWork.Repository<MenuItem, int>();
+        var repository = unitOfWork.Repository<MenuItem, int>();
     
         // Tüm menü öğelerini getir
         var allMenuItems = await repository.GetAllAsync();
@@ -67,7 +66,7 @@ public class MenuService(
         BuildCompleteMenuHierarchy(rootItems, activeItems);
     
         // DTO'lara dönüştür
-        var menuDtos = Mapper.Map<List<MenuItemDto>>(rootItems);
+        var menuDtos = mapper.Map<List<MenuItemDto>>(rootItems);
     
         // İzinleri kontrol et
         foreach (var menuDto in menuDtos)
@@ -83,24 +82,24 @@ public class MenuService(
 
     public async Task<MenuItemDto?> GetMenuItemByIdAsync(int id)
     {
-        var repository = UnitOfWork.Repository<MenuItem, int>();
+        var repository = unitOfWork.Repository<MenuItem, int>();
         var menuItem = await repository.GetByIdAsync(id);
 
-        return menuItem == null ? null : Mapper.Map<MenuItemDto>(menuItem);
+        return menuItem == null ? null : mapper.Map<MenuItemDto>(menuItem);
     }
 
     public async Task<Result<int>> CreateMenuItemAsync(CreateUpdateMenuItemDto dto)
     {
         try
         {
-            var repository = UnitOfWork.Repository<MenuItem, int>();
+            var repository = unitOfWork.Repository<MenuItem, int>();
 
             // Map DTO to entity
-            var menuItem = Mapper.Map<MenuItem>(dto);
+            var menuItem = mapper.Map<MenuItem>(dto);
 
             // Add to repository
             await repository.AddAsync(menuItem);
-            await UnitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync();
 
             logger.LogInformation("Created menu item: {Name}", menuItem.Name);
 
@@ -122,7 +121,7 @@ public class MenuService(
                 return Result.Failure(["Menu item ID is required for update"]);
             }
 
-            var repository = UnitOfWork.Repository<MenuItem, int>();
+            var repository = unitOfWork.Repository<MenuItem, int>();
 
             // Get existing menu item
             var menuItem = await repository.GetByIdAsync(dto.Id.Value);
@@ -139,11 +138,11 @@ public class MenuService(
             }
 
             // Update properties
-            Mapper.Map(dto, menuItem);
+            mapper.Map(dto, menuItem);
 
             // Update in repository
             await repository.UpdateAsync(menuItem);
-            await UnitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync();
 
             logger.LogInformation("Updated menu item: {Name} (ID: {Id})", menuItem.Name, menuItem.Id);
 
@@ -160,7 +159,7 @@ public class MenuService(
     {
         try
         {
-            var repository = UnitOfWork.Repository<MenuItem, int>();
+            var repository = unitOfWork.Repository<MenuItem, int>();
 
             // Get menu item
             var menuItem = await repository.GetByIdAsync(id);
@@ -180,7 +179,7 @@ public class MenuService(
 
             // Delete from repository
             await repository.DeleteAsync(menuItem);
-            await UnitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync();
 
             logger.LogInformation("Deleted menu item: {Name} (ID: {Id})", menuItem.Name, menuItem.Id);
 
@@ -195,7 +194,7 @@ public class MenuService(
 
     public async Task<List<MenuItemDto>> GetParentMenuItemsAsync(int? excludeId = null)
     {
-        var repository = UnitOfWork.Repository<MenuItem, int>();
+        var repository = unitOfWork.Repository<MenuItem, int>();
 
         // Tüm menü öğelerini getir
         var allItems = await repository.GetAllAsync();
@@ -232,7 +231,7 @@ public class MenuService(
         }
 
         // DTO'lara dönüştür
-        return Mapper.Map<List<MenuItemDto>>(result);
+        return mapper.Map<List<MenuItemDto>>(result);
     }
 
     // Helper methods
@@ -278,7 +277,7 @@ public class MenuService(
 
     private async Task<List<int>> GetDescendantIds(int menuItemId)
     {
-        var repository = UnitOfWork.Repository<MenuItem, int>();
+        var repository = unitOfWork.Repository<MenuItem, int>();
         var allItems = await repository.GetAllAsync();
 
         var descendants = new List<int>();
@@ -367,17 +366,5 @@ public class MenuService(
                 LoadChildren(children, lookup);
             }
         }
-    }
-
-    protected override Expression<Func<MenuItem, bool>> GetSearchPredicate(string searchTerm)
-    {
-        return m => m.Name.Contains(searchTerm) || 
-                    (m.Controller != null && m.Controller.Contains(searchTerm)) ||
-                    (m.Action != null && m.Action.Contains(searchTerm));
-    }
-    
-    protected override Func<IQueryable<MenuItem>, IOrderedQueryable<MenuItem>> GetDefaultOrdering()
-    {
-        return query => query.OrderBy(m => m.DisplayOrder);
     }
 }

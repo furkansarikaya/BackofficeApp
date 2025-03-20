@@ -54,14 +54,18 @@ public class MenuController(
         if (ModelState.IsValid)
         {
             var dto = mapper.Map<CreateUpdateMenuItemDto>(viewModel);
-            var result = await menuService.CreateAsync(dto);
+            var result = await menuService.CreateMenuItemAsync(dto);
 
-            if (result > 0)
+            if (result.Succeeded)
             {
                 NotificationService.AddSuccessNotification("Menü öğesi başarıyla oluşturuldu.");
                 return RedirectToAction(nameof(Index));
             }
-            NotificationService.AddErrorNotification("Menü öğesi oluşturulamadı.");
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error);
+            }
         }
 
         // If we got this far, something failed, redisplay form
@@ -105,9 +109,18 @@ public class MenuController(
         if (ModelState.IsValid)
         {
             var dto = mapper.Map<CreateUpdateMenuItemDto>(viewModel);
-            await menuService.UpdateAsync(dto);
-            NotificationService.AddSuccessNotification("Menü öğesi başarıyla güncellendi.");
-            return RedirectToAction(nameof(Index));
+            var result = await menuService.UpdateMenuItemAsync(dto);
+
+            if (result.Succeeded)
+            {
+                NotificationService.AddSuccessNotification("Menü öğesi başarıyla güncellendi.");
+                return RedirectToAction(nameof(Index));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error);
+            }
         }
 
         // If we got this far, something failed, redisplay form
@@ -123,8 +136,19 @@ public class MenuController(
     [Permission(PermissionType.Delete)]
     public async Task<IActionResult> Delete(int id)
     {
-        await menuService.DeleteAsync(id);
-        NotificationService.AddSuccessNotification("Menü öğesi başarıyla silindi.");
+        var result = await menuService.DeleteMenuItemAsync(id);
+
+        if (result.Succeeded)
+        {
+            NotificationService.AddSuccessNotification("Menü öğesi başarıyla silindi.");
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                NotificationService.AddErrorNotification(error);
+            }
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -146,9 +170,20 @@ public class MenuController(
         var dto = mapper.Map<CreateUpdateMenuItemDto>(menuItem);
         dto.IsActive = !dto.IsActive;
 
-        await menuService.UpdateAsync(dto);
-        var status = dto.IsActive ? "aktif" : "pasif";
-        NotificationService.AddSuccessNotification($"Menü öğesi {status} duruma getirildi.");
+        var result = await menuService.UpdateMenuItemAsync(dto);
+
+        if (result.Succeeded)
+        {
+            var status = dto.IsActive ? "aktif" : "pasif";
+            NotificationService.AddSuccessNotification($"Menü öğesi {status} duruma getirildi.");
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                NotificationService.AddErrorNotification(error);
+            }
+        }
 
         return RedirectToAction(nameof(Index));
     }
