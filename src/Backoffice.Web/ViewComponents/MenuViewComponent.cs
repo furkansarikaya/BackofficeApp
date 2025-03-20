@@ -15,100 +15,135 @@ public class MenuViewComponent(
     {
         try
         {
-            // Get menu items that the current user has permission to see
+            // Kullanıcının görme yetkisi olan menü öğelerini getir
             var menuItems = await menuService.GetUserMenuAsync();
             
-            // Map to view models
+            // DTO'ları view model'e dönüştür
             var viewModels = mapper.Map<List<MenuViewModel>>(menuItems);
             
-            // Process all menu items
+            // Menü öğelerini işle (aktif öğeleri, açık/kapalı durumları belirle)
             ProcessMenuItems(viewModels);
             
             return View(viewModels);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error loading menu items");
+            logger.LogError(ex, "Menü öğeleri yüklenirken hata oluştu");
             return View(new List<MenuViewModel>());
         }
     }
 
+    /// <summary>
+    /// Menü öğelerini işler - aktif menüleri belirler, açık/kapalı durumları ayarlar
+    /// </summary>
     private void ProcessMenuItems(List<MenuViewModel> menuItems)
     {
-        // Get current controller and action
+        // Mevcut controller ve action'ı al
         var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
         var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
         
-        // First identify which section contains the current page
-        var activeSectionFound = false;
+        // Tüm menüleri varsayılan olarak kapalı yap
+        CloseAllMenuItems(menuItems);
         
-        foreach (var item in from item in menuItems where item.IsSectionHeader let sectionHasCurrentPage = CheckSectionForCurrentPage(item.Children, currentController, currentAction) where sectionHasCurrentPage select item)
+        // Aktif menü öğesini bul ve işaretle (bu işlem üst menüleri de açacak)
+        var activeFound = MarkActiveMenuItem(menuItems, currentController, currentAction);
+        
+        // Aktif menü bulunamadıysa ve bu bir hata durumu ise (örneğin 404 sayfası)
+        // kullanıcı deneyimini iyileştirmek için ana menüyü görünür kıl
+        if (!activeFound)
         {
-            item.IsExpanded = true;
-            activeSectionFound = true;
+            // Hiçbir şey yapma - tüm menüler kapalı kalsın
         }
-        
-        // If no section contains the current page, expand all sections by default
-        if (!activeSectionFound)
-        {
-            foreach (var item in menuItems.Where(item => item.IsSectionHeader))
-            {
-                item.IsExpanded = true;
-            }
-        }
-        
-        // Now process all menu items to mark current page
-        ProcessMenuItemsRecursive(menuItems, currentController, currentAction);
     }
     
-    private static bool CheckSectionForCurrentPage(List<MenuViewModel> items, string? currentController, string? currentAction)
+    /// <summary>
+    /// Tüm menü öğelerini kapalı olarak işaretler
+    /// </summary>
+    private static void CloseAllMenuItems(List<MenuViewModel> menuItems)
     {
-        foreach (var item in items)
+        foreach (var item in menuItems)
         {
-            if (string.Equals(item.Controller, currentController, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(item.Action, currentAction, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
+            item.IsExpanded = false;
             
-            if (item.Children.Count != 0 && CheckSectionForCurrentPage(item.Children, currentController, currentAction))
+            if (item.HasChildren)
             {
-                return true;
+                CloseAllMenuItems(item.Children);
             }
         }
-        
-        return false;
     }
     
-    private static bool ProcessMenuItemsRecursive(List<MenuViewModel> menuItems, string? currentController, string? currentAction)
+    /// <summary>
+    /// Aktif menü öğesini bulur ve işaretler, üst menülerini de açar
+    /// </summary>
+    private static bool MarkActiveMenuItem(List<MenuViewModel> menuItems, string currentController, string currentAction)
     {
-        var hasCurrentPage = false;
+        var foundActive = false;
         
         foreach (var item in menuItems)
         {
-            // Skip section headers for is-current-page check but still process children
-            if (!item.IsSectionHeader)
+            // Aktif sayfa bu menü öğesi mi?
+            var isActive = string.Equals(item.Controller, currentController, StringComparison.OrdinalIgnoreCase) &&
+                           string.Equals(item.Action, currentAction, StringComparison.OrdinalIgnoreCase);
+            
+            if (isActive)
             {
-                // Check if this is the current page
-                if (string.Equals(item.Controller, currentController, StringComparison.OrdinalIgnoreCase) &&
-                    string.Equals(item.Action, currentAction, StringComparison.OrdinalIgnoreCase))
-                {
-                    item.IsCurrentPage = true;
-                    item.IsExpanded = true; // Expand this item if it's current
-                    hasCurrentPage = true;
-                }
+                item.IsCurrentPage = true;
+                foundActive = true;
+                
+                // Aktif öğenin tüm üst menülerini de aç
+                ExpandParentMenus(item);
             }
             
-            // Process children recursively
-            if (item.Children.Count == 0) continue;
-            var childHasCurrentPage = ProcessMenuItemsRecursive(item.Children, currentController, currentAction);
+            // Çocukları recursive olarak kontrol et
+            if (!item.HasChildren) continue;
+            var childIsActive = MarkActiveMenuItem(item.Children, currentController, currentAction);
                 
-            // If any child is current, this item is also expanded
-            if (!childHasCurrentPage) continue;
+            // Çocuklardan biri aktifse, bu öğeyi de aç
+            if (!childIsActive) continue;
             item.IsExpanded = true;
-            hasCurrentPage = true;
+            foundActive = true;
         }
         
-        return hasCurrentPage;
+        return foundActive;
+    }
+    
+    /// <summary>
+    /// Aktif menü öğesinin tüm üst menülerini açar
+    /// </summary>
+    private static void ExpandParentMenus(MenuViewModel item)
+    {
+        var parent = FindMenuItemParent(item);
+        if (parent == null) return;
+        parent.IsExpanded = true;
+        ExpandParentMenus(parent);
+    }
+    
+    /// <summary>
+    /// Bir menü öğesinin ebeveynini bulur
+    /// </summary>
+    private static MenuViewModel FindMenuItemParent(MenuViewModel child)
+    {
+        return FindParentRecursive(null, child);
+    }
+    
+    private static MenuViewModel FindParentRecursive(List<MenuViewModel> menuItems, MenuViewModel targetChild)
+    {
+        if (menuItems == null) return null;
+        
+        foreach (var item in menuItems)
+        {
+            if (item.Children.Contains(targetChild))
+            {
+                return item;
+            }
+            
+            var found = FindParentRecursive(item.Children, targetChild);
+            if (found != null)
+            {
+                return found;
+            }
+        }
+        
+        return null;
     }
 }

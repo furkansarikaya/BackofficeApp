@@ -64,30 +64,34 @@ public class MenuService(
     public async Task<List<MenuItemDto>> GetUserMenuAsync()
     {
         var repository = unitOfWork.Repository<MenuItem, int>();
-
-        // Get all active menu items
-        var allItems = await repository.GetWithIncludesAsync(
-            predicate: m => m.IsActive,
-            orderBy: q => q.OrderBy(m => m.DisplayOrder),
-            includes: [m => m.Children]
-        );
-
-        // Filter to get only root items (those with no parent)
-        var rootItems = allItems.Where(m => m.ParentId == null).ToList();
-
-        // Map to DTOs
+    
+        // Tüm menü öğelerini getir
+        var allMenuItems = await repository.GetAllAsync();
+    
+        // Sadece aktif olanları filtrele
+        var activeItems = allMenuItems.Where(m => m.IsActive).ToList();
+    
+        // Kök menü öğelerini DisplayOrder'a göre sırala
+        var rootItems = activeItems
+            .Where(m => m.ParentId == null)
+            .OrderBy(m => m.DisplayOrder)
+            .ToList();
+    
+        // Hiyerarşiyi oluştur
+        BuildCompleteMenuHierarchy(rootItems, activeItems);
+    
+        // DTO'lara dönüştür
         var menuDtos = mapper.Map<List<MenuItemDto>>(rootItems);
-
-        // Check permissions for each menu item
+    
+        // İzinleri kontrol et
         foreach (var menuDto in menuDtos)
         {
-            // Set visibility based on permissions
             SetMenuItemVisibility(menuDto);
         }
-
-        // Filter out items with no visible children
+    
+        // Görünmeyen öğeleri filtrele
         FilterInvisibleMenuItems(menuDtos);
-
+    
         return menuDtos;
     }
 
@@ -340,6 +344,27 @@ public class MenuService(
 
             // Alt öğeleri ekle
             AddChildrenRecursively(allItems, child.Id, result, excludeIds, level + 1);
+        }
+    }
+
+    private static void BuildCompleteMenuHierarchy(List<MenuItem> parents, List<MenuItem> allActiveItems)
+    {
+        foreach (var parent in parents)
+        {
+            // Parent'ın çocuklarını bul ve DisplayOrder'a göre sırala
+            var children = allActiveItems
+                .Where(m => m.ParentId == parent.Id)
+                .OrderBy(m => m.DisplayOrder)
+                .ToList();
+        
+            // Çocukları parent'a ekle
+            parent.Children = children;
+        
+            // Recursive olarak alt seviyeleri de oluştur
+            if (children.Count != 0)
+            {
+                BuildCompleteMenuHierarchy(children, allActiveItems);
+            }
         }
     }
 }

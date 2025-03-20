@@ -1,123 +1,54 @@
-﻿// Sidebar ve menü işlevselliği
+﻿/**
+ * Backoffice Panel - Ana JavaScript Dosyası
+ *
+ * Bu dosya, sol menü işlevselliği ve diğer UI etkileşimleri için
+ * gerekli tüm JavaScript fonksiyonlarını içerir.
+ */
+
+/**
+ * Sayfa yüklendiğinde çalışacak fonksiyonlar
+ */
 document.addEventListener('DOMContentLoaded', function() {
     // Sidebar toggle butonu işlevselliği
-    setupSidebarToggle();
+    initSidebarToggle();
 
     // Mini sidebar modu
-    setupMiniSidebar();
+    initMiniSidebar();
 
     // Açılır-kapanır menü öğeleri
     initCollapsibleMenus();
 
     // Mobil cihazlarda sidebar kapatma ve diğer responsive işlemler
-    setupMobileResponsive();
+    initMobileResponsive();
 
-    // Aktif menüyü açık tut, diğerlerini kapat
-    setupActiveMenu();
+    // Aktif menü işlemleri
+    initActiveMenuHandling();
+
+    // Bootstrap Tooltip ve Popover'ları başlat
+    initBootstrapComponents();
 });
 
-// Aktif menüyü açık tut, diğerlerini kapat
-function setupActiveMenu() {
-    // Önce aktif olan menü öğelerini bulalım
-    const activeMenuItems = document.querySelectorAll('.nav-link.active');
-
-    // Aktif öğe varsa, onun tüm üst menülerini açalım
-    if (activeMenuItems.length > 0) {
-        activeMenuItems.forEach(activeItem => {
-            // Aktif öğenin tüm üst menülerini açık hale getir
-            ensureParentMenusOpen(activeItem);
-        });
-    }
-
-    // Aktif olmayan ve açık durumda olan menüleri kapat
-    closeNonActiveMenus();
-}
-
-// Aktif öğenin tüm üst menülerini açık duruma getir
-function ensureParentMenusOpen(activeItem) {
-    // Önce aktif öğenin en yakın üst menüsünü bulalım
-    let parentSubmenu = activeItem.closest('.submenu, .section-submenu');
-
-    while (parentSubmenu) {
-        // Bu alt menünün bağlı olduğu menü öğesini bulalım (collapse trigger)
-        const parentMenuId = parentSubmenu.id;
-        if (parentMenuId) {
-            const parentMenuItem = document.querySelector(`[href="#${parentMenuId}"]`);
-
-            if (parentMenuItem) {
-                // Üst menüyü açık olarak işaretle
-                parentMenuItem.setAttribute('aria-expanded', 'true');
-
-                // Collapse sınıfını da ekleyelim
-                parentSubmenu.classList.add('show');
-
-                // Bir sonraki üst menüye geçelim
-                parentSubmenu = parentMenuItem.closest('.submenu, .section-submenu');
-            } else {
-                break;
-            }
-        } else {
-            break;
-        }
-    }
-
-    // Eğer aktif öğe bir bölüm başlığı altında ise, o bölümü de açık hale getir
-    const parentSectionSubmenu = activeItem.closest('.section-submenu');
-    if (parentSectionSubmenu) {
-        const sectionId = parentSectionSubmenu.id.replace('section-', '');
-        if (sectionId) {
-            const sectionHeader = document.querySelector(`[href="#section-${sectionId}"]`);
-            if (sectionHeader) {
-                sectionHeader.setAttribute('aria-expanded', 'true');
-                parentSectionSubmenu.classList.add('show');
-            }
-        }
-    }
-}
-
-// Aktif olmayan ve açık durumda olan menüleri kapat
-function closeNonActiveMenus() {
-    // Açık durumdaki tüm collapsible öğeleri bul
-    const expandedMenus = document.querySelectorAll('.collapsible-menu-item[aria-expanded="true"]');
-
-    expandedMenus.forEach(item => {
-        const targetId = item.getAttribute('href');
-        if (!targetId) return;
-
-        const targetElement = document.querySelector(targetId);
-        if (!targetElement) return;
-
-        // Eğer bu menü aktif bir menü öğesi içermiyorsa kapat
-        const hasActiveChild = targetElement.querySelector('.nav-link.active') !== null;
-
-        if (!hasActiveChild && !item.classList.contains('active')) {
-            // Menüyü kapat
-            const bsCollapse = bootstrap.Collapse.getInstance(targetElement);
-            if (bsCollapse) {
-                bsCollapse.hide();
-            } else {
-                // Eğer bootstrap instance yoksa, manuel olarak kapat
-                targetElement.classList.remove('show');
-            }
-            // aria-expanded durumunu güncelle
-            item.setAttribute('aria-expanded', 'false');
-        }
-    });
-}
-
-// Sidebar toggle butonu işlevselliğini ayarla
-function setupSidebarToggle() {
+/**
+ * Sidebar açma/kapatma düğmesi işlevselliği
+ */
+function initSidebarToggle() {
     const sidebarToggle = document.getElementById('sidebarToggle');
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function() {
-            document.querySelector('.sidebar')?.classList.toggle('active');
-            document.querySelector('.content-wrapper')?.classList.toggle('active');
+            // Sidebar'ı aç/kapat
+            const sidebar = document.querySelector('.sidebar');
+            const contentWrapper = document.querySelector('.content-wrapper');
+
+            if (sidebar) sidebar.classList.toggle('active');
+            if (contentWrapper) contentWrapper.classList.toggle('active');
         });
     }
 }
 
-// Mini sidebar modunu ayarla
-function setupMiniSidebar() {
+/**
+ * Mini sidebar modunu başlat
+ */
+function initMiniSidebar() {
     const miniToggle = document.getElementById('sidebarMiniToggle');
     if (miniToggle) {
         miniToggle.addEventListener('click', function() {
@@ -134,116 +65,294 @@ function setupMiniSidebar() {
     }
 }
 
-// Açılır-kapanır menüleri başlat
+/**
+ * Tüm açılır-kapanır menü öğelerini başlat
+ */
 function initCollapsibleMenus() {
-    const isMobile = window.innerWidth < 992;
+    // Tüm menü öğelerini seç
     const collapsibleItems = document.querySelectorAll('.collapsible-menu-item');
 
+    // Her menü öğesine tıklama olayı ekle
     collapsibleItems.forEach(item => {
-        // Menü öğesi tıklandığında
-        item.addEventListener('click', function(re) {
-            const thisTarget = this.getAttribute('href');
-            if (!thisTarget) return;
+        item.addEventListener('click', function(event) {
+            // Bağlantı davranışını engelle
+            event.preventDefault();
 
-            // Bölüm başlığı kısmını seçiyoruz
+            // Hedef collapse elementini bul
+            const targetId = this.getAttribute('href');
+            if (!targetId) return;
+
+            // Target elementi seç
+            const targetElement = document.querySelector(targetId);
+            if (!targetElement) return;
+
+            // Mevcut durumu kontrol et
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+            // Durumu güncelle
+            this.setAttribute('aria-expanded', (!isExpanded).toString());
+
+            // Bootstrap Collapse API kullan veya manuel toggle
+            if (typeof bootstrap !== 'undefined' && bootstrap.Collapse) {
+                const bsCollapse = bootstrap.Collapse.getInstance(targetElement);
+                if (bsCollapse) {
+                    bsCollapse.toggle();
+                } else {
+                    new bootstrap.Collapse(targetElement, {
+                        toggle: true
+                    });
+                }
+            } else {
+                // Bootstrap yoksa manuel toggle yap
+                targetElement.classList.toggle('show');
+            }
+
+            // Tıklanan menü bir bölüm başlığı mı?
             const isSectionHeader = this.classList.contains('section-header');
 
-            // Bir açılır-kapanır menü açıldığında aynı seviyedeki diğer menüleri kapat
-            if (isMobile || this.getAttribute('data-close-others') !== 'false') {
-                closeOtherMenus(this, isSectionHeader);
+            // Aynı seviyedeki diğer menüleri kapat (opsiyonel)
+            if (this.getAttribute('data-close-others') !== 'false') {
+                closeOtherMenusInSameLevel(this, isSectionHeader);
             }
         });
     });
 }
 
-// Diğer menüleri kapat
-function closeOtherMenus(currentItem, isSectionHeader) {
-    const collapsibleItems = document.querySelectorAll('.collapsible-menu-item');
+/**
+ * Aynı seviyedeki diğer menüleri kapat
+ * @param {HTMLElement} currentItem - Tıklanan menü öğesi
+ * @param {boolean} isSectionHeader - Menü öğesi bir bölüm başlığı mı?
+ */
+function closeOtherMenusInSameLevel(currentItem, isSectionHeader) {
+    const parent = currentItem.closest('.submenu, .section-submenu, .sidebar-menu');
+    if (!parent) return;
 
-    collapsibleItems.forEach(otherItem => {
-        // Aynı bölüm başlığı türünde mi?
-        const otherIsSectionHeader = otherItem.classList.contains('section-header');
+    // Aynı ebeveyn içindeki tüm menüleri bul
+    const siblings = parent.querySelectorAll(isSectionHeader ?
+        '.section-header[aria-expanded="true"]' :
+        '.collapsible-menu-item:not(.section-header)[aria-expanded="true"]');
 
-        // Aynı tipte ve kendisi değilse
-        if (isSectionHeader === otherIsSectionHeader && otherItem !== currentItem) {
-            const otherTarget = otherItem.getAttribute('href');
-
-            // Alt menüler için sadece aynı bölüm içindekileri kapat
-            if (!isSectionHeader) {
-                // Aynı bölüm içinde mi?
-                const thisParent = currentItem.closest('.section-submenu');
-                const otherParent = otherItem.closest('.section-submenu');
-
-                // Aynı bölüm içinde değilse geç
-                if (thisParent !== otherParent) {
-                    return;
+    siblings.forEach(item => {
+        // Tıklanan öğe değilse kapat
+        if (item !== currentItem) {
+            const targetId = item.getAttribute('href');
+            if (targetId) {
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Bootstrap Collapse API kullan veya manuel kapat
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Collapse) {
+                        const bsCollapse = bootstrap.Collapse.getInstance(targetElement);
+                        if (bsCollapse) {
+                            bsCollapse.hide();
+                        } else {
+                            new bootstrap.Collapse(targetElement, {
+                                show: false
+                            });
+                        }
+                    } else {
+                        // Bootstrap yoksa manuel kapat
+                        targetElement.classList.remove('show');
+                    }
+                    item.setAttribute('aria-expanded', 'false');
                 }
             }
+        }
+    });
+}
 
-            // Açık menüyü kapat
-            if (otherTarget && otherItem.getAttribute('aria-expanded') === 'true') {
-                closeMenu(otherItem, otherTarget);
+/**
+ * Aktif menüler için işlemler
+ */
+function initActiveMenuHandling() {
+    // Önce tüm açık menüleri kapat
+    closeAllMenus();
+
+    // Aktif menüleri bul
+    const activeLinks = document.querySelectorAll('.nav-link.active');
+
+    // Her aktif menü için
+    activeLinks.forEach(activeLink => {
+        // Sadece aktif menünün üst menülerini aç
+        expandParentMenus(activeLink);
+    });
+}
+
+/**
+ * Tüm açık menüleri kapatır
+ */
+function closeAllMenus() {
+    const openMenus = document.querySelectorAll('.collapsible-menu-item[aria-expanded="true"]');
+    openMenus.forEach(menu => {
+        const targetId = menu.getAttribute('href');
+        if (targetId) {
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Bootstrap Collapse API kullan
+                if (typeof bootstrap !== 'undefined' && bootstrap.Collapse) {
+                    const bsCollapse = bootstrap.Collapse.getInstance(targetElement);
+                    if (bsCollapse) {
+                        bsCollapse.hide();
+                    }
+                } else {
+                    // Bootstrap yoksa manuel kapat
+                    targetElement.classList.remove('show');
+                }
+                menu.setAttribute('aria-expanded', 'false');
             }
         }
     });
 }
 
-// Belirli bir menüyü kapat
-function closeMenu(item, target) {
-    const collapseElement = document.querySelector(target);
-    if (collapseElement) {
-        // Bootstrap Collapse API kullanarak kapat
-        const bsCollapse = bootstrap.Collapse.getInstance(collapseElement);
-        if (bsCollapse) {
-            bsCollapse.hide();
+/**
+ * Aktif menünün tüm üst menülerini aç
+ * @param {HTMLElement} activeItem - Aktif menü öğesi
+ */
+function expandParentMenus(activeItem) {
+    // Eğer aktif öğe bir menü başlığıysa kendisini değil, sadece üst collapse'ları aç
+    if (activeItem.classList.contains('collapsible-menu-item')) {
+        // Sadece aktif olduğunda kendi alt menüsünü aç
+        const targetId = activeItem.getAttribute('href');
+        if (targetId) {
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.classList.add('show');
+                activeItem.setAttribute('aria-expanded', 'true');
+            }
         }
-        item.setAttribute('aria-expanded', 'false');
+    }
+
+    // Aktif öğenin en yakın submenu'sünü bul
+    let parentCollapse = activeItem.closest('.collapse');
+
+    // Tüm üst menüleri yukarı doğru takip et
+    while (parentCollapse) {
+        // Collapse'ı göster
+        parentCollapse.classList.add('show');
+
+        // Collapse controller'ını bul
+        const parentLink = document.querySelector(`[href="#${parentCollapse.id}"]`);
+        if (parentLink) {
+            // aria-expanded değerini güncelle
+            parentLink.setAttribute('aria-expanded', 'true');
+
+            // Bir sonraki üst collapse'ı ara
+            parentCollapse = parentLink.closest('.collapse');
+        } else {
+            break;
+        }
     }
 }
 
-// Menüyü genişlet
-function expandMenu(menuElement, triggerElement) {
-    const bsCollapse = new bootstrap.Collapse(menuElement, {
-        toggle: false
-    });
-    bsCollapse.show();
-    if (triggerElement) {
-        triggerElement.setAttribute('aria-expanded', 'true');
-    }
-}
-
-// Menüyü daralt
-function collapseMenu(menuElement, triggerElement) {
-    const bsCollapse = new bootstrap.Collapse(menuElement, {
-        toggle: false
-    });
-    bsCollapse.hide();
-    if (triggerElement) {
-        triggerElement.setAttribute('aria-expanded', 'false');
-    }
-}
-
-// Mobil cihazlar için responsive ayarları
-function setupMobileResponsive() {
-    // İçerik alanında tıklama yapıldığında (mobil) sidebar'ı gizle
+/**
+ * Mobil cihazlar için responsive ayarlar
+ */
+function initMobileResponsive() {
+    // İçerik alanı tıklamaları
     const contentWrapper = document.querySelector('.content-wrapper');
     if (contentWrapper) {
         contentWrapper.addEventListener('click', function() {
-            const isMobile = window.innerWidth < 992;
-            const sidebar = document.querySelector('.sidebar');
-
-            if (isMobile && sidebar && sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-                document.querySelector('.content-wrapper')?.classList.remove('active');
+            if (window.innerWidth < 768) {
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                    contentWrapper.classList.remove('active');
+                }
             }
         });
     }
 
-    // Pencere boyutu değiştiğinde ayarla
+    // Pencere boyutu değiştiğinde
     window.addEventListener('resize', function() {
-        if (window.innerWidth > 992) {
-            document.querySelector('.sidebar')?.classList.remove('active');
-            document.querySelector('.content-wrapper')?.classList.remove('active');
+        if (window.innerWidth > 768) {
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                sidebar.classList.remove('active');
+            }
+            if (contentWrapper) {
+                contentWrapper.classList.remove('active');
+            }
         }
     });
 }
+
+/**
+ * Bootstrap bileşenlerini başlat
+ */
+function initBootstrapComponents() {
+    // Tooltip'leri başlat
+    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    }
+
+    // Popover'ları başlat
+    if (typeof bootstrap !== 'undefined' && bootstrap.Popover) {
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    }
+}
+
+/**
+ * Menü öğesini manuel olarak aç
+ * @param {string} menuId - Açılacak menünün ID'si
+ */
+function expandMenu(menuId) {
+    const menuElement = document.getElementById(menuId);
+    if (!menuElement) return;
+
+    // Collapse elementini göster
+    menuElement.classList.add('show');
+
+    // Controller'ı bul ve güncelle
+    const controller = document.querySelector(`[href="#${menuId}"]`);
+    if (controller) {
+        controller.setAttribute('aria-expanded', 'true');
+    }
+
+    // Üst menüleri de aç
+    expandParentMenus(menuElement);
+}
+
+/**
+ * Menü öğesini manuel olarak kapat
+ * @param {string} menuId - Kapatılacak menünün ID'si
+ */
+function collapseMenu(menuId) {
+    const menuElement = document.getElementById(menuId);
+    if (!menuElement) return;
+
+    // Collapse elementini gizle
+    menuElement.classList.remove('show');
+
+    // Controller'ı bul ve güncelle
+    const controller = document.querySelector(`[href="#${menuId}"]`);
+    if (controller) {
+        controller.setAttribute('aria-expanded', 'false');
+    }
+}
+
+/**
+ * Tüm bildirim kutularını otomatik kapat
+ */
+(function() {
+    // Tüm kapatılabilir uyarı kutularını bul
+    const alerts = document.querySelectorAll('.alert-dismissible');
+
+    // Her uyarıya otomatik kapanma fonksiyonu ekle
+    alerts.forEach(alert => {
+        // 5 saniye sonra otomatik kapat
+        setTimeout(() => {
+            // Bootstrap dismiss API'sini kullan
+            if (typeof bootstrap !== 'undefined' && bootstrap.Alert) {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            } else {
+                // Bootstrap yoksa manuel kapat
+                alert.classList.add('fade');
+                setTimeout(() => {
+                    alert.remove();
+                }, 150);
+            }
+        }, 5000);
+    });
+})();
