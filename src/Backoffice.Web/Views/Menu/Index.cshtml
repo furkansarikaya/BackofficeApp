@@ -1,7 +1,7 @@
 @model Backoffice.Web.ViewModels.Menu.MenuListViewModel
 @{
     ViewData["Title"] = "Menü Yönetimi";
-    
+
     List<FlatMenuItem> GetFlatMenuList(List<MenuViewModel> items, int level = 0)
     {
         var result = new List<FlatMenuItem>();
@@ -19,14 +19,14 @@
                 RequiredPermissionCode = item.RequiredPermissionCode,
                 IsSectionHeader = item.IsSectionHeader,
                 IsActive = item.IsActive,
-                Level = level,
-                FullPath = item.FullPath
+                Level = level
             });
             if (item.Children.Any())
             {
                 result.AddRange(GetFlatMenuList(item.Children, level + 1));
             }
         }
+
         return result;
     }
 }
@@ -52,94 +52,91 @@
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
-                        <tr>
-                            <th>Sıra</th>
-                            <th>Tam Yol</th>
-                            <th>Tür</th>
-                            <th>Yönlendirme</th>
-                            <th>İzin</th>
-                            <th>Durum</th>
-                            <th>İşlemler</th>
-                        </tr>
+                    <tr>
+                        <th>Sıra</th>
+                        <th>Tam Yol</th>
+                        <th>Tür</th>
+                        <th>Yönlendirme</th>
+                        <th>İzin</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in GetFlatMenuList(Model.MenuItems))
-                        {
-                            <tr>
-                                <td>@item.DisplayOrder</td>
-                                <td>
+                    @foreach (var item in GetFlatMenuList(Model.MenuItems))
+                    {
+                        <tr>
+                            <td>@item.DisplayOrder</td>
+                            <td>
                                     <span style="padding-left: @(item.Level * 20)px;">
                                         @if (!string.IsNullOrEmpty(item.Icon))
                                         {
                                             <i class="@item.Icon me-2"></i>
                                         }
-                                        @if (!string.IsNullOrEmpty(item.FullPath))
-                                        {
-                                            @item.FullPath
-                                        }
-                                        else
-                                        {
-                                            @item.Name
-                                        }
+                                        @item.Name
                                     </span>
-                                </td>
-                                <td>
+                            </td>
+                            <td>
                                     <span class="badge @(item.IsSectionHeader ? "bg-secondary" : "bg-primary")">
                                         @(item.IsSectionHeader ? "Bölüm Başlığı" : "Menü Öğesi")
                                     </span>
-                                </td>
-                                <td>
-                                    @if (item.IsSectionHeader)
-                                    {
-                                        <span class="text-muted">-</span>
-                                    }
-                                    else if (!string.IsNullOrEmpty(item.Url))
-                                    {
-                                        <span>@item.Url</span>
-                                    }
-                                    else if (!string.IsNullOrEmpty(item.Controller) && !string.IsNullOrEmpty(item.Action))
-                                    {
-                                        <span>@item.Controller / @item.Action</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">-</span>
-                                    }
-                                </td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(item.RequiredPermissionCode))
-                                    {
-                                        <span class="badge bg-info">@item.RequiredPermissionCode</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">-</span>
-                                    }
-                                </td>
-                                <td>
+                            </td>
+                            <td>
+                                @if (item.IsSectionHeader)
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                                else if (!string.IsNullOrEmpty(item.Url))
+                                {
+                                    <span>@item.Url</span>
+                                }
+                                else if (!string.IsNullOrEmpty(item.Controller) && !string.IsNullOrEmpty(item.Action))
+                                {
+                                    <span>@item.Controller / @item.Action</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.RequiredPermissionCode))
+                                {
+                                    <span class="badge bg-info">@item.RequiredPermissionCode</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                            <td>
                                     <span class="badge @(item.IsActive ? "bg-success" : "bg-danger")">
                                         @(item.IsActive ? "Aktif" : "Pasif")
                                     </span>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning" title="Düzenle">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form asp-action="ToggleActive" asp-route-id="@item.Id" method="post" class="d-inline">
-                                            <button type="submit" class="btn btn-sm @(item.IsActive ? "btn-secondary" : "btn-success")" title="@(item.IsActive ? "Pasif Yap" : "Aktif Yap")">
-                                                <i class="fas @(item.IsActive ? "fa-toggle-off" : "fa-toggle-on")"></i>
-                                            </button>
-                                        </form>
-                                        <button type="button" class="btn btn-sm btn-danger" title="Sil"
-                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                data-id="@item.Id" data-name="@item.Name">
-                                            <i class="fas fa-trash"></i>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning"
+                                       title="Düzenle">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form asp-action="ToggleActive" asp-route-id="@item.Id" method="post"
+                                          class="d-inline">
+                                        <button type="submit"
+                                                class="btn btn-sm @(item.IsActive ? "btn-secondary" : "btn-success")"
+                                                title="@(item.IsActive ? "Pasif Yap" : "Aktif Yap")">
+                                            <i class="fas @(item.IsActive ? "fa-toggle-off" : "fa-toggle-on")"></i>
                                         </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
+                                    </form>
+                                    <button type="button" class="btn btn-sm btn-danger" title="Sil"
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                            data-id="@item.Id" data-name="@item.Name">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
             </div>
@@ -165,7 +162,7 @@
             </div>
             <div class="modal-footer">
                 <form asp-action="Delete" method="post" id="deleteForm">
-                    <input type="hidden" name="id" id="menuItemId" />
+                    <input type="hidden" name="id" id="menuItemId"/>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
                     <button type="submit" class="btn btn-danger">Sil</button>
                 </form>

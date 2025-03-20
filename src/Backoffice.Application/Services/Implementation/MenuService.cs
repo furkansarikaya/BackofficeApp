@@ -30,22 +30,35 @@ public class MenuService(
     {
         var repository = unitOfWork.Repository<MenuItem, int>();
 
-        // Get all menu items
+        // Get all menu items without includes to avoid shallow loading
         var allItems = await repository.GetWithIncludesAsync(
-            orderBy: q => q.OrderBy(m => m.DisplayOrder),
-            includes: [m => m.Children]
+            orderBy: q => q.OrderBy(m => m.DisplayOrder)
         );
 
-        // Filter to get only root items (those with no parent)
+        // Build the hierarchy manually
+        var lookup = allItems.ToLookup(i => i.ParentId);
         var rootItems = allItems.Where(m => m.ParentId == null).ToList();
 
+        // Recursively load children
+        LoadChildren(rootItems, lookup);
+
         // Map to DTOs
-        var menuItems = mapper.Map<List<MenuItemDto>>(rootItems);
+        return mapper.Map<List<MenuItemDto>>(rootItems);
+    }
 
-        // Calculate full paths
-        CalculateFullPaths(menuItems);
+    private void LoadChildren(List<MenuItem> items, ILookup<int?, MenuItem> lookup)
+    {
+        foreach (var item in items)
+        {
+            var children = lookup[item.Id].ToList();
+            item.Children = children;
 
-        return menuItems;
+            // Recursively load deeper levels
+            if (children.Any())
+            {
+                LoadChildren(children, lookup);
+            }
+        }
     }
 
     public async Task<List<MenuItemDto>> GetUserMenuAsync()
@@ -194,34 +207,42 @@ public class MenuService(
     {
         var repository = unitOfWork.Repository<MenuItem, int>();
 
-        // Get potential parent items (active)
-        var query = repository.GetQueryable()
-            .Where(m => m.IsActive);
+        // Tüm menü öğelerini getir
+        var allItems = await repository.GetAllAsync();
 
-        // Exclude the current item and its descendants if an ID is provided
+        // Hariç tutulacak ID'leri belirle
+        var excludeIds = new HashSet<int>();
         if (excludeId.HasValue)
         {
-            // First get all descendants of the item
+            excludeIds.Add(excludeId.Value);
             var descendants = await GetDescendantIds(excludeId.Value);
-
-            // Exclude the item and its descendants
-            var excludeIds = new List<int> { excludeId.Value };
-            excludeIds.AddRange(descendants);
-
-            query = query.Where(m => !excludeIds.Contains(m.Id));
+            foreach (var id in descendants)
+            {
+                excludeIds.Add(id);
+            }
         }
 
-        var items = await query
+        // Menü hiyerarşisini oluştur
+        var result = new List<MenuItem>();
+
+        // Önce kök öğeleri al
+        var rootItems = allItems
+            .Where(m => m.ParentId == null && !excludeIds.Contains(m.Id))
             .OrderBy(m => m.DisplayOrder)
-            .ToListAsync();
+            .ToList();
 
-        // Map to DTOs
-        var menuItems = mapper.Map<List<MenuItemDto>>(items);
+        // Her bir kök öğe için
+        foreach (var rootItem in rootItems)
+        {
+            // Kök öğeyi ekle
+            result.Add(rootItem);
 
-        // Calculate full paths for all items
-        CalculateFullPaths(menuItems, new List<MenuItem>());
+            // Alt öğeleri ekle
+            AddChildrenRecursively(allItems, rootItem.Id, result, excludeIds, 1);
+        }
 
-        return menuItems;
+        // DTO'lara dönüştür
+        return mapper.Map<List<MenuItemDto>>(result);
     }
 
     // Helper methods
@@ -241,7 +262,7 @@ public class MenuService(
         }
     }
 
-    private void FilterInvisibleMenuItems(List<MenuItemDto> menuItems)
+    private static void FilterInvisibleMenuItems(List<MenuItemDto> menuItems)
     {
         // Remove invisible non-section-header items with no visible children
         for (var i = menuItems.Count - 1; i >= 0; i--)
@@ -289,61 +310,36 @@ public class MenuService(
 
         return descendants;
     }
-
-    private static void CalculateFullPaths(List<MenuItemDto> menuItems, string parentPath = "")
-    {
-        foreach (var item in menuItems)
-        {
-            // Set the full path
-            item.FullPath = string.IsNullOrEmpty(parentPath) ? item.Name : $"{parentPath} >> {item.Name}";
-
-            // Process children recursively
-            if (item.Children.Count != 0)
-            {
-                CalculateFullPaths(item.Children, item.FullPath);
-            }
-        }
-    }
     
-    private static void CalculateFullPaths(List<MenuItemDto> menuItems, List<MenuItem> allItems)
+    
+    private static void AddChildrenRecursively(IEnumerable<MenuItem> allItems, int parentId,
+        List<MenuItem> result, HashSet<int> excludeIds, int level)
     {
-        // Bu yardımcı metot tam yolları hesaplar
-        // Her menü öğesinin adına, varsa üst menüsünün adını ekler
+        if (level > 10) return; // Güvenlik sınırı
 
-        // Üst menü ID'lerini ve adlarını hızlı erişim için dictionary'de depola
-        var menuPaths = new Dictionary<int, string>();
+        var children = allItems
+            .Where(m => m.ParentId == parentId && !excludeIds.Contains(m.Id))
+            .OrderBy(m => m.DisplayOrder);
 
-        // Önce tüm menü öğelerini tarayıp ID-Ad eşleştirmesini oluştur
-        foreach (var item in menuItems)
+        foreach (var child in children)
         {
-            menuPaths[item.Id] = item.Name;
-        }
+            // Seviyeyi göstermek için ismi değiştir - açık ve net bir girintileme sistemi
+            var indent = new string('\u00A0', level * 4); // Kırılmayan boşluk karakteri
+            var prefix = "";
 
-        // Şimdi her öğe için tam yolu oluştur
-        foreach (var item in menuItems)
-        {
-            var path = item.Name;
-            var currentParentId = item.ParentId;
-
-            // Üst menüleri takip ederek tam yolu oluştur
-            while (currentParentId.HasValue)
+            // Seviye göstergesini ekle
+            for (var i = 0; i < level; i++)
             {
-                if (menuPaths.TryGetValue(currentParentId.Value, out string? parentName))
-                {
-                    path = $"{parentName} >> {path}";
-
-                    // Üst menünün üst menüsünü bul (varsa)
-                    var parentItem = menuItems.FirstOrDefault(m => m.Id == currentParentId.Value);
-                    currentParentId = parentItem?.ParentId;
-                }
-                else
-                {
-                    // Üst menü bulunamadı, döngüyü sonlandır
-                    break;
-                }
+                prefix += (i == level - 1) ? "» " : "  ";
             }
 
-            item.FullPath = path;
+            child.Name = indent + prefix + child.Name;
+
+            // Öğeyi listeye ekle
+            result.Add(child);
+
+            // Alt öğeleri ekle
+            AddChildrenRecursively(allItems, child.Id, result, excludeIds, level + 1);
         }
     }
 }

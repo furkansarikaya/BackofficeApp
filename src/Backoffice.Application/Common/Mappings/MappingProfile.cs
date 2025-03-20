@@ -14,8 +14,10 @@ public class MappingProfile : Profile
     {
         // MenuItem -> MenuItemDto (for nested items)
         CreateMap<MenuItem, MenuItemDto>()
-            .ForMember(dest => dest.Children, opt => opt.MapFrom(src => src.Children.Where(c => c.IsActive).OrderBy(c => c.DisplayOrder)))
-            .ForMember(dest => dest.IsVisible, opt => opt.Ignore());
+            .ForMember(dest => dest.Children, opt => 
+                opt.MapFrom(src => src.Children.Where(c => c.IsActive).OrderBy(c => c.DisplayOrder)))
+            .ForMember(dest => dest.IsVisible, opt => opt.Ignore())
+            .PreserveReferences(); // Ensure circular references are handled correctly
 
         // CreateUpdateMenuItemDto -> MenuItem
         CreateMap<CreateUpdateMenuItemDto, MenuItem>();

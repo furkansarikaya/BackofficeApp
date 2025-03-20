@@ -57,17 +57,4 @@ public class MenuViewModel
     /// Bu menü öğesinin alt menü listesinin benzersiz ID'si
     /// </summary>
     public string ChildrenHtmlId => $"submenu-{Id}";
-    
-    /// <summary>
-    /// Menü öğesinin tam yolu (üst menülerle birlikte)
-    /// </summary>
-    public string FullPath { get; set; } = string.Empty;
-    
-    /// <summary>
-    /// Menü öğesinin soy ağacını oluşturur
-    /// </summary>
-    public string GetFullPath(string separator = " >> ")
-    {
-        return FullPath;
-    }
 }

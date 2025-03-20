@@ -15,5 +15,4 @@ public class MenuItemDto
     public bool IsActive { get; set; }
     public List<MenuItemDto> Children { get; set; } = new();
     public bool IsVisible { get; set; } // Used for UI to determine if the user has permission to see this item
-    public string FullPath { get; set; } = string.Empty;
 }

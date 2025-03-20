@@ -202,7 +202,7 @@ public class MenuController(
 
         selectList.AddRange(menuItems.Select(m => new SelectListItem
         {
-            Text = !string.IsNullOrEmpty(m.FullPath) ? m.FullPath : m.Name,
+            Text = m.Name,
             Value = m.Id.ToString(),
             Selected = selectedValue.HasValue && m.Id == selectedValue.Value
         }));
