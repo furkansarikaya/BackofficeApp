@@ -174,4 +174,12 @@ public class ActivityLogController(
         
         return Json(activityTypes);
     }
+    
+    // GET: /ActivityLog/UserActivitiesPartial?userId=abc123
+    [HttpGet]
+    public async Task<IActionResult> UserActivitiesPartial(string userId)
+    {
+        var logs = await activityLogService.GetUserActivityLogsAsync(userId, 1, 10);
+        return PartialView("_UserActivitiesPartial", logs);
+    }
 }

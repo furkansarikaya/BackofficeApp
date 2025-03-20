@@ -1,0 +1,67 @@
+@model Backoffice.Application.Common.Models.PaginatedList<Backoffice.Application.DTOs.Auditing.ActivityLogDto>
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i> Bu kullanıcıya ait aktivite bulunamadı.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Kategori</th>
+                    <th>İşlem</th>
+                    <th>Varlık</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var log in Model.Items)
+                {
+                    <tr>
+                        <td>@log.Timestamp.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>@log.Category</td>
+                        <td>
+                            @{
+                                var badgeClass = "bg-secondary";
+                                
+                                if (log.ActivityType.Contains("Create")) badgeClass = "bg-success";
+                                else if (log.ActivityType.Contains("Update")) badgeClass = "bg-primary";
+                                else if (log.ActivityType.Contains("Delete")) badgeClass = "bg-danger";
+                                else if (log.ActivityType.Contains("Login")) badgeClass = "bg-info";
+                                else if (log.ActivityType.Contains("Failed")) badgeClass = "bg-warning";
+                            }
+                            
+                            <span class="badge @badgeClass">@log.ActivityType</span>
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(log.EntityType) && !string.IsNullOrEmpty(log.EntityId))
+                            {
+                                @($"{log.EntityType} ({log.EntityId})")
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Details", "ActivityLog", new { id = log.Id })" class="btn btn-sm btn-info">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="text-center mt-2">
+        <a href="@Url.Action("UserActivities", "ActivityLog", new { userId = Model.Items.First().UserId })" class="btn btn-outline-primary btn-sm">
+            Tüm Aktiviteleri Gör <i class="fas fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+}
