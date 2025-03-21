@@ -3,64 +3,69 @@
     ViewData["Title"] = "Kullanıcı Düzenle";
 }
 
-<div class="card">
-    <div class="card-body">
+<div class="bg-white rounded-lg shadow-sm">
+    <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-medium text-gray-900">@Model.UserName Kullanıcısını Düzenle</h2>
+    </div>
+    <div class="p-6">
         <form asp-action="Edit" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700"></div>
             
             <input type="hidden" asp-for="Id" />
             
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="mb-3">
-                        <label asp-for="UserName" class="form-label">Kullanıcı Adı</label>
-                        <input asp-for="UserName" class="form-control" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
+            <div class="space-y-6">
+                <div>
+                    <label asp-for="UserName" class="block text-sm font-medium text-gray-700">Kullanıcı Adı</label>
+                    <input asp-for="UserName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    <span asp-validation-for="UserName" class="mt-1 text-sm text-red-600"></span>
+                </div>
+                
+                <div>
+                    <label asp-for="Email" class="block text-sm font-medium text-gray-700">E-posta</label>
+                    <input asp-for="Email" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    <span asp-validation-for="Email" class="mt-1 text-sm text-red-600"></span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label asp-for="FirstName" class="block text-sm font-medium text-gray-700">Ad</label>
+                        <input asp-for="FirstName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                        <span asp-validation-for="FirstName" class="mt-1 text-sm text-red-600"></span>
                     </div>
                     
-                    <div class="mb-3">
-                        <label asp-for="Email" class="form-label">E-posta</label>
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
+                    <div>
+                        <label asp-for="LastName" class="block text-sm font-medium text-gray-700">Soyad</label>
+                        <input asp-for="LastName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                        <span asp-validation-for="LastName" class="mt-1 text-sm text-red-600"></span>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label asp-for="FirstName" class="form-label">Ad</label>
-                                <input asp-for="FirstName" class="form-control" />
-                                <span asp-validation-for="FirstName" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label asp-for="LastName" class="form-label">Soyad</label>
-                                <input asp-for="LastName" class="form-control" />
-                                <span asp-validation-for="LastName" class="text-danger"></span>
-                            </div>
-                        </div>
+                </div>
+                
+                <div>
+                    <label asp-for="SelectedRoles" class="block text-sm font-medium text-gray-700">Roller</label>
+                    <select asp-for="SelectedRoles" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 select2-multiple"
+                            asp-items="Model.AvailableRoles" multiple>
+                    </select>
+                    <span asp-validation-for="SelectedRoles" class="mt-1 text-sm text-red-600"></span>
+                    <p class="mt-2 text-sm text-gray-500">Birden fazla rol seçebilirsiniz</p>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input asp-for="IsActive" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
                     </div>
-                    
-                    <div class="mb-3">
-                        <label asp-for="SelectedRoles" class="form-label">Roller</label>
-                        <select asp-for="SelectedRoles" class="form-select"
-                                asp-items="Model.AvailableRoles"  asp-multiple="true"></select>
-                        <span asp-validation-for="SelectedRoles" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="mb-3 form-check form-switch">
-                        <input asp-for="IsActive" class="form-check-input" />
-                        <label asp-for="IsActive" class="form-check-label">Aktif</label>
+                    <div class="ml-3 text-sm">
+                        <label asp-for="IsActive" class="font-medium text-gray-700">Aktif</label>
+                        <p class="text-gray-500">Pasif kullanıcılar sisteme giriş yapamaz</p>
                     </div>
                 </div>
             </div>
             
-            <div class="d-flex justify-content-between mt-4">
-                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> İptal
+            <div class="mt-8 pt-5 border-t border-gray-200 flex justify-between">
+                <a asp-action="Details" asp-route-id="@Model.Id" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <i class="fas fa-arrow-left mr-2"></i> İptal
                 </a>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Kaydet
+                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <i class="fas fa-save mr-2"></i> Kaydet
                 </button>
             </div>
         </form>
@@ -69,15 +74,45 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    
     <script>
-        $(document).ready(function () {
-            // Initialize Select2 for the roles dropdown
-            $('select[name="SelectedRoles"]').select2({
-                placeholder: "Rol Seçiniz",
-                allowClear: false,
-                closeOnSelect: false,
-                width: '100%'
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select2 for multiple select if available
+            if (typeof $ !== 'undefined' && $.fn.select2) {
+                $('.select2-multiple').select2({
+                    placeholder: "Rol seçiniz",
+                    allowClear: true,
+                    closeOnSelect: false,
+                    width: '100%'
+                });
+            }
+            
+            // Administrator rolünü pasif yapma kontrolü
+            const isActiveCheckbox = document.getElementById('IsActive');
+            const adminUserCheck = () => {
+                const selectElement = document.getElementById('SelectedRoles');
+                if (!selectElement) return;
+                
+                const selectedRoles = Array.from(selectElement.selectedOptions)
+                    .map(option => option.text);
+                
+                if (selectedRoles.includes('Administrator') && !isActiveCheckbox.checked) {
+                    alert('Administrator rolündeki kullanıcılar pasif yapılamaz.');
+                    isActiveCheckbox.checked = true;
+                }
+            };
+            
+            if (isActiveCheckbox) {
+                isActiveCheckbox.addEventListener('change', adminUserCheck);
+            }
+            
+            // Form submit öncesi kontrol
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    adminUserCheck();
+                });
+            }
         });
     </script>
 }

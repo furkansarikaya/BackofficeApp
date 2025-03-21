@@ -1,0 +1,280 @@
+@model Backoffice.Web.ViewModels.User.UserListViewModel
+@{
+    ViewData["Title"] = "Kullanıcılar";
+}
+
+@section PageActions {
+    <div>
+        <a asp-action="Create" class="px-4 py-2 text-white bg-primary-600 rounded-md hover:bg-primary-700 inline-flex items-center">
+            <i class="fas fa-plus mr-2"></i> Yeni Kullanıcı
+        </a>
+    </div>
+}
+
+<div class="bg-white rounded-lg shadow-sm border border-gray-100">
+    <div class="p-5">
+        <form asp-action="Index" method="get" class="mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <div class="flex">
+                        <input type="text" class="flex-1 border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                               placeholder="Kullanıcı adı, e-posta veya isim..."
+                               name="searchTerm" value="@Model.SearchTerm">
+                        <button class="bg-gray-200 border border-gray-300 border-l-0 rounded-r-md px-3 py-2 hover:bg-gray-300" type="submit">
+                            <i class="fas fa-search"></i> Ara
+                        </button>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center">
+                    <div class="flex items-center">
+                        <input class="h-4 w-4 mr-2 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                               type="checkbox" id="showInactive" name="showInactive"
+                               value="true" @(Model.ShowInactive ? "checked" : "") onchange="this.form.submit()">
+                        <label class="text-sm text-gray-700" for="showInactive">
+                            Pasif kullanıcıları göster
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        @if (Model.Users == null || !Model.Users.Items.Any())
+        {
+            <div class="flex items-center p-4 mb-4 text-blue-800 border-l-4 border-blue-500 bg-blue-50">
+                <i class="fas fa-info-circle mr-2"></i> Kullanıcı bulunamadı.
+            </div>
+        }
+        else
+        {
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="text-xs font-medium text-gray-500 bg-gray-50 uppercase tracking-wider">
+                    <tr>
+                        <th class="px-5 py-3 text-left">Kullanıcı Adı</th>
+                        <th class="px-5 py-3 text-left">E-posta</th>
+                        <th class="px-5 py-3 text-left">Ad Soyad</th>
+                        <th class="px-5 py-3 text-left">Roller</th>
+                        <th class="px-5 py-3 text-left">Durum</th>
+                        <th class="px-5 py-3 text-left">Kayıt Tarihi</th>
+                        <th class="px-5 py-3 text-left">Son Giriş</th>
+                        <th class="px-5 py-3 text-left">İşlemler</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                    @foreach (var user in Model.Users.Items)
+                    {
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-5 py-4">@user.UserName</td>
+                            <td class="px-5 py-4">@user.Email</td>
+                            <td class="px-5 py-4">@user.FullName</td>
+                            <td class="px-5 py-4">
+                                @foreach (var role in user.Roles)
+                                {
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-primary-100 text-primary-800 mr-1">@role</span>
+                                }
+                            </td>
+                            <td class="px-5 py-4">
+                                @if (user.IsActive)
+                                {
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Pasif</span>
+                                }
+                            </td>
+                            <td class="px-5 py-4 text-sm text-gray-500">@user.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td class="px-5 py-4 text-sm text-gray-500">
+                                @if (user.LastLoginAt.HasValue)
+                                {
+                                    @user.LastLoginAt.Value.ToString("dd.MM.yyyy HH:mm")
+                                }
+                                else
+                                {
+                                    <span class="text-gray-400">-</span>
+                                }
+                            </td>
+                            <td class="px-5 py-4">
+                                <div class="flex space-x-1">
+                                    <a asp-action="Details" asp-route-id="@user.Id"
+                                       class="p-1.5 text-white bg-blue-500 rounded-md hover:bg-blue-600" title="Detay">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@user.Id"
+                                       class="p-1.5 text-white bg-yellow-500 rounded-md hover:bg-yellow-600" title="Düzenle">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    @if (!user.Roles.Contains("Administrator"))
+                                    {
+                                        <button data-modal-target="delete-modal" data-modal-toggle="delete-modal"
+                                                class="p-1.5 text-white bg-red-500 rounded-md hover:bg-red-600"
+                                                title="Sil"
+                                                data-user-id="@user.Id"
+                                                data-user-name="@user.UserName">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex justify-between items-center mt-4">
+                <div>
+                    Toplam: <span class="font-semibold">@Model.Users.TotalCount</span> kullanıcı
+                </div>
+
+                @if (Model.Users.TotalPages > 1)
+                {
+                    <nav aria-label="Page navigation">
+                        <ul class="flex">
+                            <li class="@(!Model.Users.HasPreviousPage ? "opacity-50 pointer-events-none" : "")">
+                                <a class="px-3 py-2 border border-gray-300 rounded-l-md bg-white text-gray-600 hover:bg-gray-100" asp-action="Index"
+                                   asp-route-pageNumber="@(Model.Users.PageIndex - 1)"
+                                   asp-route-searchTerm="@Model.SearchTerm"
+                                   asp-route-showInactive="@Model.ShowInactive">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+
+                            @for (int i = 1; i <= Model.Users.TotalPages; i++)
+                            {
+                                <li>
+                                    <a class="px-3 py-2 border border-gray-300 border-l-0 bg-white @(i == Model.Users.PageIndex ? "text-primary-600 font-medium" : "text-gray-600 hover:bg-gray-100")" asp-action="Index"
+                                       asp-route-pageNumber="@i"
+                                       asp-route-searchTerm="@Model.SearchTerm"
+                                       asp-route-showInactive="@Model.ShowInactive">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="@(!Model.Users.HasNextPage ? "opacity-50 pointer-events-none" : "")">
+                                <a class="px-3 py-2 border border-gray-300 border-l-0 rounded-r-md bg-white text-gray-600 hover:bg-gray-100" asp-action="Index"
+                                   asp-route-pageNumber="@(Model.Users.PageIndex + 1)"
+                                   asp-route-searchTerm="@Model.SearchTerm"
+                                   asp-route-showInactive="@Model.ShowInactive">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Silme Modal (Flowbite/Tailwind) -->
+<div id="delete-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Kullanıcı Silme
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="delete-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Modalı kapat</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5">
+                <p class="mb-3 text-gray-700 dark:text-gray-300">
+                    <span id="userName"></span> kullanıcısını silmek istediğinize emin misiniz?
+                </p>
+                <div class="flex items-center text-red-600 dark:text-red-400 mt-3">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span>Bu işlem geri alınamaz.</span>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button data-modal-hide="delete-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-md border border-gray-300 hover:bg-gray-300 focus:z-10">İptal</button>
+                <form asp-action="Delete" method="post" class="ml-2">
+                    <input type="hidden" name="id" id="userId" />
+                    <button type="submit" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Sil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Silme butonlarını dinle
+            const deleteButtons = document.querySelectorAll('[data-modal-target="delete-modal"]');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const userId = button.getAttribute('data-user-id');
+                    const userName = button.getAttribute('data-user-name');
+                    
+                    // Modal içindeki alanlara verileri doldur
+                    document.getElementById('userName').textContent = userName;
+                    document.getElementById('userId').value = userId;
+                });
+            });
+
+            // Modal davranışını ayarla (Flowbite JS varsa bu kısmı atlayabilirsiniz)
+            const modalToggles = document.querySelectorAll('[data-modal-toggle]');
+            modalToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const targetModal = document.getElementById(toggle.getAttribute('data-modal-target'));
+                    if (targetModal) {
+                        // Göster/gizle toggle
+                        if (targetModal.classList.contains('hidden')) {
+                            targetModal.classList.remove('hidden');
+                            targetModal.classList.add('flex');
+                            document.body.classList.add('overflow-hidden');
+                        } else {
+                            targetModal.classList.add('hidden');
+                            targetModal.classList.remove('flex');
+                            document.body.classList.remove('overflow-hidden');
+                        }
+                    }
+                });
+            });
+
+            // Modal kapatma butonları için
+            const modalHides = document.querySelectorAll('[data-modal-hide]');
+            modalHides.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetModal = document.getElementById(button.getAttribute('data-modal-hide'));
+                    if (targetModal) {
+                        targetModal.classList.add('hidden');
+                        targetModal.classList.remove('flex');
+                        document.body.classList.remove('overflow-hidden');
+                    }
+                });
+            });
+
+            // Dışarı tıklayarak kapatma (opsiyonel)
+            window.addEventListener('click', function(event) {
+                if (event.target.hasAttribute('aria-hidden') &&
+                    event.target.getAttribute('aria-hidden') === 'true' &&
+                    !event.target.classList.contains('hidden')) {
+                    event.target.classList.add('hidden');
+                    event.target.classList.remove('flex');
+                    document.body.classList.remove('overflow-hidden');
+                }
+            });
+
+            // Sayfa değişikliklerinde form submit
+            var showInactiveCheckbox = document.getElementById('showInactive');
+            if (showInactiveCheckbox) {
+                showInactiveCheckbox.addEventListener('change', function() {
+                    this.form.submit();
+                });
+            }
+        });
+    </script>
+}

@@ -2,75 +2,85 @@
 @{
     ViewData["Title"] = "Yeni Kullanıcı";
 }
-
-<div class="card">
-    <div class="card-body">
+<div class="bg-white rounded-lg shadow-sm">
+    <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-medium text-gray-900">Kullanıcı Bilgileri</h2>
+    </div>
+    <div class="p-6">
         <form asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700"></div>
             
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="mb-3">
-                        <label asp-for="UserName" class="form-label">Kullanıcı Adı</label>
-                        <input asp-for="UserName" class="form-control" placeholder="Kullanıcı adı giriniz" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label asp-for="Email" class="form-label">E-posta</label>
-                        <input asp-for="Email" class="form-control" placeholder="E-posta adresi giriniz" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label">Şifre</label>
-                        <input asp-for="Password" class="form-control" placeholder="Şifre giriniz" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label asp-for="ConfirmPassword" class="form-label">Şifre Tekrar</label>
-                        <input asp-for="ConfirmPassword" class="form-control" placeholder="Şifreyi tekrar giriniz" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label asp-for="FirstName" class="form-label">Ad</label>
-                                <input asp-for="FirstName" class="form-control" placeholder="Ad giriniz" />
-                                <span asp-validation-for="FirstName" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label asp-for="LastName" class="form-label">Soyad</label>
-                                <input asp-for="LastName" class="form-control" placeholder="Soyad giriniz" />
-                                <span asp-validation-for="LastName" class="text-danger"></span>
-                            </div>
+            <div class="space-y-6">
+                <div>
+                    <label asp-for="UserName" class="block text-sm font-medium text-gray-700">Kullanıcı Adı</label>
+                    <input asp-for="UserName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Kullanıcı adı giriniz" />
+                    <span asp-validation-for="UserName" class="mt-1 text-sm text-red-600"></span>
+                </div>
+                
+                <div>
+                    <label asp-for="Email" class="block text-sm font-medium text-gray-700">E-posta</label>
+                    <input asp-for="Email" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="E-posta adresi giriniz" />
+                    <span asp-validation-for="Email" class="mt-1 text-sm text-red-600"></span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label asp-for="Password" class="block text-sm font-medium text-gray-700">Şifre</label>
+                        <div class="relative">
+                            <input asp-for="Password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Şifre giriniz" />
+                            <span asp-validation-for="Password" class="mt-1 text-sm text-red-600"></span>
                         </div>
                     </div>
                     
-                    <div class="mb-3">
-                        <label asp-for="SelectedRoles" class="form-label">Roller</label>
-                        <select asp-for="SelectedRoles" class="form-select"
-                                asp-items="Model.AvailableRoles"  asp-multiple="true"></select>
-                        <span asp-validation-for="SelectedRoles" class="text-danger"></span>
+                    <div>
+                        <label asp-for="ConfirmPassword" class="block text-sm font-medium text-gray-700">Şifre Tekrar</label>
+                        <div class="relative">
+                            <input asp-for="ConfirmPassword" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Şifreyi tekrar giriniz" />
+                            <span asp-validation-for="ConfirmPassword" class="mt-1 text-sm text-red-600"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label asp-for="FirstName" class="block text-sm font-medium text-gray-700">Ad</label>
+                        <input asp-for="FirstName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ad giriniz" />
+                        <span asp-validation-for="FirstName" class="mt-1 text-sm text-red-600"></span>
                     </div>
                     
-                    <div class="mb-3 form-check form-switch">
-                        <input asp-for="IsActive" class="form-check-input" />
-                        <label asp-for="IsActive" class="form-check-label">Aktif</label>
+                    <div>
+                        <label asp-for="LastName" class="block text-sm font-medium text-gray-700">Soyad</label>
+                        <input asp-for="LastName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Soyad giriniz" />
+                        <span asp-validation-for="LastName" class="mt-1 text-sm text-red-600"></span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label asp-for="SelectedRoles" class="block text-sm font-medium text-gray-700">Roller</label>
+                    <select asp-for="SelectedRoles" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 select2-multiple" 
+                            asp-items="Model.AvailableRoles" multiple>
+                    </select>
+                    <span asp-validation-for="SelectedRoles" class="mt-1 text-sm text-red-600"></span>
+                    <p class="mt-2 text-sm text-gray-500">Birden fazla rol seçebilirsiniz</p>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input asp-for="IsActive" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label asp-for="IsActive" class="font-medium text-gray-700">Aktif</label>
+                        <p class="text-gray-500">Pasif kullanıcılar sisteme giriş yapamaz</p>
                     </div>
                 </div>
             </div>
             
-            <div class="d-flex justify-content-between mt-4">
-                <a asp-action="Index" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> İptal
+            <div class="mt-8 pt-5 border-t border-gray-200 flex justify-between">
+                <a asp-action="Index" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <i class="fas fa-arrow-left mr-2"></i> İptal
                 </a>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Kaydet
+                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <i class="fas fa-save mr-2"></i> Kaydet
                 </button>
             </div>
         </form>
@@ -79,15 +89,47 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    
     <script>
-        $(document).ready(function () {
-            // Initialize Select2 for the roles dropdown
-            $('select[name="SelectedRoles"]').select2({
-                placeholder: "Rol Seçiniz",
-                allowClear: false,
-                closeOnSelect: false,
-                width: '100%'
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select2 for multiple select if available
+            if (typeof $ !== 'undefined' && $.fn.select2) {
+                $('.select2-multiple').select2({
+                    placeholder: "Rol seçiniz",
+                    allowClear: true,
+                    closeOnSelect: false,
+                    width: '100%'
+                });
+            }
+            
+            // Password visibility toggle
+            function addPasswordToggle(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500';
+                button.innerHTML = '<i class="fas fa-eye"></i>';
+                button.setAttribute('aria-label', 'Şifreyi göster/gizle');
+                
+                button.addEventListener('click', function() {
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        button.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                    } else {
+                        input.type = 'password';
+                        button.innerHTML = '<i class="fas fa-eye"></i>';
+                    }
+                });
+                
+                input.parentNode.style.position = 'relative';
+                input.parentNode.appendChild(button);
+            }
+            
+            // Add password visibility toggles
+            addPasswordToggle('Password');
+            addPasswordToggle('ConfirmPassword');
         });
     </script>
 }
