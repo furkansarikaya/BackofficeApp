@@ -55,7 +55,7 @@ public class MenuSeedService(
                         new MenuItem
                         {
                             Name = "Kullanıcılar",
-                            Icon = "fas fa-users",
+                            Icon = "",
                             Controller = "User",
                             Action = "Index",
                             DisplayOrder = 3,
@@ -67,7 +67,7 @@ public class MenuSeedService(
                         new MenuItem
                         {
                             Name = "Roller",
-                            Icon = "fas fa-user-shield",
+                            Icon = "",
                             Controller = "Role",
                             Action = "Index",
                             DisplayOrder = 4,
@@ -90,7 +90,7 @@ public class MenuSeedService(
                         new MenuItem
                         {
                             Name = "Menü Yönetimi",
-                            Icon = "fas fa-bars",
+                            Icon = "",
                             Controller = "Menu",
                             Action = "Index",
                             DisplayOrder = 901,
@@ -100,7 +100,7 @@ public class MenuSeedService(
                         new MenuItem
                         {
                             Name = "IP Filtreleme",
-                            Icon = "fas fa-shield-alt",
+                            Icon = "",
                             Controller = "IpFilter",
                             Action = "Index",
                             DisplayOrder = 902,
@@ -110,7 +110,7 @@ public class MenuSeedService(
                         new MenuItem
                         {
                             Name = "Aktivite Günlüğü",
-                            Icon = "fas fa-history",
+                            Icon = "",
                             Controller = "ActivityLog",
                             Action = "Index",
                             DisplayOrder = 903,

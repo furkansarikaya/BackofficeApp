@@ -9,7 +9,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="mb-3">
                         <label asp-for="UserName" class="form-label">Kullanıcı Adı</label>
                         <input asp-for="UserName" class="form-control" placeholder="Kullanıcı adı giriniz" />
@@ -51,26 +51,16 @@
                         </div>
                     </div>
                     
-                    <div class="mb-3 form-check">
+                    <div class="mb-3">
+                        <label asp-for="SelectedRoles" class="form-label">Roller</label>
+                        <select asp-for="SelectedRoles" class="form-select"
+                                asp-items="Model.AvailableRoles"  asp-multiple="true"></select>
+                        <span asp-validation-for="SelectedRoles" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3 form-check form-switch">
                         <input asp-for="IsActive" class="form-check-input" />
                         <label asp-for="IsActive" class="form-check-label">Aktif</label>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Roller</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <select asp-for="SelectedRoles" class="form-select" multiple size="10" 
-                                        asp-items="Model.AvailableRoles"></select>
-                                <small class="form-text text-muted">
-                                    Birden fazla rol seçmek için CTRL tuşunu basılı tutun.
-                                </small>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -89,4 +79,15 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            // Initialize Select2 for the roles dropdown
+            $('select[name="SelectedRoles"]').select2({
+                placeholder: "Rol Seçiniz",
+                allowClear: false,
+                closeOnSelect: false,
+                width: '100%'
+            });
+        });
+    </script>
 }

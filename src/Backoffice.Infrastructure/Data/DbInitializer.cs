@@ -175,7 +175,13 @@ public static class DbInitializer
                     "Role.List",
                     "Role.View",
                     "User.List",
-                    "User.View"
+                    "User.View",
+                    "IpFilter.List",
+                    "IpFilter.View",
+                    "Menu.List",
+                    "Menu.View",
+                    "ActivityLog.List",
+                    "ActivityLog.View",
                 });
                 break;
         }
