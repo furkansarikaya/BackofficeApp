@@ -1,113 +1,234 @@
 ﻿<!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="h-full bg-gray-50">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Backoffice</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/select2/dist/css/select2.min.css" />
+    
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                            950: '#1e1b4b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom styles that override Tailwind -->
+    <style>
+        [x-cloak] { display: none !important; }
+        
+        /* Ensure the sidebar scrolls when it's taller than the viewport */
+        .sidebar-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+        }
+        
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 20px;
+        }
+        
+        /* Select2 adjustments for Tailwind */
+        .select2-container--default .select2-selection--multiple {
+            border-color: #d1d5db !important;
+            border-radius: 0.375rem !important;
+        }
+        
+        .select2-container--default.select2-container--focus .select2-selection--multiple {
+            border-color: #6366f1 !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+        }
+    </style>
+    
     @await RenderSectionAsync("Styles", required: false)
+    
+    <!-- Alpine.js for interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 </head>
-<body>
-<!-- Top Navbar -->
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-        <!-- Sidebar Toggle Button -->
-        <button id="sidebarToggle" class="sidebar-toggler">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="/">
-            <i class="fas fa-th-large me-2"></i> Backoffice
-        </a>
-
-        <!-- Navbar Right -->
-        <div class="ms-auto d-flex align-items-center">
-            <!-- Mini Sidebar Toggle (Sadece geniş ekranlarda görünür) -->
-            <button id="sidebarMiniToggle" class="sidebar-toggler d-none d-lg-flex me-2">
-                <i class="fas fa-exchange-alt"></i>
-            </button>
-
-            <!-- Kullanıcı Dropdown -->
-            <div class="dropdown">
-                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-user-circle me-1"></i>
-                    <span class="d-none d-md-inline">@CurrentUserService.UserName</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="@($"/User/Details/{CurrentUserService.UserId}")"><i class="fas fa-user me-2"></i> Profilim</a></li>
-                    <li><a class="dropdown-item" href="@($"/User/ChangePassword/{CurrentUserService.UserId}")"><i class="fas fa-key me-2"></i> Şifre Değiştir</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
+<body class="h-full font-sans text-gray-700 antialiased" 
+      x-data="{ 
+          sidebarOpen: window.innerWidth >= 1024, 
+          sidebarMini: localStorage.getItem('sidebar-mini') === 'true',
+          profileOpen: false
+      }">
+    <div class="flex h-full">
+        <!-- Sidebar Backdrop (mobile only) -->
+        <div x-show="sidebarOpen" 
+             x-cloak
+             @@click="sidebarOpen = false" 
+             class="fixed inset-0 z-20 bg-gray-900/50 lg:hidden"></div>
+        
+        <!-- Sidebar -->
+        <div x-bind:class="{
+                'w-64': !(sidebarMini && window.innerWidth >= 1024),
+                'w-20': sidebarMini && window.innerWidth >= 1024,
+                '-translate-x-full': !sidebarOpen,
+                'translate-x-0': sidebarOpen
+             }"
+             class="fixed inset-y-0 left-0 z-30 flex flex-col transition-all duration-300 bg-gray-900 shadow-xl transform lg:transform-none sidebar-scroll overflow-y-auto">
+            
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between px-4 py-4 border-b border-gray-800">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2 text-white" x-bind:class="{ 'justify-center': sidebarMini && window.innerWidth >= 1024 }">
+                    <div class="flex items-center justify-center w-8 h-8 text-white bg-primary-600 rounded-md">
+                        <i class="text-lg fas fa-th-large"></i>
+                    </div>
+                    <span class="text-lg font-semibold" x-bind:class="{ 'hidden': sidebarMini && window.innerWidth >= 1024 }">Backoffice</span>
+                </div>
+                
+                <!-- Close button (mobile only) -->
+                <button @@click="sidebarOpen = false" class="p-1 text-gray-400 rounded-md hover:text-white hover:bg-gray-800 lg:hidden">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- User Profile -->
+            <div class="flex items-center px-4 py-4 space-x-3 border-b border-gray-800" x-bind:class="{ 'justify-center': sidebarMini && window.innerWidth >= 1024 }">
+                <div class="flex items-center justify-center w-10 h-10 text-white bg-gray-600 rounded-full">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div x-bind:class="{ 'hidden': sidebarMini && window.innerWidth >= 1024 }">
+                    <p class="text-sm font-medium text-white">@CurrentUserService.UserName</p>
+                    <p class="text-xs text-gray-400">@(User.IsInRole("Administrator") ? "Yönetici" : "Kullanıcı")</p>
+                </div>
+            </div>
+            
+            <!-- Sidebar Menu -->
+            <div class="flex-1 px-2 py-4 overflow-y-auto">
+                @await Component.InvokeAsync("Menu")
+            </div>
+            
+            <!-- Sidebar Footer -->
+            <div class="px-4 py-3 text-xs text-center text-gray-400 border-t border-gray-800">
+                &copy; @DateTime.Now.Year Backoffice
+            </div>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="flex flex-col flex-1 transition-all duration-300"
+             x-bind:class="{
+                'lg:ml-64': !(sidebarMini && window.innerWidth >= 1024),
+                'lg:ml-20': sidebarMini && window.innerWidth >= 1024
+             }">
+            
+            <!-- Top Navigation -->
+            <header class="z-10 flex items-center justify-between h-16 px-4 py-2 bg-white shadow-sm lg:px-6">
+                <!-- Left: Menu toggle and breadcrumb -->
+                <div class="flex items-center space-x-4">
+                    <!-- Menu toggle -->
+                    <button @@click="sidebarOpen = !sidebarOpen" class="p-2 text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <!-- Mini sidebar toggle (desktop only) -->
+                    <button @@click="sidebarMini = !sidebarMini; localStorage.setItem('sidebar-mini', sidebarMini)" 
+                            class="hidden p-2 text-gray-600 rounded-md lg:block hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                    
+                    <!-- Page title -->
+                    <h1 class="text-lg font-medium text-gray-700">@ViewData["Title"]</h1>
+                </div>
+                
+                <!-- Right: User dropdown -->
+                <div class="relative" x-data="{ open: false }">
+                    <button @@click="open = !open" class="flex items-center space-x-2 text-gray-700 focus:outline-none">
+                        <span class="hidden sm:block">@CurrentUserService.UserName</span>
+                        <i class="fas fa-user-circle text-xl"></i>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    
+                    <!-- Dropdown menu -->
+                    <div x-show="open" 
+                         x-cloak
+                         @@click.away="open = false"
+                         class="absolute right-0 z-10 w-48 py-2 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                        <a href="@($"/User/Details/{CurrentUserService.UserId}")" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <i class="w-5 mr-2 fas fa-user"></i> Profilim
+                        </a>
+                        <a href="@($"/User/ChangePassword/{CurrentUserService.UserId}")" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <i class="w-5 mr-2 fas fa-key"></i> Şifre Değiştir
+                        </a>
+                        <div class="border-t border-gray-200"></div>
                         <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
-                            <button type="submit" class="dropdown-item">
-                                <i class="fas fa-sign-out-alt me-2"></i> Çıkış Yap
+                            <button type="submit" class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100">
+                                <i class="w-5 mr-2 fas fa-sign-out-alt"></i> Çıkış Yap
                             </button>
                         </form>
-                    </li>
-                </ul>
-            </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Main Content -->
+            <main class="flex-1 px-4 py-6 overflow-y-auto bg-gray-50 lg:px-6">
+                <!-- Notifications -->
+                <partial name="_Notifications" />
+                
+                <!-- Page Header -->
+                <div class="flex flex-col justify-between pb-4 mb-6 border-b border-gray-200 md:flex-row md:items-center">
+                    <h1 class="mb-4 text-2xl font-semibold text-gray-800 md:mb-0">@ViewData["Title"]</h1>
+                    
+                    @if (IsSectionDefined("PageActions"))
+                    {
+                        <div class="flex space-x-2">
+                            @await RenderSectionAsync("PageActions", required: false)
+                        </div>
+                    }
+                </div>
+                
+                <!-- Page Content -->
+                <div class="pb-12">
+                    @RenderBody()
+                </div>
+                
+                <!-- Footer -->
+                <footer class="py-4 mt-auto">
+                    <div class="text-center text-gray-500 text-sm">
+                        &copy; @DateTime.Now.Year - Backoffice Uygulaması
+                    </div>
+                </footer>
+            </main>
         </div>
     </div>
-</nav>
-
-<!-- Sidebar & Content -->
-<div class="d-flex">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header">
-            <div class="user-avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="user-info">
-                <div>@CurrentUserService.UserName</div>
-                <small>@(User.IsInRole("Administrator") ? "Yönetici" : "Kullanıcı")</small>
-            </div>
-        </div>
-
-        <!-- Sidebar Menu -->
-        @await Component.InvokeAsync("Menu")
-    </div>
-
-    <!-- Main Content -->
-    <div class="content-wrapper">
-        <!-- Notifications -->
-        <partial name="_Notifications" />
-
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="h3">@ViewData["Title"]</h1>
-
-            @if (IsSectionDefined("PageActions"))
-            {
-                @await RenderSectionAsync("PageActions", required: false)
-            }
-        </div>
-
-        <!-- Main Content -->
-        <div class="container-fluid p-0">
-            @RenderBody()
-        </div>
-
-        <!-- Footer -->
-        <footer class="mt-auto py-3">
-            <div class="container-fluid">
-                <span class="text-muted">&copy; @DateTime.Now.Year - Backoffice Uygulaması</span>
-            </div>
-        </footer>
-    </div>
-</div>
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/lib/select2/dist/js/select2.full.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", required: false)
+    
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

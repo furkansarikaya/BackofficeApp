@@ -28,4 +28,8 @@
       <ProjectReference Include="..\Backoffice.Infrastructure\Backoffice.Infrastructure.csproj" />
     </ItemGroup>
 
+    <Target Name="BuildTailwindCSS" BeforeTargets="Build">
+        <Exec Command="npm run css:build" />
+    </Target>
+
 </Project>

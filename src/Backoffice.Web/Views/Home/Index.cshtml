@@ -3,338 +3,336 @@
 }
 
 <div class="container-fluid p-0">
-    <!-- Karşılama Kartı -->
-    <div class="card bg-primary text-white shadow-sm border-0 mb-4">
-        <div class="card-body p-4">
-            <div class="d-flex align-items-center">
-                <div>
-                    <h2 class="card-title">Hoş Geldiniz, @CurrentUserService.UserName</h2>
-                    <p class="card-text mb-0">
-                        Backoffice yönetim panelinize hoş geldiniz. Bu panel üzerinden sistemdeki tüm verileri 
+    <!-- Hoş Geldiniz Kartı -->
+    <div class="bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg shadow-md mb-6 text-white">
+        <div class="p-5">
+            <div class="flex flex-col md:flex-row md:items-center">
+                <div class="flex-grow">
+                    <h2 class="text-2xl font-bold mb-2">Hoş Geldiniz, @CurrentUserService.UserName</h2>
+                    <p class="text-white/90">
+                        Backoffice yönetim panelinize hoş geldiniz. Bu panel üzerinden sistemdeki tüm verileri
                         yönetebilir ve ayarları değiştirebilirsiniz.
                     </p>
                 </div>
-                <div class="ms-auto d-none d-md-block text-end">
-                    <i class="fas fa-tachometer-alt fa-3x opacity-50"></i>
+                <div class="hidden md:flex items-center justify-center p-4">
+                    <i class="fas fa-tachometer-alt text-5xl text-white/70"></i>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- İstatistik Kartları -->
-    <div class="row">
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="rounded-circle p-3 bg-primary-subtle text-primary me-3">
-                            <i class="fas fa-users fa-2x"></i>
-                        </div>
-                        <div>
-                            <h6 class="text-muted mb-1">Toplam Kullanıcı</h6>
-                            <h3 class="mb-0 fw-bold">245</h3>
-                        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Kullanıcı İstatistikleri -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 transition-all hover:shadow-md">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="bg-primary-100 text-primary-600 p-3 rounded-full mr-4">
+                        <i class="fas fa-users text-2xl"></i>
                     </div>
-                </div>
-                <div class="card-footer bg-transparent border-0 py-2">
-                    <span class="text-success">
-                        <i class="fas fa-arrow-up me-1"></i> 5.3%
-                    </span>
-                    <span class="text-muted ms-1">geçen aydan</span>
+                    <div>
+                        <h6 class="text-gray-500 text-sm font-medium">Toplam Kullanıcı</h6>
+                        <h3 class="text-2xl font-bold">245</h3>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="rounded-circle p-3 bg-success-subtle text-success me-3">
-                            <i class="fas fa-file-alt fa-2x"></i>
-                        </div>
-                        <div>
-                            <h6 class="text-muted mb-1">Aktif İşlemler</h6>
-                            <h3 class="mb-0 fw-bold">128</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent border-0 py-2">
-                    <span class="text-danger">
-                        <i class="fas fa-arrow-down me-1"></i> 1.2%
-                    </span>
-                    <span class="text-muted ms-1">geçen haftadan</span>
-                </div>
+            <div class="px-5 py-3 border-t border-gray-100">
+                <span class="text-emerald-500">
+                    <i class="fas fa-arrow-up text-xs mr-1"></i> 5.3%
+                </span>
+                <span class="text-gray-500 text-sm ml-1">geçen aydan</span>
             </div>
         </div>
-        
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="rounded-circle p-3 bg-warning-subtle text-warning me-3">
-                            <i class="fas fa-chart-bar fa-2x"></i>
-                        </div>
-                        <div>
-                            <h6 class="text-muted mb-1">Tamamlanan</h6>
-                            <h3 class="mb-0 fw-bold">856</h3>
-                        </div>
+
+        <!-- İşlem İstatistikleri -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 transition-all hover:shadow-md">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="bg-emerald-100 text-emerald-600 p-3 rounded-full mr-4">
+                        <i class="fas fa-file-alt text-2xl"></i>
                     </div>
-                </div>
-                <div class="card-footer bg-transparent border-0 py-2">
-                    <span class="text-success">
-                        <i class="fas fa-arrow-up me-1"></i> 8.7%
-                    </span>
-                    <span class="text-muted ms-1">geçen aydan</span>
+                    <div>
+                        <h6 class="text-gray-500 text-sm font-medium">Aktif İşlemler</h6>
+                        <h3 class="text-2xl font-bold">128</h3>
+                    </div>
                 </div>
             </div>
+            <div class="px-5 py-3 border-t border-gray-100">
+                <span class="text-red-500">
+                    <i class="fas fa-arrow-down text-xs mr-1"></i> 1.2%
+                </span>
+                <span class="text-gray-500 text-sm ml-1">geçen haftadan</span>
+            </div>
         </div>
-        
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="rounded-circle p-3 bg-info-subtle text-info me-3">
-                            <i class="fas fa-bell fa-2x"></i>
-                        </div>
-                        <div>
-                            <h6 class="text-muted mb-1">Bildirimler</h6>
-                            <h3 class="mb-0 fw-bold">12</h3>
-                        </div>
+
+        <!-- Tamamlanan İstatistikler -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 transition-all hover:shadow-md">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="bg-amber-100 text-amber-600 p-3 rounded-full mr-4">
+                        <i class="fas fa-chart-bar text-2xl"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-gray-500 text-sm font-medium">Tamamlanan</h6>
+                        <h3 class="text-2xl font-bold">856</h3>
                     </div>
                 </div>
-                <div class="card-footer bg-transparent border-0 py-2">
-                    <a href="#" class="text-decoration-none">Tümünü Gör</a>
+            </div>
+            <div class="px-5 py-3 border-t border-gray-100">
+                <span class="text-emerald-500">
+                    <i class="fas fa-arrow-up text-xs mr-1"></i> 8.7%
+                </span>
+                <span class="text-gray-500 text-sm ml-1">geçen aydan</span>
+            </div>
+        </div>
+
+        <!-- Bildirimler -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 transition-all hover:shadow-md">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="bg-sky-100 text-sky-600 p-3 rounded-full mr-4">
+                        <i class="fas fa-bell text-2xl"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-gray-500 text-sm font-medium">Bildirimler</h6>
+                        <h3 class="text-2xl font-bold">12</h3>
+                    </div>
                 </div>
+            </div>
+            <div class="px-5 py-3 border-t border-gray-100">
+                <a href="#" class="text-primary-600 hover:text-primary-700 text-sm">Tümünü Gör</a>
             </div>
         </div>
     </div>
 
     <!-- Ana İçerik -->
-    <div class="row">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Son Aktiviteler -->
-        <div class="col-lg-8 mb-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header d-flex justify-content-between align-items-center bg-transparent">
-                    <h5 class="card-title mb-0">Son Aktiviteler</h5>
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                <div class="flex justify-between items-center px-5 py-4 border-b border-gray-100">
+                    <h5 class="font-medium text-gray-700">Son Aktiviteler</h5>
                     <div class="dropdown">
-                        <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown">
+                        <button class="text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-md p-1.5" type="button" id="activitiesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-v"></i>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-refresh me-2"></i>Yenile</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-filter me-2"></i>Filtrele</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>Dışa Aktar</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end text-sm py-1.5 shadow-md bg-white rounded-md border border-gray-100" aria-labelledby="activitiesDropdown">
+                            <li><a class="flex px-4 py-2 text-gray-700 hover:bg-gray-100" href="#"><i class="fas fa-sync-alt w-4 mr-2"></i>Yenile</a></li>
+                            <li><a class="flex px-4 py-2 text-gray-700 hover:bg-gray-100" href="#"><i class="fas fa-filter w-4 mr-2"></i>Filtrele</a></li>
+                            <li><a class="flex px-4 py-2 text-gray-700 hover:bg-gray-100" href="#"><i class="fas fa-download w-4 mr-2"></i>Dışa Aktar</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Kullanıcı</th>
-                                    <th>İşlem</th>
-                                    <th>Durum</th>
-                                    <th>Tarih</th>
-                                    <th></th>
-                                </tr>
+                <div class="p-0">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="text-xs font-medium text-gray-500 bg-gray-50 uppercase tracking-wider">
+                            <tr>
+                                <th class="px-5 py-3 text-left">Kullanıcı</th>
+                                <th class="px-5 py-3 text-left">İşlem</th>
+                                <th class="px-5 py-3 text-left">Durum</th>
+                                <th class="px-5 py-3 text-left">Tarih</th>
+                                <th class="px-5 py-3 text-left"></th>
+                            </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar bg-primary text-white rounded-circle me-2">
-                                                <span>AY</span>
-                                            </div>
-                                            <span>Ahmet Yılmaz</span>
+                            <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
+                                            <span>AY</span>
                                         </div>
-                                    </td>
-                                    <td>Kullanıcı güncelleme</td>
-                                    <td><span class="badge bg-success">Tamamlandı</span></td>
-                                    <td>10 dakika önce</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-light"><i class="fas fa-eye"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar bg-info text-white rounded-circle me-2">
-                                                <span>MS</span>
-                                            </div>
-                                            <span>Mehmet Solmaz</span>
+                                        <span class="font-medium text-gray-900">Ahmet Yılmaz</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-700">Kullanıcı güncelleme</td>
+                                <td class="px-5 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800">Tamamlandı</span>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-500">10 dakika önce</td>
+                                <td class="px-5 py-4 text-right">
+                                    <a href="#" class="p-1.5 text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-md">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-sky-600 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
+                                            <span>MS</span>
                                         </div>
-                                    </td>
-                                    <td>Yeni kayıt oluşturma</td>
-                                    <td><span class="badge bg-warning">İşlemde</span></td>
-                                    <td>45 dakika önce</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-light"><i class="fas fa-eye"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar bg-danger text-white rounded-circle me-2">
-                                                <span>ZK</span>
-                                            </div>
-                                            <span>Zeynep Kaya</span>
+                                        <span class="font-medium text-gray-900">Mehmet Solmaz</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-700">Yeni kayıt oluşturma</td>
+                                <td class="px-5 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-800">İşlemde</span>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-500">45 dakika önce</td>
+                                <td class="px-5 py-4 text-right">
+                                    <a href="#" class="p-1.5 text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-md">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
+                                            <span>ZK</span>
                                         </div>
-                                    </td>
-                                    <td>Doküman silindi</td>
-                                    <td><span class="badge bg-success">Tamamlandı</span></td>
-                                    <td>1 saat önce</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-light"><i class="fas fa-eye"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar bg-success text-white rounded-circle me-2">
-                                                <span>EÇ</span>
-                                            </div>
-                                            <span>Emre Çelik</span>
+                                        <span class="font-medium text-gray-900">Zeynep Kaya</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-700">Doküman silindi</td>
+                                <td class="px-5 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800">Tamamlandı</span>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-500">1 saat önce</td>
+                                <td class="px-5 py-4 text-right">
+                                    <a href="#" class="p-1.5 text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-md">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
+                                            <span>EÇ</span>
                                         </div>
-                                    </td>
-                                    <td>Şifre değişikliği</td>
-                                    <td><span class="badge bg-danger">Hata</span></td>
-                                    <td>3 saat önce</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-light"><i class="fas fa-eye"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar bg-warning text-white rounded-circle me-2">
-                                                <span>SA</span>
-                                            </div>
-                                            <span>Serkan Aydın</span>
+                                        <span class="font-medium text-gray-900">Emre Çelik</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-700">Şifre değişikliği</td>
+                                <td class="px-5 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Hata</span>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-500">3 saat önce</td>
+                                <td class="px-5 py-4 text-right">
+                                    <a href="#" class="p-1.5 text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-md">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-amber-600 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
+                                            <span>SA</span>
                                         </div>
-                                    </td>
-                                    <td>Rapor oluşturma</td>
-                                    <td><span class="badge bg-info">Onay Bekliyor</span></td>
-                                    <td>5 saat önce</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-light"><i class="fas fa-eye"></i></a>
-                                    </td>
-                                </tr>
+                                        <span class="font-medium text-gray-900">Serkan Aydın</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-700">Rapor oluşturma</td>
+                                <td class="px-5 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-sky-100 text-sky-800">Onay Bekliyor</span>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-500">5 saat önce</td>
+                                <td class="px-5 py-4 text-right">
+                                    <a href="#" class="p-1.5 text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-md">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="card-footer bg-transparent text-center">
-                    <a href="#" class="text-decoration-none">Tüm Aktiviteleri Gör <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="border-t border-gray-100 p-4 text-center">
+                    <a href="#" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                        Tüm Aktiviteleri Gör <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
-        
-        <!-- Hızlı Erişim ve Duyurular -->
-        <div class="col-lg-4">
+
+        <!-- Sağ Sütun -->
+        <div class="space-y-6">
             <!-- Hızlı Erişim -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-transparent">
-                    <h5 class="card-title mb-0">Hızlı Erişim</h5>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                <div class="px-5 py-4 border-b border-gray-100">
+                    <h5 class="font-medium text-gray-700">Hızlı Erişim</h5>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card bg-light text-center p-3 h-100">
-                                    <div class="mb-2">
-                                        <i class="fas fa-users text-primary fa-2x"></i>
-                                    </div>
-                                    <h6 class="mb-0">Kullanıcı Yönetimi</h6>
+                <div class="p-5">
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="#" class="block group">
+                            <div class="bg-gray-50 group-hover:bg-gray-100 rounded-lg p-4 text-center h-full">
+                                <div class="text-primary-500 mb-3">
+                                    <i class="fas fa-users text-2xl"></i>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card bg-light text-center p-3 h-100">
-                                    <div class="mb-2">
-                                        <i class="fas fa-cogs text-secondary fa-2x"></i>
-                                    </div>
-                                    <h6 class="mb-0">Ayarlar</h6>
+                                <h6 class="text-sm font-medium text-gray-800">Kullanıcı Yönetimi</h6>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="bg-gray-50 group-hover:bg-gray-100 rounded-lg p-4 text-center h-full">
+                                <div class="text-gray-500 mb-3">
+                                    <i class="fas fa-cogs text-2xl"></i>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card bg-light text-center p-3 h-100">
-                                    <div class="mb-2">
-                                        <i class="fas fa-file-alt text-success fa-2x"></i>
-                                    </div>
-                                    <h6 class="mb-0">Raporlar</h6>
+                                <h6 class="text-sm font-medium text-gray-800">Ayarlar</h6>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="bg-gray-50 group-hover:bg-gray-100 rounded-lg p-4 text-center h-full">
+                                <div class="text-emerald-500 mb-3">
+                                    <i class="fas fa-file-alt text-2xl"></i>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card bg-light text-center p-3 h-100">
-                                    <div class="mb-2">
-                                        <i class="fas fa-question-circle text-info fa-2x"></i>
-                                    </div>
-                                    <h6 class="mb-0">Yardım</h6>
+                                <h6 class="text-sm font-medium text-gray-800">Raporlar</h6>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="bg-gray-50 group-hover:bg-gray-100 rounded-lg p-4 text-center h-full">
+                                <div class="text-sky-500 mb-3">
+                                    <i class="fas fa-question-circle text-2xl"></i>
                                 </div>
-                            </a>
-                        </div>
+                                <h6 class="text-sm font-medium text-gray-800">Yardım</h6>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Duyurular -->
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-transparent">
-                    <h5 class="card-title mb-0">Duyurular</h5>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                <div class="px-5 py-4 border-b border-gray-100">
+                    <h5 class="font-medium text-gray-700">Duyurular</h5>
                 </div>
-                <div class="card-body p-0">
-                    <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action p-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <h6 class="mb-0 text-primary">Sistem Güncellemesi</h6>
-                                <small class="text-muted">Bugün</small>
-                            </div>
-                            <p class="mb-0 text-muted small">
-                                Sistemde bakım çalışması yapılacaktır. 22:00-23:00 saatleri arasında kesinti yaşanabilir.
-                            </p>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action p-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <h6 class="mb-0 text-primary">Yeni Özellik</h6>
-                                <small class="text-muted">Dün</small>
-                            </div>
-                            <p class="mb-0 text-muted small">
-                                Rapor modülüne yeni özellikler eklendi. Artık PDF ve Excel formatında dışa aktarım yapabilirsiniz.
-                            </p>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action p-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <h6 class="mb-0 text-primary">Toplantı Hatırlatması</h6>
-                                <small class="text-muted">2 gün önce</small>
-                            </div>
-                            <p class="mb-0 text-muted small">
-                                Haftalık değerlendirme toplantısı yarın saat 10:00'da video konferans ile yapılacaktır.
-                            </p>
-                        </a>
-                    </div>
+                <div class="divide-y divide-gray-100">
+                    <a href="#" class="block p-5 hover:bg-gray-50">
+                        <div class="flex justify-between mb-1">
+                            <h6 class="text-sm font-medium text-primary-600">Sistem Güncellemesi</h6>
+                            <span class="text-xs text-gray-500">Bugün</span>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            Sistemde bakım çalışması yapılacaktır. 22:00-23:00 saatleri arasında kesinti yaşanabilir.
+                        </p>
+                    </a>
+                    <a href="#" class="block p-5 hover:bg-gray-50">
+                        <div class="flex justify-between mb-1">
+                            <h6 class="text-sm font-medium text-primary-600">Yeni Özellik</h6>
+                            <span class="text-xs text-gray-500">Dün</span>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            Rapor modülüne yeni özellikler eklendi. Artık PDF ve Excel formatında dışa aktarım yapabilirsiniz.
+                        </p>
+                    </a>
+                    <a href="#" class="block p-5 hover:bg-gray-50">
+                        <div class="flex justify-between mb-1">
+                            <h6 class="text-sm font-medium text-primary-600">Toplantı Hatırlatması</h6>
+                            <span class="text-xs text-gray-500">2 gün önce</span>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            Haftalık değerlendirme toplantısı yarın saat 10:00'da video konferans ile yapılacaktır.
+                        </p>
+                    </a>
                 </div>
-                <div class="card-footer bg-transparent text-center">
-                    <a href="#" class="text-decoration-none">Tüm Duyuruları Gör <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="border-t border-gray-100 p-4 text-center">
+                    <a href="#" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                        Tüm Duyuruları Gör <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-    .avatar {
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        font-size: 14px;
-    }
-</style>
