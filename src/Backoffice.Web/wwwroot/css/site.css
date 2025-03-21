@@ -7,7 +7,7 @@ body {
     display: flex;
     flex-direction: column;
     background-color: #f8f9fa;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:Inter,Helvetica,sans-serif;
 }
 
 .navbar-brand {
@@ -24,7 +24,7 @@ body {
 /* ================= */
 .sidebar {
     width: 260px;
-    background-color: #343a40;
+    background-color: #0d0e12;
     color: #fff;
     transition: all 0.3s;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -107,7 +107,7 @@ body {
 
 /* Genel Menü Linkleri */
 .sidebar .nav-link {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.65);
     padding: 0.75rem 1rem;
     border-radius: 0.25rem;
     margin: 0.2rem 0.5rem;
@@ -115,6 +115,8 @@ body {
     display: flex;
     align-items: center;
     cursor: pointer; /* Tüm menü öğeleri için imleç */
+    font-size: 13px;
+    font-weight: 400;
 }
 
 .sidebar .nav-link:hover {
@@ -124,7 +126,7 @@ body {
 
 .sidebar .nav-link.active {
     color: #fff;
-    background-color: #007bff;
+    background-color: #1b84ff;
     font-weight: 500;
 }
 
@@ -167,29 +169,29 @@ body {
 .sidebar-menu .section-submenu {
     padding-left: 0; /* Sol boşluğu temizle */
     margin-top: 0;
-    background-color: rgba(0, 0, 0, 0.15);
-    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.18);
+    border-left: 2px solid rgba(255, 255, 255, 0.05);
     margin-left: 10px;
 }
 
 /* Her seviye için farklı sol boşluk - 5 seviyeye kadar destek */
 .sidebar-menu .submenu .submenu {
-    margin-left: 12px;
-    background-color: rgba(0, 0, 0, 0.2);
+    margin-left: 14px;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .sidebar-menu .submenu .submenu .submenu {
-    margin-left: 14px;
+    margin-left: 16px;
     background-color: rgba(0, 0, 0, 0.25);
 }
 
 .sidebar-menu .submenu .submenu .submenu .submenu {
-    margin-left: 16px;
+    margin-left: 18px;
     background-color: rgba(0, 0, 0, 0.3);
 }
 
 .sidebar-menu .submenu .submenu .submenu .submenu .submenu {
-    margin-left: 18px;
+    margin-left: 20px;
     background-color: rgba(0, 0, 0, 0.35);
 }
 
@@ -223,10 +225,10 @@ body {
 
 /* Bölüm Başlıkları */
 .sidebar-menu .section-header {
-    font-size: 0.75rem;
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.1rem;
-    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.05rem;
+    color: rgba(255, 255, 255, 0.4);
     font-weight: 600;
     padding: 0.75rem 1rem;
     margin-top: 0.5rem;
