@@ -73,6 +73,10 @@
                                         {
                                             <i class="@item.Icon me-2"></i>
                                         }
+                                        else if (!item.IsSectionHeader)
+                                        {
+                                            <i class="fas fa-dot-circle me-2"></i>
+                                        }
                                         @item.Name
                                     </span>
                             </td>

@@ -7,7 +7,7 @@ body {
     display: flex;
     flex-direction: column;
     background-color: #f8f9fa;
-    font-family:Inter,Helvetica,sans-serif;
+    font-family: 'Inter', Helvetica, sans-serif;
 }
 
 .navbar-brand {
@@ -108,15 +108,16 @@ body {
 /* Genel Menü Linkleri */
 .sidebar .nav-link {
     color: rgba(255, 255, 255, 0.65);
-    padding: 0.75rem 1rem;
+    padding: 0.625rem 1rem;
     border-radius: 0.25rem;
-    margin: 0.2rem 0.5rem;
-    transition: all 0.3s;
+    margin: 0.15rem 0.5rem;
+    transition: all 0.2s;
     display: flex;
     align-items: center;
-    cursor: pointer; /* Tüm menü öğeleri için imleç */
-    font-size: 14px;
+    cursor: pointer;
+    font-size: 13px;
     font-weight: 400;
+    letter-spacing: 0.01em;
 }
 
 .sidebar .nav-link:hover {
@@ -131,9 +132,10 @@ body {
 }
 
 .sidebar .nav-link i {
-    width: 24px;
+    width: 20px;
     text-align: center;
     margin-right: 0.5rem;
+    opacity: 0.7;
 }
 
 /* Menü Bileşenleri */
@@ -167,11 +169,11 @@ body {
 /* Alt Menüler - Tüm seviyeler için */
 .sidebar-menu .submenu,
 .sidebar-menu .section-submenu {
-    padding-left: 0; /* Sol boşluğu temizle */
+    padding-left: 0;
     margin-top: 0;
-    background-color: rgba(0, 0, 0, 0.18);
-    border-left: 2px solid rgba(255, 255, 255, 0.05);
-    margin-left: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    margin-left: 8px;
 }
 
 /* Her seviye için farklı sol boşluk - 5 seviyeye kadar destek */
@@ -197,9 +199,9 @@ body {
 
 .sidebar-menu .submenu .nav-link,
 .sidebar-menu .section-submenu .nav-link {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    margin: 0.1rem 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    margin: 0.1rem 0.4rem;
 }
 
 /* Her alt seviye için ek stil */
@@ -225,17 +227,18 @@ body {
 
 /* Bölüm Başlıkları */
 .sidebar-menu .section-header {
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05rem;
     color: rgba(255, 255, 255, 0.4);
-    font-weight: 600;
-    padding: 0.75rem 1rem;
-    margin-top: 0.5rem;
+    font-weight: 500;
+    padding: 0.6rem 1rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
     display: flex;
     align-items: center;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
 }
 
 .sidebar-menu .section-header:hover {
@@ -434,4 +437,27 @@ body.sidebar-mini .sidebar:hover .menu-icon {
     .content-wrapper.active {
         margin-left: 260px;
     }
+}
+
+.sidebar-menu .submenu .nav-link.active {
+    background-color: #4785ff;
+    color: white;
+}
+
+.sidebar-menu > ul > li.nav-item > span {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 600;
+    letter-spacing: 0.05rem;
+}
+
+.sidebar-menu .submenu .nav-link::before {
+    content: '•';
+    display: inline-block;
+    width: 12px;
+    margin-right: 8px;
+    opacity: 0.7;
 }

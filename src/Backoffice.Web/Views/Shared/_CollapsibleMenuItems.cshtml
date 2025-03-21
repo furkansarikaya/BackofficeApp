@@ -13,6 +13,10 @@
                 {
                     <i class="@menuItem.Icon menu-icon"></i>
                 }
+                else
+                {
+                    <i class="far fa-dot-circle menu-icon"></i>
+                }
                 <span class="menu-text">@menuItem.Name</span>
                 <i class="fas fa-chevron-down ms-auto menu-arrow"></i>
             </a>
@@ -30,6 +34,10 @@
                 @if (!string.IsNullOrEmpty(menuItem.Icon))
                 {
                     <i class="@menuItem.Icon menu-icon"></i>
+                }
+                else
+                {
+                    <i class="far fa-dot-circle menu-icon"></i>
                 }
                 <span class="menu-text">@menuItem.Name</span>
             </a>
