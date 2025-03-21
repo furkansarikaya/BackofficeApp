@@ -1,0 +1,106 @@
+@model Backoffice.Web.ViewModels.Menu.MenuItemFormViewModel
+
+<input type="hidden" asp-for="Id" />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Menü Adı</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label asp-for="Icon" class="form-label">İkon</label>
+            <div class="input-group">
+                            <span class="input-group-text">
+                                @if (!string.IsNullOrEmpty(Model.Icon))
+                                {
+                                    <i class="@Model.Icon"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-icons"></i>
+                                }
+                            </span>
+                <input asp-for="Icon" class="form-control" placeholder="Örn: fas fa-home" />
+            </div>
+            <span asp-validation-for="Icon" class="text-danger"></span>
+            <small class="form-text text-muted">Font Awesome ikon sınıfı girin (örn: fas fa-home)</small>
+            <br />
+            <small class="form-text text-muted">Boş bırakılırsa ve bölüm başlığı değil ise "far fa-dot-circle" gelir</small>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label asp-for="ParentId" class="form-label">Üst Menü</label>
+            <select asp-for="ParentId" class="form-select" asp-items="Model.ParentMenuItems"></select>
+            <span asp-validation-for="ParentId" class="text-danger"></span>
+            <small class="form-text text-muted">Bu menü öğesinin üst menüsünü seçin</small>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label asp-for="DisplayOrder" class="form-label">Görüntüleme Sırası</label>
+            <input asp-for="DisplayOrder" class="form-control" type="number" min="1" max="1000" />
+            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            <small class="form-text text-muted">Menüdeki sıralama (küçük değerler üstte gösterilir)</small>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label asp-for="Controller" class="form-label">Controller</label>
+            <input asp-for="Controller" class="form-control" />
+            <span asp-validation-for="Controller" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label asp-for="Action" class="form-label">Action</label>
+            <input asp-for="Action" class="form-control" />
+            <span asp-validation-for="Action" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Url" class="form-label">URL</label>
+    <input asp-for="Url" class="form-control" />
+    <span asp-validation-for="Url" class="text-danger"></span>
+    <small class="form-text text-muted">Eğer Controller/Action kullanmak yerine doğrudan URL belirtmek istiyorsanız doldurun</small>
+</div>
+
+<div class="mb-3">
+    <label asp-for="RequiredPermissionCode" class="form-label">Gerekli İzin Kodu</label>
+    <select asp-for="RequiredPermissionCode" class="form-select" asp-items="Model.PermissionCodes"></select>
+    <span asp-validation-for="RequiredPermissionCode" class="text-danger"></span>
+    <small class="form-text text-muted">Bu menü öğesini görmek için gerekli izin</small>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-check mb-3">
+            <input asp-for="IsSectionHeader" class="form-check-input" />
+            <label asp-for="IsSectionHeader" class="form-check-label">Bölüm Başlığı</label>
+            <div>
+                <small class="form-text text-muted">Bölüm başlıkları tıklanamaz, sadece gruplama amaçlıdır</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-check form-switch mb-3">
+            <input asp-for="IsActive" class="form-check-input" />
+            <label asp-for="IsActive" class="form-check-label">Aktif</label>
+            <div>
+                <small class="form-text text-muted">Pasif menü öğeleri gösterilmez</small>
+            </div>
+        </div>
+    </div>
+</div>
