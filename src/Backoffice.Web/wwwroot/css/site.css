@@ -115,7 +115,7 @@ body {
     display: flex;
     align-items: center;
     cursor: pointer; /* Tüm menü öğeleri için imleç */
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 400;
 }
 
