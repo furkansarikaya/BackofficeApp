@@ -9,63 +9,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Erişim Engellendi - Backoffice</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <style>
-        body {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f8f9fa;
-            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 20px;
-        }
-        
-        .error-container {
-            max-width: 600px;
-            width: 100%;
-        }
-        
-        .error-icon {
-            font-size: 48px;
-            color: #dc3545;
-            margin-bottom: 20px;
-        }
-        
-        .ip-address {
-            font-family: monospace;
-            font-weight: bold;
-        }
-    </style>
 </head>
-<body>
-    <div class="error-container">
-        <div class="card shadow border-0">
-            <div class="card-body text-center p-5">
-                <div class="error-icon">
-                    <i class="fas fa-shield-alt"></i>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+<div class="max-w-md w-full">
+    <div class="bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden">
+        <div class="p-8 text-center">
+            <div class="text-red-500 text-5xl mb-6">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+                
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Erişim Engellendi</h1>
+                
+            <div class="mb-6 text-gray-600">
+                <p class="mb-2">IP adresiniz <span class="font-mono font-medium text-red-600">@Model</span> bu kaynağa erişim için yetkilendirilmemiş.</p>
+                <p>Bu sayfaya erişmek için yetkili bir ağ üzerinden bağlanmanız gerekmektedir.</p>
+            </div>
+                
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 text-yellow-700 text-sm text-left">
+                <div class="flex">
+                    <i class="fas fa-exclamation-triangle mt-0.5 mr-2"></i>
+                    <span>Eğer bu bir hata olduğunu düşünüyorsanız, lütfen sistem yöneticinizle iletişime geçin.</span>
                 </div>
-                
-                <h1 class="h3 mb-3">Erişim Engellendi</h1>
-                
-                <p class="mb-4">
-                    IP adresiniz <span class="ip-address">@Model</span> bu kaynağa erişim için yetkilendirilmemiş.
-                </p>
-                
-                <p class="text-muted mb-4">
-                    Bu sayfaya erişmek için yetkili bir ağ üzerinden bağlanmanız gerekmektedir.
-                    Eğer bu bir hata olduğunu düşünüyorsanız, lütfen sistem yöneticinizle iletişime geçin.
-                </p>
             </div>
         </div>
-        
-        <div class="text-center mt-3">
-            <p class="text-muted">
-                &copy; @DateTime.Now.Year Backoffice Uygulaması
-            </p>
-        </div>
     </div>
+        
+    <div class="text-center mt-6 text-sm text-gray-500">
+        &copy; @DateTime.Now.Year Backoffice Uygulaması
+    </div>
+</div>
 </body>
 </html>
