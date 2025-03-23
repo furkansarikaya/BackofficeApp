@@ -2,24 +2,23 @@
     ViewData["Title"] = "Erişim Reddedildi";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-body text-center p-5">
-                    <i class="fas fa-exclamation-triangle text-danger fa-4x mb-4"></i>
-                    <h2 class="mb-3">Erişim Reddedildi</h2>
-                    <p class="mb-4">
-                        Bu sayfaya erişim yetkiniz bulunmamaktadır. Sistem yöneticinize başvurarak
-                        gerekli izinleri talep edebilirsiniz.
-                    </p>
-                    <div class="mt-4">
-                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
-                            <i class="fas fa-home me-2"></i> Ana Sayfaya Dön
-                        </a>
-                    </div>
-                </div>
+<div class="flex flex-col items-center justify-center min-h-[70vh] p-4">
+    <div class="max-w-lg w-full bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden">
+        <div class="p-8 text-center">
+            <div class="text-red-500 text-5xl mb-6">
+                <i class="fas fa-exclamation-circle"></i>
             </div>
+            
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Erişim Reddedildi</h1>
+            
+            <p class="text-gray-600 mb-8">
+                Bu sayfaya erişim yetkiniz bulunmamaktadır. Sistem yöneticinize başvurarak
+                gerekli izinleri talep edebilirsiniz.
+            </p>
+            
+            <a asp-controller="Home" asp-action="Index" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                <i class="fas fa-home mr-2"></i> Ana Sayfaya Dön
+            </a>
         </div>
     </div>
 </div>
