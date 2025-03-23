@@ -1,60 +1,90 @@
 @model Backoffice.Web.ViewModels.Account.LoginViewModel
 @{
     ViewData["Title"] = "Giriş";
-    Layout = "_AuthLayout"; // Authentication-specific layout
+    Layout = "_AuthLayout";
 }
 
-<div class="card shadow-lg border-0">
-    <div class="card-header bg-transparent pb-5">
-        <div class="text-center mt-2 mb-3">
-            <h1 class="h3">Backoffice Giriş</h1>
-        </div>
+<div class="bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden">
+    <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+        <h2 class="text-lg font-medium text-gray-800">Backoffice Giriş</h2>
     </div>
-    <div class="card-body px-lg-5 py-lg-5">
+    
+    <div class="p-6">
         <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="mb-4 p-4 text-red-700 bg-red-50 border-l-4 border-red-500 rounded-r-md"></div>
             
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label">E-posta</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                    <input asp-for="Email" class="form-control" placeholder="E-posta adresiniz" />
+            <div class="space-y-6">
+                <div>
+                    <label asp-for="Email" class="block text-sm font-medium text-gray-700">E-posta</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input asp-for="Email" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500" placeholder="E-posta adresiniz" />
+                    </div>
+                    <span asp-validation-for="Email" class="mt-1 text-sm text-red-600"></span>
                 </div>
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            
-            <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <label asp-for="Password" class="form-label">Şifre</label>
-                    <a href="#" class="small text-muted">Şifremi Unuttum</a>
+                
+                <div>
+                    <div class="flex items-center justify-between">
+                        <label asp-for="Password" class="block text-sm font-medium text-gray-700">Şifre</label>
+                        <a href="#" class="text-sm text-primary-600 hover:text-primary-500">Şifremi Unuttum</a>
+                    </div>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input asp-for="Password" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500" placeholder="Şifreniz" />
+                    </div>
+                    <span asp-validation-for="Password" class="mt-1 text-sm text-red-600"></span>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    <input asp-for="Password" class="form-control" placeholder="Şifreniz" />
+                
+                <div class="flex items-center">
+                    <input asp-for="RememberMe" type="checkbox" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" />
+                    <label asp-for="RememberMe" class="ml-2 block text-sm text-gray-700">Beni Hatırla</label>
                 </div>
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            
-            <div class="mb-3 form-check">
-                <input asp-for="RememberMe" class="form-check-input" />
-                <label asp-for="RememberMe" class="form-check-label">Beni Hatırla</label>
-            </div>
-            
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary w-100 mt-4">
-                    <i class="fas fa-sign-in-alt me-2"></i> Giriş Yap
-                </button>
+                
+                <div>
+                    <button type="submit" class="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Giriş Yap
+                    </button>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div class="text-center mt-3">
-    <p class="text-muted">
-        © @DateTime.Now.Year Backoffice Uygulaması. Tüm hakları saklıdır.
-    </p>
-</div>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Focus the email field automatically
+            const emailInput = document.getElementById('Email');
+            if (emailInput) {
+                emailInput.focus();
+            }
+            
+            // Optional: Add password visibility toggle
+            const passwordInput = document.getElementById('Password');
+            if (passwordInput) {
+                const toggleButton = document.createElement('button');
+                toggleButton.type = 'button';
+                toggleButton.className = 'absolute inset-y-0 right-0 pr-3 flex items-center';
+                toggleButton.innerHTML = '<i class="fas fa-eye text-gray-400"></i>';
+                toggleButton.setAttribute('tabindex', '-1');
+                
+                toggleButton.addEventListener('click', function() {
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        this.innerHTML = '<i class="fas fa-eye-slash text-gray-400"></i>';
+                    } else {
+                        passwordInput.type = 'password';
+                        this.innerHTML = '<i class="fas fa-eye text-gray-400"></i>';
+                    }
+                });
+                
+                passwordInput.parentElement.appendChild(toggleButton);
+            }
+        });
+    </script>
 }

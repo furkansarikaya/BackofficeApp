@@ -83,7 +83,7 @@ public class AccountController(
             return RedirectToAction(nameof(Lockout));
         }
             
-        ModelState.AddModelError(string.Empty, "Geçersiz giriş denemesi.");
+        ModelState.AddModelError(string.Empty, "E-posta ve/veya şifre hatalı.");
         
         var failedUser = await userManager.FindByEmailAsync(model.Email);
         if (failedUser != null)
