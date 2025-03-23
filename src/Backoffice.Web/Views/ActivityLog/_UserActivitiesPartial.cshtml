@@ -2,66 +2,68 @@
 
 @if (!Model.Items.Any())
 {
-    <div class="alert alert-info">
-        <i class="fas fa-info-circle me-2"></i> Bu kullanıcıya ait aktivite bulunamadı.
+    <div class="flex items-center p-4 text-blue-800 border-l-4 border-blue-500 bg-blue-50 rounded-r-md">
+        <i class="fas fa-info-circle mr-2"></i> Bu kullanıcıya ait aktivite bulunamadı.
     </div>
 }
 else
 {
-    <div class="table-responsive">
-        <table class="table table-sm table-striped">
-            <thead>
-                <tr>
-                    <th>Tarih</th>
-                    <th>Kategori</th>
-                    <th>İşlem</th>
-                    <th>Varlık</th>
-                    <th></th>
-                </tr>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+            <tr>
+                <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarih</th>
+                <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İşlem</th>
+                <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Varlık</th>
+                <th scope="col" class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
+            </tr>
             </thead>
-            <tbody>
-                @foreach (var log in Model.Items)
-                {
-                    <tr>
-                        <td>@log.Timestamp.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
-                        <td>@log.Category</td>
-                        <td>
-                            @{
-                                var badgeClass = "bg-secondary";
-                                
-                                if (log.ActivityType.Contains("Create")) badgeClass = "bg-success";
-                                else if (log.ActivityType.Contains("Update")) badgeClass = "bg-primary";
-                                else if (log.ActivityType.Contains("Delete")) badgeClass = "bg-danger";
-                                else if (log.ActivityType.Contains("Login")) badgeClass = "bg-info";
-                                else if (log.ActivityType.Contains("Failed")) badgeClass = "bg-warning";
-                            }
-                            
-                            <span class="badge @badgeClass">@log.ActivityType</span>
-                        </td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(log.EntityType) && !string.IsNullOrEmpty(log.EntityId))
-                            {
-                                @($"{log.EntityType} ({log.EntityId})")
-                            }
-                            else
-                            {
-                                <span class="text-muted">-</span>
-                            }
-                        </td>
-                        <td>
-                            <a href="@Url.Action("Details", "ActivityLog", new { id = log.Id })" class="btn btn-sm btn-info">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
+            <tbody class="bg-white divide-y divide-gray-200">
+            @foreach (var log in Model.Items)
+            {
+                <tr class="hover:bg-gray-50">
+                    <td class="px-3 py-2 text-sm text-gray-600">@log.Timestamp.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                    <td class="px-3 py-2 text-sm text-gray-600">@log.Category</td>
+                    <td class="px-3 py-2 text-sm">
+                        @{
+                            var badgeClass = "bg-gray-200 text-gray-800";
+
+                            if (log.ActivityType.Contains("Create")) badgeClass = "bg-green-100 text-green-800";
+                            else if (log.ActivityType.Contains("Update")) badgeClass = "bg-blue-100 text-blue-800";
+                            else if (log.ActivityType.Contains("Delete")) badgeClass = "bg-red-100 text-red-800";
+                            else if (log.ActivityType.Contains("Login")) badgeClass = "bg-blue-100 text-blue-800";
+                            else if (log.ActivityType.Contains("Failed")) badgeClass = "bg-yellow-100 text-yellow-800";
+                        }
+
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium @badgeClass">
+                                @log.ActivityType
+                            </span>
+                    </td>
+                    <td class="px-3 py-2 text-sm text-gray-600">
+                        @if (!string.IsNullOrEmpty(log.EntityType) && !string.IsNullOrEmpty(log.EntityId))
+                        {
+                            <span>@log.EntityType (@log.EntityId)</span>
+                        }
+                        else
+                        {
+                            <span class="text-gray-400">-</span>
+                        }
+                    </td>
+                    <td class="px-3 py-2 text-sm text-gray-600 text-right">
+                        <a href="@Url.Action("Details", "ActivityLog", new { id = log.Id })" class="inline-flex items-center p-1 bg-blue-500 text-white rounded hover:bg-blue-600" title="Detay">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
-    
-    <div class="text-center mt-2">
-        <a href="@Url.Action("UserActivities", "ActivityLog", new { userId = Model.Items.First().UserId })" class="btn btn-outline-primary btn-sm">
-            Tüm Aktiviteleri Gör <i class="fas fa-arrow-right ms-1"></i>
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("UserActivities", "ActivityLog", new { userId = Model.Items.First().UserId })" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            Tüm Aktiviteleri Gör <i class="fas fa-arrow-right ml-2"></i>
         </a>
     </div>
 }

@@ -1,74 +1,84 @@
 @model Backoffice.Web.ViewModels.Auditing.ActivityLogListViewModel
 @{
-    ViewData["Title"] = ViewData["UserName"] != null 
-        ? $"{ViewData["UserName"]} Kullanıcısının Aktiviteleri" 
-        : (ViewData["EntityName"] != null 
-            ? $"{ViewData["EntityName"]} Aktiviteleri" 
+    ViewData["Title"] = ViewData["UserName"] != null
+        ? $"{ViewData["UserName"]} Kullanıcısının Aktiviteleri"
+        : (ViewData["EntityName"] != null
+            ? $"{ViewData["EntityName"]} Aktiviteleri"
             : "Aktivite Günlüğü");
 }
 
-<div class="card mb-4">
-    <div class="card-header">
-        <h5 class="card-title mb-0">Filtreler</h5>
+<div class="bg-white rounded-lg shadow-sm border border-gray-100 mb-6">
+    <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-medium text-gray-900">Filtreler</h2>
     </div>
-    <div class="card-body">
+    <div class="p-6">
         <form asp-action="Index" method="get" id="filterForm">
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <label asp-for="Filter.Category" class="form-label">Kategori</label>
-                    <select asp-for="Filter.Category" class="form-select" id="categorySelect">
-                        <option value="">-- Tüm Kategoriler --</option>
-                        @foreach (var category in Model.Categories)
-                        {
-                            <option value="@category">@category</option>
-                        }
-                    </select>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label asp-for="Filter.Category" class="block text-sm font-medium text-gray-700">Kategori</label>
+                    <div class="relative mt-1">
+                        <select asp-for="Filter.Category" id="categorySelect" class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded-md appearance-none bg-white">
+                            <option value="">-- Tüm Kategoriler --</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <option value="@category">@category</option>
+                            }
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="col-md-3 mb-3">
-                    <label asp-for="Filter.ActivityType" class="form-label">İşlem Tipi</label>
-                    <select asp-for="Filter.ActivityType" class="form-select" id="activityTypeSelect">
-                        <option value="">-- Tüm İşlemler --</option>
-                        @foreach (var activityType in Model.ActivityTypes)
-                        {
-                            <option value="@activityType">@activityType</option>
-                        }
-                    </select>
+
+                <div>
+                    <label asp-for="Filter.ActivityType" class="block text-sm font-medium text-gray-700">İşlem Tipi</label>
+                    <div class="relative mt-1">
+                        <select asp-for="Filter.ActivityType" id="activityTypeSelect" class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded-md appearance-none bg-white">
+                            <option value="">-- Tüm İşlemler --</option>
+                            @foreach (var activityType in Model.ActivityTypes)
+                            {
+                                <option value="@activityType">@activityType</option>
+                            }
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="col-md-3 mb-3">
-                    <label asp-for="Filter.EntityType" class="form-label">Varlık Tipi</label>
-                    <input asp-for="Filter.EntityType" class="form-control" placeholder="Ör: User, Role, Menu" />
+
+                <div>
+                    <label asp-for="Filter.EntityType" class="block text-sm font-medium text-gray-700">Varlık Tipi</label>
+                    <input asp-for="Filter.EntityType" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" placeholder="Ör: User, Role, Menu" />
                 </div>
-                
-                <div class="col-md-3 mb-3">
-                    <label asp-for="Filter.EntityId" class="form-label">Varlık ID</label>
-                    <input asp-for="Filter.EntityId" class="form-control" placeholder="Ör: 5, abc123" />
+
+                <div>
+                    <label asp-for="Filter.EntityId" class="block text-sm font-medium text-gray-700">Varlık ID</label>
+                    <input asp-for="Filter.EntityId" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" placeholder="Ör: 5, abc123" />
                 </div>
             </div>
-            
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <label asp-for="Filter.FromDate" class="form-label">Başlangıç Tarihi</label>
-                    <input asp-for="Filter.FromDate" class="form-control" type="date" />
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div>
+                    <label asp-for="Filter.FromDate" class="block text-sm font-medium text-gray-700">Başlangıç Tarihi</label>
+                    <input asp-for="Filter.FromDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
                 </div>
-                
-                <div class="col-md-3 mb-3">
-                    <label asp-for="Filter.ToDate" class="form-label">Bitiş Tarihi</label>
-                    <input asp-for="Filter.ToDate" class="form-control" type="date" />
+
+                <div>
+                    <label asp-for="Filter.ToDate" class="block text-sm font-medium text-gray-700">Bitiş Tarihi</label>
+                    <input asp-for="Filter.ToDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
                 </div>
-                
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Filter.SearchTerm" class="form-label">Arama</label>
-                    <div class="input-group">
-                        <input asp-for="Filter.SearchTerm" class="form-control" placeholder="Kullanıcı adı, açıklama veya varlık ID ile ara..." />
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search me-1"></i> Ara
+
+                <div>
+                    <label asp-for="Filter.SearchTerm" class="block text-sm font-medium text-gray-700">Arama</label>
+                    <div class="mt-1 flex">
+                        <input asp-for="Filter.SearchTerm" class="flex-1 block w-full px-3 py-2 border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" placeholder="Kullanıcı adı, açıklama veya varlık ID ile ara..." />
+                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-r-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                            <i class="fas fa-search mr-2"></i> Ara
                         </button>
                     </div>
                 </div>
             </div>
-            
+
             @if (ViewData["UserName"] != null)
             {
                 <input type="hidden" asp-for="Filter.UserId" />
@@ -77,139 +87,142 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-body">
+<div class="bg-white rounded-lg shadow-sm border border-gray-100">
+    <div class="p-6">
         @if (Model.ActivityLogs == null || !Model.ActivityLogs.Items.Any())
         {
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle me-2"></i> Aktivite logu bulunamadı.
+            <div class="flex items-center p-4 text-blue-800 border-l-4 border-blue-500 bg-blue-50">
+                <i class="fas fa-info-circle mr-2"></i> Aktivite logu bulunamadı.
             </div>
         }
         else
         {
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>Tarih</th>
-                            <th>Kullanıcı</th>
-                            <th>Kategori</th>
-                            <th>İşlem</th>
-                            <th>Varlık</th>
-                            <th>IP Adresi</th>
-                            <th></th>
-                        </tr>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="text-xs font-medium text-gray-500 bg-gray-50 uppercase tracking-wider">
+                    <tr>
+                        <th class="px-5 py-3 text-left">Tarih</th>
+                        <th class="px-5 py-3 text-left">Kullanıcı</th>
+                        <th class="px-5 py-3 text-left">Kategori</th>
+                        <th class="px-5 py-3 text-left">İşlem</th>
+                        <th class="px-5 py-3 text-left">Varlık</th>
+                        <th class="px-5 py-3 text-left">IP Adresi</th>
+                        <th class="px-5 py-3 text-left">İşlemler</th>
+                    </tr>
                     </thead>
-                    <tbody>
-                        @foreach (var log in Model.ActivityLogs.Items)
-                        {
-                            <tr>
-                                <td>@log.Timestamp.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
-                                <td>
-                                    <a asp-action="UserActivities" asp-route-userId="@log.UserId" class="text-decoration-none">
-                                        @log.UserName
+                    <tbody class="divide-y divide-gray-100">
+                    @foreach (var log in Model.ActivityLogs.Items)
+                    {
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-5 py-4 text-sm">@log.Timestamp.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
+                            <td class="px-5 py-4">
+                                <a asp-action="UserActivities" asp-route-userId="@log.UserId" class="text-primary-600 hover:text-primary-700 font-medium">
+                                    @log.UserName
+                                </a>
+                            </td>
+                            <td class="px-5 py-4">@log.Category</td>
+                            <td class="px-5 py-4">
+                                @{
+                                    var badgeClass = "bg-gray-200 text-gray-800";
+
+                                    if (log.ActivityType.Contains("Create")) badgeClass = "bg-green-100 text-green-800";
+                                    else if (log.ActivityType.Contains("Update")) badgeClass = "bg-blue-100 text-blue-800";
+                                    else if (log.ActivityType.Contains("Delete")) badgeClass = "bg-red-100 text-red-800";
+                                    else if (log.ActivityType.Contains("Login")) badgeClass = "bg-blue-100 text-blue-800";
+                                    else if (log.ActivityType.Contains("Failed")) badgeClass = "bg-yellow-100 text-yellow-800";
+                                }
+
+                                <span class="px-2 py-1 text-xs font-medium rounded-full @badgeClass">@log.ActivityType</span>
+                            </td>
+                            <td class="px-5 py-4">
+                                @if (!string.IsNullOrEmpty(log.EntityType) && !string.IsNullOrEmpty(log.EntityId))
+                                {
+                                    <a asp-action="EntityActivities"
+                                       asp-route-entityType="@log.EntityType"
+                                       asp-route-entityId="@log.EntityId"
+                                       class="text-primary-600 hover:text-primary-700">
+                                        @log.EntityType (@log.EntityId)
                                     </a>
-                                </td>
-                                <td>@log.Category</td>
-                                <td>
-                                    @{
-                                        var badgeClass = "bg-secondary";
-                                        
-                                        if (log.ActivityType.Contains("Create")) badgeClass = "bg-success";
-                                        else if (log.ActivityType.Contains("Update")) badgeClass = "bg-primary";
-                                        else if (log.ActivityType.Contains("Delete")) badgeClass = "bg-danger";
-                                        else if (log.ActivityType.Contains("Login")) badgeClass = "bg-info";
-                                        else if (log.ActivityType.Contains("Failed")) badgeClass = "bg-warning";
-                                    }
-                                    
-                                    <span class="badge @badgeClass">@log.ActivityType</span>
-                                </td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(log.EntityType) && !string.IsNullOrEmpty(log.EntityId))
-                                    {
-                                        <a asp-action="EntityActivities" 
-                                           asp-route-entityType="@log.EntityType" 
-                                           asp-route-entityId="@log.EntityId"
-                                           class="text-decoration-none">
-                                            @log.EntityType (@log.EntityId)
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">-</span>
-                                    }
-                                </td>
-                                <td>@log.IpAddress</td>
-                                <td>
-                                    <a asp-action="Details" asp-route-id="@log.Id" class="btn btn-sm btn-info">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
+                                }
+                                else
+                                {
+                                    <span class="text-gray-400">-</span>
+                                }
+                            </td>
+                            <td class="px-5 py-4 font-mono text-sm">@log.IpAddress</td>
+                            <td class="px-5 py-4">
+                                <a asp-action="Details" asp-route-id="@log.Id" class="inline-flex items-center p-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600" title="Detay Görüntüle">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div>
-                    Toplam: <span class="fw-bold">@Model.ActivityLogs.TotalCount</span> kayıt
+            <div class="flex flex-col md:flex-row justify-between items-center mt-6">
+                <div class="mb-4 md:mb-0">
+                    Toplam: <span class="font-semibold">@Model.ActivityLogs.TotalCount</span> kayıt
                 </div>
 
                 @if (Model.ActivityLogs.TotalPages > 1)
                 {
                     <nav aria-label="Page navigation">
-                        <ul class="pagination mb-0">
-                            <li class="page-item @(!Model.ActivityLogs.HasPreviousPage ? "disabled" : "")">
-                                <a class="page-link" asp-action="Index"
+                        <ul class="flex">
+                            <li class="@(!Model.ActivityLogs.HasPreviousPage ? "opacity-50 pointer-events-none" : "")">
+                                <a class="px-3 py-2 border border-gray-300 rounded-l-md bg-white text-gray-600 hover:bg-gray-100"
+                                   asp-action="Index"
                                    asp-all-route-data="@(new Dictionary<string, string> {
-                                       {"pageNumber", (Model.ActivityLogs.PageIndex - 1).ToString() },
-                                       {"Category", Model.Filter.Category ?? "" },
-                                       {"ActivityType", Model.Filter.ActivityType ?? "" },
-                                       {"EntityType", Model.Filter.EntityType ?? "" },
-                                       {"EntityId", Model.Filter.EntityId ?? "" },
-                                       {"SearchTerm", Model.Filter.SearchTerm ?? "" },
-                                       {"UserId", Model.Filter.UserId ?? "" },
-                                       {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
-                                       {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
-                                   })">
+                                                           {"pageNumber", (Model.ActivityLogs.PageIndex - 1).ToString() },
+                                                           {"Category", Model.Filter.Category ?? "" },
+                                                           {"ActivityType", Model.Filter.ActivityType ?? "" },
+                                                           {"EntityType", Model.Filter.EntityType ?? "" },
+                                                           {"EntityId", Model.Filter.EntityId ?? "" },
+                                                           {"SearchTerm", Model.Filter.SearchTerm ?? "" },
+                                                           {"UserId", Model.Filter.UserId ?? "" },
+                                                           {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
+                                                           {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
+                                                       })">
                                     <i class="fas fa-angle-left"></i>
                                 </a>
                             </li>
 
                             @for (int i = 1; i <= Model.ActivityLogs.TotalPages; i++)
                             {
-                                <li class="page-item @(i == Model.ActivityLogs.PageIndex ? "active" : "")">
-                                    <a class="page-link" asp-action="Index"
+                                <li>
+                                    <a class="px-3 py-2 border border-gray-300 border-l-0 bg-white @(i == Model.ActivityLogs.PageIndex ? "text-primary-600 font-medium" : "text-gray-600 hover:bg-gray-100")"
+                                       asp-action="Index"
                                        asp-all-route-data="@(new Dictionary<string, string> {
-                                           {"pageNumber", i.ToString() },
-                                           {"Category", Model.Filter.Category ?? "" },
-                                           {"ActivityType", Model.Filter.ActivityType ?? "" },
-                                           {"EntityType", Model.Filter.EntityType ?? "" },
-                                           {"EntityId", Model.Filter.EntityId ?? "" },
-                                           {"SearchTerm", Model.Filter.SearchTerm ?? "" },
-                                           {"UserId", Model.Filter.UserId ?? "" },
-                                           {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
-                                           {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
-                                       })">
+                                                               {"pageNumber", i.ToString() },
+                                                               {"Category", Model.Filter.Category ?? "" },
+                                                               {"ActivityType", Model.Filter.ActivityType ?? "" },
+                                                               {"EntityType", Model.Filter.EntityType ?? "" },
+                                                               {"EntityId", Model.Filter.EntityId ?? "" },
+                                                               {"SearchTerm", Model.Filter.SearchTerm ?? "" },
+                                                               {"UserId", Model.Filter.UserId ?? "" },
+                                                               {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
+                                                               {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
+                                                           })">
                                         @i
                                     </a>
                                 </li>
                             }
 
-                            <li class="page-item @(!Model.ActivityLogs.HasNextPage ? "disabled" : "")">
-                                <a class="page-link" asp-action="Index"
+                            <li class="@(!Model.ActivityLogs.HasNextPage ? "opacity-50 pointer-events-none" : "")">
+                                <a class="px-3 py-2 border border-gray-300 border-l-0 rounded-r-md bg-white text-gray-600 hover:bg-gray-100"
+                                   asp-action="Index"
                                    asp-all-route-data="@(new Dictionary<string, string> {
-                                       {"pageNumber", (Model.ActivityLogs.PageIndex + 1).ToString() },
-                                       {"Category", Model.Filter.Category ?? "" },
-                                       {"ActivityType", Model.Filter.ActivityType ?? "" },
-                                       {"EntityType", Model.Filter.EntityType ?? "" },
-                                       {"EntityId", Model.Filter.EntityId ?? "" },
-                                       {"SearchTerm", Model.Filter.SearchTerm ?? "" },
-                                       {"UserId", Model.Filter.UserId ?? "" },
-                                       {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
-                                       {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
-                                   })">
+                                                           {"pageNumber", (Model.ActivityLogs.PageIndex + 1).ToString() },
+                                                           {"Category", Model.Filter.Category ?? "" },
+                                                           {"ActivityType", Model.Filter.ActivityType ?? "" },
+                                                           {"EntityType", Model.Filter.EntityType ?? "" },
+                                                           {"EntityId", Model.Filter.EntityId ?? "" },
+                                                           {"SearchTerm", Model.Filter.SearchTerm ?? "" },
+                                                           {"UserId", Model.Filter.UserId ?? "" },
+                                                           {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
+                                                           {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
+                                                       })">
                                     <i class="fas fa-angle-right"></i>
                                 </a>
                             </li>
@@ -223,43 +236,52 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // Kategori değiştiğinde işlem tiplerini güncelle
-            $('#categorySelect').change(function() {
-                var category = $(this).val();
-                
-                if (category) {
-                    // AJAX ile işlem tiplerini al
-                    $.getJSON('@Url.Action("GetActivityTypes")', { category: category }, function(data) {
-                        var activityTypeSelect = $('#activityTypeSelect');
-                        activityTypeSelect.empty();
-                        
-                        // Default seçenek ekle
-                        activityTypeSelect.append($('<option></option>')
-                            .attr('value', '')
-                            .text('-- Tüm İşlemler --'));
-                        
-                        // İşlem tiplerini ekle
-                        $.each(data, function(index, item) {
-                            activityTypeSelect.append($('<option></option>')
-                                .attr('value', item)
-                                .text(item));
-                        });
-                    });
-                } else {
-                    // Kategori seçilmediğinde işlem tiplerini temizle
-                    var activityTypeSelect = $('#activityTypeSelect');
-                    activityTypeSelect.empty();
-                    activityTypeSelect.append($('<option></option>')
-                        .attr('value', '')
-                        .text('-- Tüm İşlemler --'));
+            const categorySelect = document.getElementById('categorySelect');
+            const activityTypeSelect = document.getElementById('activityTypeSelect');
+
+            if (categorySelect && activityTypeSelect) {
+                categorySelect.addEventListener('change', function() {
+                    const category = this.value;
+
+                    if (category) {
+                        // AJAX ile işlem tiplerini al
+                        fetch(`@Url.Action("GetActivityTypes")?category=${encodeURIComponent(category)}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                // Mevcut seçenekleri temizle
+                                activityTypeSelect.innerHTML = '';
+
+                                // Default seçenek ekle
+                                const defaultOption = document.createElement('option');
+                                defaultOption.value = '';
+                                defaultOption.textContent = '-- Tüm İşlemler --';
+                                activityTypeSelect.appendChild(defaultOption);
+
+                                // İşlem tiplerini ekle
+                                data.forEach(item => {
+                                    const option = document.createElement('option');
+                                    option.value = item;
+                                    option.textContent = item;
+                                    activityTypeSelect.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('İşlem tipleri yüklenirken hata oluştu:', error));
+                    } else {
+                        // Kategori seçilmediğinde işlem tiplerini temizle
+                        activityTypeSelect.innerHTML = '';
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = '-- Tüm İşlemler --';
+                        activityTypeSelect.appendChild(defaultOption);
+                    }
+                });
+
+                // Sayfa yüklendiğinde mevcut kategori seçiliyse işlem tiplerini yükle
+                if (categorySelect.value) {
+                    categorySelect.dispatchEvent(new Event('change'));
                 }
-            });
-            
-            // Sayfa yüklendiğinde mevcut kategori seçiliyse işlem tiplerini yükle
-            var initialCategory = $('#categorySelect').val();
-            if (initialCategory) {
-                $('#categorySelect').trigger('change');
             }
         });
     </script>
