@@ -5,60 +5,64 @@
 
 @section PageActions {
     <div>
-        <a asp-action="Create" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Yeni Rol
+        <a asp-action="Create" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700">
+            <i class="fas fa-plus mr-2"></i> Yeni Rol
         </a>
     </div>
 }
 
-<div class="card">
-    <div class="card-body">
+<div class="bg-white rounded-lg shadow-sm border border-gray-100">
+    <div class="p-5">
         @if (!Model.Roles.Any())
         {
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle me-2"></i> Sistemde henüz rol tanımlanmamıştır.
+            <div class="flex items-center p-4 text-blue-800 border-l-4 border-blue-500 bg-blue-50">
+                <i class="fas fa-info-circle mr-2"></i> Sistemde henüz rol tanımlanmamıştır.
             </div>
         }
         else
         {
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="text-xs font-medium text-gray-500 bg-gray-50 uppercase tracking-wider">
                         <tr>
-                            <th>Rol Adı</th>
-                            <th>Açıklama</th>
-                            <th>Oluşturulma Tarihi</th>
-                            <th>İşlemler</th>
+                            <th class="px-5 py-3 text-left">Rol Adı</th>
+                            <th class="px-5 py-3 text-left">Açıklama</th>
+                            <th class="px-5 py-3 text-left">Oluşturulma Tarihi</th>
+                            <th class="px-5 py-3 text-left">İşlemler</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-gray-100">
                         @foreach (var role in Model.Roles)
                         {
-                            <tr>
-                                <td>@role.Name</td>
-                                <td>@role.Description</td>
-                                <td>@role.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
-                                <td>
-                                    <div class="btn-group">
-                                        @if (role.Name != "Administrator")
-                                        {
-                                            <a asp-action="Edit" asp-route-id="@role.Id" class="btn btn-sm btn-warning" title="Düzenle">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-5 py-4">@role.Name</td>
+                                <td class="px-5 py-4">@role.Description</td>
+                                <td class="px-5 py-4 text-sm text-gray-500">@role.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td class="px-5 py-4">
+                                    @if (role.Name != "Administrator")
+                                    {
+                                        <div class="flex space-x-1">
+                                            <a asp-action="Edit" asp-route-id="@role.Id"
+                                               class="p-1.5 text-white bg-yellow-500 rounded-md hover:bg-yellow-600" title="Düzenle">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a asp-action="Permissions" asp-route-id="@role.Id" class="btn btn-sm btn-info" title="İzinler">
+                                            <a asp-action="Permissions" asp-route-id="@role.Id"
+                                               class="p-1.5 text-white bg-blue-500 rounded-md hover:bg-blue-600" title="İzinler">
                                                 <i class="fas fa-key"></i>
                                             </a>
-                                            <button type="button" class="btn btn-sm btn-danger" title="Sil" 
-                                                    data-bs-toggle="modal" data-bs-target="#deleteModal" 
-                                                    data-role-id="@role.Id" data-role-name="@role.Name">
+                                            <button data-modal-target="delete-modal" data-modal-toggle="delete-modal"
+                                                    class="p-1.5 text-white bg-red-500 rounded-md hover:bg-red-600"
+                                                    title="Sil"
+                                                    data-role-id="@role.Id"
+                                                    data-role-name="@role.Name">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                        }
-                                        else
-                                        {
-                                            <span class="text-muted small">Administrator rolü üzerinde işlem yapılamaz</span>
-                                        }
-                                    </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-sm text-gray-500">Administrator rolü üzerinde işlem yapılamaz</span>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -69,27 +73,39 @@
     </div>
 </div>
 
-<!-- Silme Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Rol Silme</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+<!-- Silme Modal (Flowbite/Tailwind) -->
+<div id="delete-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Kullanıcı Silme
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="delete-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Modalı kapat</span>
+                </button>
             </div>
-            <div class="modal-body">
-                <p>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5">
+                <p class="mb-3 text-gray-700 dark:text-gray-300">
                     <span id="roleName"></span> rolünü silmek istediğinize emin misiniz?
                 </p>
-                <p class="text-danger">
-                    <i class="fas fa-exclamation-triangle"></i> Bu işlem geri alınamaz.
-                </p>
+                <div class="flex items-center text-red-600 dark:text-red-400 mt-3">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span>Bu işlem geri alınamaz.</span>
+                </div>
             </div>
-            <div class="modal-footer">
-                <form asp-action="Delete" method="post" id="deleteForm">
+            <!-- Modal footer -->
+            <div class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button data-modal-hide="delete-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-md border border-gray-300 hover:bg-gray-300 focus:z-10">İptal</button>
+                <form asp-action="Delete" method="post" class="ml-2">
                     <input type="hidden" name="id" id="roleId" />
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                    <button type="submit" class="btn btn-danger">Sil</button>
+                    <button type="submit" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Sil</button>
                 </form>
             </div>
         </div>
@@ -98,20 +114,72 @@
 
 @section Scripts {
     <script>
-        // Delete modal için rol bilgilerini ayarla
-        var deleteModal = document.getElementById('deleteModal');
-        if (deleteModal) {
-            deleteModal.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget;
-                var roleId = button.getAttribute('data-role-id');
-                var roleName = button.getAttribute('data-role-name');
-                
-                var modalRoleName = document.getElementById('roleName');
-                var modalRoleId = document.getElementById('roleId');
-                
-                modalRoleName.textContent = roleName;
-                modalRoleId.value = roleId;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Silme butonlarını dinle
+            const deleteButtons = document.querySelectorAll('[data-modal-target="delete-modal"]');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const roleId = button.getAttribute('data-role-id');
+                    const roleName = button.getAttribute('data-role-name');
+
+                    // Modal içindeki alanlara verileri doldur
+                    document.getElementById('roleName').textContent = roleName;
+                    document.getElementById('roleId').value = roleId;
+                });
             });
-        }
+
+            // Modal davranışını ayarla (Flowbite JS varsa bu kısmı atlayabilirsiniz)
+            const modalToggles = document.querySelectorAll('[data-modal-toggle]');
+            modalToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const targetModal = document.getElementById(toggle.getAttribute('data-modal-target'));
+                    if (targetModal) {
+                        // Göster/gizle toggle
+                        if (targetModal.classList.contains('hidden')) {
+                            targetModal.classList.remove('hidden');
+                            targetModal.classList.add('flex');
+                            document.body.classList.add('overflow-hidden');
+                        } else {
+                            targetModal.classList.add('hidden');
+                            targetModal.classList.remove('flex');
+                            document.body.classList.remove('overflow-hidden');
+                        }
+                    }
+                });
+            });
+
+            // Modal kapatma butonları için
+            const modalHides = document.querySelectorAll('[data-modal-hide]');
+            modalHides.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetModal = document.getElementById(button.getAttribute('data-modal-hide'));
+                    if (targetModal) {
+                        targetModal.classList.add('hidden');
+                        targetModal.classList.remove('flex');
+                        document.body.classList.remove('overflow-hidden');
+                    }
+                });
+            });
+
+            // Dışarı tıklayarak kapatma (opsiyonel)
+            window.addEventListener('click', function(event) {
+                if (event.target.hasAttribute('aria-hidden') &&
+                    event.target.getAttribute('aria-hidden') === 'true' &&
+                    !event.target.classList.contains('hidden')) {
+                    event.target.classList.add('hidden');
+                    event.target.classList.remove('flex');
+                    document.body.classList.remove('overflow-hidden');
+                }
+            });
+
+            // Sayfa değişikliklerinde form submit
+            var showInactiveCheckbox = document.getElementById('showInactive');
+            if (showInactiveCheckbox) {
+                showInactiveCheckbox.addEventListener('change', function() {
+                    this.form.submit();
+                });
+            }
+        });
     </script>
 }

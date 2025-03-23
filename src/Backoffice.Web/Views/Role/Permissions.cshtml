@@ -3,21 +3,24 @@
     ViewData["Title"] = "Rol İzinleri";
 }
 
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center bg-light">
-        <h5 class="card-title mb-0">@Model.RoleName - İzin Yönetimi</h5>
-        <span class="badge bg-primary">@Model.ControllerGroups.SelectMany(g => g.Permissions).Count(p => p.IsSelected) İzin Seçili</span>
+<div class="bg-white rounded-lg shadow-sm border border-gray-100">
+    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+        <h2 class="text-lg font-medium text-gray-900">@Model.RoleName - İzin Yönetimi</h2>
+        <span class="px-3 py-1 text-sm font-medium rounded-full bg-primary-100 text-primary-800">
+            @Model.ControllerGroups.SelectMany(g => g.Permissions).Count(p => p.IsSelected) İzin Seçili
+        </span>
     </div>
-    <div class="card-body">
+    <div class="p-6">
         @if (Model.RoleName == "Administrator")
         {
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle me-2"></i> Administrator rolü tüm izinlere otomatik olarak sahiptir ve değiştirilemez.
+            <div class="flex items-center p-4 mb-4 text-blue-800 border-l-4 border-blue-500 bg-blue-50">
+                <i class="fas fa-info-circle mr-2"></i>
+                <span>Administrator rolü tüm izinlere otomatik olarak sahiptir ve değiştirilemez.</span>
             </div>
-            
-            <div class="d-flex justify-content-between mt-4">
-                <a asp-action="Index" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Geri
+
+            <div class="flex justify-between mt-6">
+                <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md">
+                    <i class="fas fa-arrow-left mr-2"></i> Geri
                 </a>
             </div>
         }
@@ -26,76 +29,72 @@
             <form asp-action="Permissions" method="post">
                 <input type="hidden" asp-for="RoleId" />
                 <input type="hidden" asp-for="RoleName" />
-                
-                <p class="mb-4">
-                    @if (!string.IsNullOrEmpty(Model.Description))
-                    {
-                        <small class="text-muted">@Model.Description</small>
-                    }
-                </p>
-                
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-primary" id="selectAll">Tümünü Seç</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAll">Tümünü Kaldır</button>
-                        </div>
+
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    <p class="mb-4 text-sm text-gray-500">@Model.Description</p>
+                }
+
+                <div class="flex mb-4">
+                    <div class="space-x-2">
+                        <button type="button" id="selectAll" class="px-3 py-1.5 text-sm bg-primary-600 hover:bg-primary-700 text-white rounded-md">
+                            Tümünü Seç
+                        </button>
+                        <button type="button" id="deselectAll" class="px-3 py-1.5 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md">
+                            Tümünü Kaldır
+                        </button>
                     </div>
                 </div>
-                
-                <div class="row">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @for (int groupIndex = 0; groupIndex < Model.ControllerGroups.Count; groupIndex++)
                     {
                         var group = Model.ControllerGroups[groupIndex];
-                        <div class="col-md-6 mb-4">
-                            <div class="card h-100">
-                                <div class="card-header d-flex justify-content-between align-items-center permission-group-header" data-group="@group.ControllerName">
-                                    <h6 class="mb-0">@group.ControllerName</h6>
-                                    <input type="hidden" name="ControllerGroups[@groupIndex].ControllerName" value="@group.ControllerName" />
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input group-select" id="group_@group.ControllerName"
-                                               data-group="@group.ControllerName"
-                                               @(group.Permissions.All(p => p.IsSelected) ? "checked" : "") />
-                                        <label class="form-check-label" for="group_@group.ControllerName">Tümünü Seç</label>
-                                    </div>
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm h-full">
+                            <div class="px-4 py-3 border-b border-gray-200 bg-gray-50 rounded-t-lg flex justify-between items-center permission-group-header" data-group="@group.ControllerName">
+                                <h3 class="text-sm font-medium text-gray-700">@group.ControllerName</h3>
+                                <input type="hidden" name="ControllerGroups[@groupIndex].ControllerName" value="@group.ControllerName" />
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="group_@group.ControllerName" data-group="@group.ControllerName"
+                                           class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 group-select"
+                                           @(group.Permissions.All(p => p.IsSelected) ? "checked" : "") />
+                                    <label for="group_@group.ControllerName" class="ml-2 text-sm text-gray-700">Tümünü Seç</label>
                                 </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        @for (int i = 0; i < group.Permissions.Count; i++)
-                                        {
-                                            var permission = group.Permissions[i];
-                                            <div class="col-6">
-                                                <div class="form-check mb-2">
-                                                    <input type="hidden" name="ControllerGroups[@groupIndex].Permissions[@i].Id" value="@permission.Id" />
-                                                    <input type="hidden" name="ControllerGroups[@groupIndex].Permissions[@i].Code" value="@permission.Code" />
-                                                    <input type="hidden" name="ControllerGroups[@groupIndex].Permissions[@i].Description" value="@permission.Description" />
+                            </div>
+                            <div class="p-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4">
+                                    @for (int i = 0; i < group.Permissions.Count; i++)
+                                    {
+                                        var permission = group.Permissions[i];
+                                        <div class="flex items-center">
+                                            <input type="hidden" name="ControllerGroups[@groupIndex].Permissions[@i].Id" value="@permission.Id" />
+                                            <input type="hidden" name="ControllerGroups[@groupIndex].Permissions[@i].Code" value="@permission.Code" />
+                                            <input type="hidden" name="ControllerGroups[@groupIndex].Permissions[@i].Description" value="@permission.Description" />
 
-                                                    <input type="checkbox" class="form-check-input permission-checkbox"
-                                                           name="ControllerGroups[@groupIndex].Permissions[@i].IsSelected"
-                                                           id="permission_@permission.Id"
-                                                           value="true"
-                                                           data-group="@group.ControllerName"
-                                                           @(permission.IsSelected ? "checked" : "") />
+                                            <input type="checkbox" class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 permission-checkbox"
+                                                   name="ControllerGroups[@groupIndex].Permissions[@i].IsSelected"
+                                                   id="permission_@permission.Id"
+                                                   value="true"
+                                                   data-group="@group.ControllerName"
+                                                   @(permission.IsSelected ? "checked" : "") />
 
-                                                    <label class="form-check-label" for="permission_@permission.Id">
-                                                        @permission.Description
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
+                                            <label for="permission_@permission.Id" class="ml-2 text-sm text-gray-700">
+                                                @permission.Description
+                                            </label>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
                     }
                 </div>
-                
-                <div class="d-flex justify-content-between mt-4">
-                    <a asp-action="Index" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Geri
+
+                <div class="flex justify-between mt-8 pt-5 border-t border-gray-200">
+                    <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md">
+                        <i class="fas fa-arrow-left mr-2"></i> Geri
                     </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Değişiklikleri Kaydet
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <i class="fas fa-save mr-2"></i> Değişiklikleri Kaydet
                     </button>
                 </div>
             </form>
@@ -105,39 +104,56 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // Tümünü seç/kaldır butonları
-            $('#selectAll').click(function() {
-                $('.permission-checkbox').prop('checked', true);
-                updateGroupCheckboxes();
-            });
-            
-            $('#deselectAll').click(function() {
-                $('.permission-checkbox').prop('checked', false);
-                updateGroupCheckboxes();
-            });
-            
+            const selectAllBtn = document.getElementById('selectAll');
+            const deselectAllBtn = document.getElementById('deselectAll');
+
+            if (selectAllBtn) {
+                selectAllBtn.addEventListener('click', function() {
+                    document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
+                        checkbox.checked = true;
+                    });
+                    updateGroupCheckboxes();
+                });
+            }
+
+            if (deselectAllBtn) {
+                deselectAllBtn.addEventListener('click', function() {
+                    document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                    updateGroupCheckboxes();
+                });
+            }
+
             // Grup başlığı tıklandığında tüm izinleri seç/kaldır
-            $('.group-select').change(function() {
-                var group = $(this).data('group');
-                var isChecked = $(this).prop('checked');
-                
-                $('input.permission-checkbox[data-group="' + group + '"]').prop('checked', isChecked);
+            document.querySelectorAll('.group-select').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const group = this.getAttribute('data-group');
+                    const isChecked = this.checked;
+
+                    document.querySelectorAll(`.permission-checkbox[data-group="${group}"]`).forEach(permissionCheckbox => {
+                        permissionCheckbox.checked = isChecked;
+                    });
+                });
             });
-            
+
             // İzin checkboxları değiştiğinde grup checkboxını güncelle
-            $('.permission-checkbox').change(function() {
-                updateGroupCheckboxes();
+            document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateGroupCheckboxes();
+                });
             });
-            
+
             // Grup checkbox durumlarını güncelle
             function updateGroupCheckboxes() {
-                $('.group-select').each(function() {
-                    var group = $(this).data('group');
-                    var totalPermissions = $('input.permission-checkbox[data-group="' + group + '"]').length;
-                    var checkedPermissions = $('input.permission-checkbox[data-group="' + group + '"]:checked').length;
-                    
-                    $(this).prop('checked', totalPermissions === checkedPermissions);
+                document.querySelectorAll('.group-select').forEach(groupCheckbox => {
+                    const group = groupCheckbox.getAttribute('data-group');
+                    const permissionCheckboxes = document.querySelectorAll(`.permission-checkbox[data-group="${group}"]`);
+                    const checkedPermissions = document.querySelectorAll(`.permission-checkbox[data-group="${group}"]:checked`);
+
+                    groupCheckbox.checked = permissionCheckboxes.length === checkedPermissions.length;
                 });
             }
         });
