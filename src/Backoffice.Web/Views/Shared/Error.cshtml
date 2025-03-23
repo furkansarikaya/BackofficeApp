@@ -3,61 +3,57 @@
     ViewData["Title"] = "Hata";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-body text-center p-5">
-                    <i class="fas fa-exclamation-triangle text-danger fa-5x mb-4"></i>
-                    
-                    <h1 class="display-5 fw-bold text-danger mb-3">Bir Hata Oluştu</h1>
-                    
-                    @if (!string.IsNullOrEmpty(Model.Message))
-                    {
-                        <div class="alert alert-danger">
-                            @Model.Message
-                        </div>
-                    }
-                    else
-                    {
-                        <p class="lead mb-4">
-                            Üzgünüz, isteğiniz işlenirken beklenmeyen bir hata oluştu.
-                        </p>
-                    }
-                    
-                    @if (Model.ShowRequestId)
-                    {
-                        <div class="text-muted mb-4">
-                            <small>
-                                <strong>İstek ID:</strong> <code>@Model.RequestId</code>
-                            </small>
-                        </div>
-                    }
-                    
-                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
-                        <a href="/" class="btn btn-primary btn-lg px-4 gap-3">
-                            <i class="fas fa-home me-2"></i> Ana Sayfaya Dön
-                        </a>
-                        <button class="btn btn-outline-secondary btn-lg px-4" onclick="window.history.back();">
-                            <i class="fas fa-arrow-left me-2"></i> Geri Dön
-                        </button>
+<div class="flex flex-col items-center justify-center min-h-[70vh] p-4">
+    <div class="max-w-2xl w-full">
+        <div class="bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden">
+            <div class="p-8 text-center">
+                <div class="text-red-500 text-5xl mb-6">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+
+                <h1 class="text-3xl font-bold text-red-600 mb-6">Bir Hata Oluştu</h1>
+
+                @if (!string.IsNullOrEmpty(Model.Message))
+                {
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 text-red-700 mb-6 text-left">
+                        @Model.Message
                     </div>
+                }
+                else
+                {
+                    <p class="text-gray-600 text-lg mb-6">
+                        Üzgünüz, isteğiniz işlenirken beklenmeyen bir hata oluştu.
+                    </p>
+                }
+
+                @if (Model.ShowRequestId)
+                {
+                    <div class="text-sm text-gray-500 mb-6">
+                        <strong>İstek ID:</strong> <code class="bg-gray-100 px-1 py-0.5 rounded">@Model.RequestId</code>
+                    </div>
+                }
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+                    <a href="/" class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        <i class="fas fa-home mr-2"></i> Ana Sayfaya Dön
+                    </a>
+                    <button onclick="window.history.back();" class="inline-flex items-center justify-center px-6 py-3 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                        <i class="fas fa-arrow-left mr-2"></i> Geri Dön
+                    </button>
                 </div>
             </div>
-            
-            @if (Context.Request.Cookies.ContainsKey(".AspNetCore.Identity.Application") && 
-                 CurrentUserService.IsAuthenticated)
-            {
-                <div class="card mt-4 shadow-sm border-0">
-                    <div class="card-body">
-                        <h5 class="card-title">Teknik Detaylar</h5>
-                        <p class="card-text">
-                            Bu hata kaydedildi ve incelenmesi için ilgili ekibe bildirildi.
-                            Sorun devam ederse lütfen yöneticinizle iletişime geçin.
-                        </p>
-                    </div>
-                </div>
-            }
         </div>
+
+        @if (Context.Request.Cookies.ContainsKey(".AspNetCore.Identity.Application") &&
+             CurrentUserService.IsAuthenticated)
+        {
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 mt-6 p-4">
+                <h2 class="text-lg font-medium text-gray-800 mb-2">Teknik Detaylar</h2>
+                <p class="text-gray-600">
+                    Bu hata kaydedildi ve incelenmesi için ilgili ekibe bildirildi.
+                    Sorun devam ederse lütfen yöneticinizle iletişime geçin.
+                </p>
+            </div>
+        }
     </div>
 </div>
