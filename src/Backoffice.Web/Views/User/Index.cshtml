@@ -179,6 +179,19 @@
                     </nav>
                 }
             </div>
+            
+            @await Component.InvokeAsync("Pagination", new PaginationViewModel {
+                CurrentPage = Model.Users.PageIndex,
+                TotalPages = Model.Users.TotalPages,
+                TotalItems = Model.Users.TotalCount,
+                PageSize = Model.Users.PageSize,
+                ControllerName = "User",
+                ActionName = "Index",
+                RouteValues = new Dictionary<string, object?> {
+                    {"SearchTerm", Model.SearchTerm ?? "" },
+                    {"ShowInactive", Model.ShowInactive.ToString() ?? "" }
+                }
+            })
         }
     </div>
 </div>

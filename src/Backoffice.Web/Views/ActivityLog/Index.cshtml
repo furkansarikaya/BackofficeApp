@@ -160,76 +160,25 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="flex flex-col md:flex-row justify-between items-center mt-6">
-                <div class="mb-4 md:mb-0 text-gray-700 dark:text-gray-300">
-                    Toplam: <span class="font-semibold">@Model.ActivityLogs.TotalCount</span> kayıt
-                </div>
-
-                @if (Model.ActivityLogs.TotalPages > 1)
-                {
-                    <nav aria-label="Page navigation">
-                        <ul class="flex">
-                            <li class="@(!Model.ActivityLogs.HasPreviousPage ? "opacity-50 pointer-events-none" : "")">
-                                <a class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                   asp-action="Index"
-                                   asp-all-route-data="@(new Dictionary<string, string> {
-                                                           {"pageNumber", (Model.ActivityLogs.PageIndex - 1).ToString() },
-                                                           {"Category", Model.Filter.Category ?? "" },
-                                                           {"ActivityType", Model.Filter.ActivityType ?? "" },
-                                                           {"EntityType", Model.Filter.EntityType ?? "" },
-                                                           {"EntityId", Model.Filter.EntityId ?? "" },
-                                                           {"SearchTerm", Model.Filter.SearchTerm ?? "" },
-                                                           {"UserId", Model.Filter.UserId ?? "" },
-                                                           {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
-                                                           {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
-                                                       })">
-                                    <i class="fas fa-angle-left"></i>
-                                </a>
-                            </li>
-
-                            @for (int i = 1; i <= Model.ActivityLogs.TotalPages; i++)
-                            {
-                                <li>
-                                    <a class="px-3 py-2 border border-gray-300 dark:border-gray-600 border-l-0 bg-white dark:bg-gray-800 @(i == Model.ActivityLogs.PageIndex ? "text-primary-600 dark:text-primary-400 font-medium" : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700")"
-                                       asp-action="Index"
-                                       asp-all-route-data="@(new Dictionary<string, string> {
-                                                               {"pageNumber", i.ToString() },
-                                                               {"Category", Model.Filter.Category ?? "" },
-                                                               {"ActivityType", Model.Filter.ActivityType ?? "" },
-                                                               {"EntityType", Model.Filter.EntityType ?? "" },
-                                                               {"EntityId", Model.Filter.EntityId ?? "" },
-                                                               {"SearchTerm", Model.Filter.SearchTerm ?? "" },
-                                                               {"UserId", Model.Filter.UserId ?? "" },
-                                                               {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
-                                                               {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
-                                                           })">
-                                        @i
-                                    </a>
-                                </li>
-                            }
-
-                            <li class="@(!Model.ActivityLogs.HasNextPage ? "opacity-50 pointer-events-none" : "")">
-                                <a class="px-3 py-2 border border-gray-300 dark:border-gray-600 border-l-0 rounded-r-md bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                   asp-action="Index"
-                                   asp-all-route-data="@(new Dictionary<string, string> {
-                                                           {"pageNumber", (Model.ActivityLogs.PageIndex + 1).ToString() },
-                                                           {"Category", Model.Filter.Category ?? "" },
-                                                           {"ActivityType", Model.Filter.ActivityType ?? "" },
-                                                           {"EntityType", Model.Filter.EntityType ?? "" },
-                                                           {"EntityId", Model.Filter.EntityId ?? "" },
-                                                           {"SearchTerm", Model.Filter.SearchTerm ?? "" },
-                                                           {"UserId", Model.Filter.UserId ?? "" },
-                                                           {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
-                                                           {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
-                                                       })">
-                                    <i class="fas fa-angle-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+            
+            @await Component.InvokeAsync("Pagination", new PaginationViewModel {
+                CurrentPage = Model.ActivityLogs.PageIndex,
+                TotalPages = Model.ActivityLogs.TotalPages,
+                TotalItems = Model.ActivityLogs.TotalCount,
+                PageSize = Model.ActivityLogs.PageSize,
+                ControllerName = "ActivityLog",
+                ActionName = "Index",
+                RouteValues = new Dictionary<string, object?> {
+                    {"Category", Model.Filter.Category ?? "" },
+                    {"ActivityType", Model.Filter.ActivityType ?? "" },
+                    {"EntityType", Model.Filter.EntityType ?? "" },
+                    {"EntityId", Model.Filter.EntityId ?? "" },
+                    {"SearchTerm", Model.Filter.SearchTerm ?? "" },
+                    {"UserId", Model.Filter.UserId ?? "" },
+                    {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
+                    {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
                 }
-            </div>
+            })
         }
     </div>
 </div>
