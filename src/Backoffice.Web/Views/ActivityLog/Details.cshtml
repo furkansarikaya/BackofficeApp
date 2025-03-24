@@ -6,76 +6,76 @@
     var timestamp = Model.ActivityLog.Timestamp.ToLocalTime();
 }
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h2 class="text-lg font-medium text-gray-900">Aktivite #@Model.ActivityLog.Id</h2>
-        <span class="text-sm text-gray-500">@timestamp.ToString("dd.MM.yyyy HH:mm:ss")</span>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Aktivite #@Model.ActivityLog.Id</h2>
+        <span class="text-sm text-gray-500 dark:text-gray-400">@timestamp.ToString("dd.MM.yyyy HH:mm:ss")</span>
     </div>
     <div class="p-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
-                <h3 class="text-sm font-medium text-gray-500 mb-3">Temel Bilgiler</h3>
-                <div class="bg-white border border-gray-200 rounded-md shadow-sm divide-y divide-gray-200">
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Temel Bilgiler</h3>
+                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-sm divide-y divide-gray-200 dark:divide-gray-700">
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">Kategori</div>
-                        <div class="col-span-2">@Model.ActivityLog.Category</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Kategori</div>
+                        <div class="col-span-2 text-gray-900 dark:text-gray-200">@Model.ActivityLog.Category</div>
                     </div>
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">İşlem Tipi</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">İşlem Tipi</div>
                         <div class="col-span-2">
                             @{
-                                var badgeClass = "bg-gray-200 text-gray-800";
+                                var badgeClass = "bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-300";
 
-                                if (Model.ActivityLog.ActivityType.Contains("Create")) badgeClass = "bg-green-100 text-green-800";
-                                else if (Model.ActivityLog.ActivityType.Contains("Update")) badgeClass = "bg-blue-100 text-blue-800";
-                                else if (Model.ActivityLog.ActivityType.Contains("Delete")) badgeClass = "bg-red-100 text-red-800";
-                                else if (Model.ActivityLog.ActivityType.Contains("Login")) badgeClass = "bg-blue-100 text-blue-800";
-                                else if (Model.ActivityLog.ActivityType.Contains("Failed")) badgeClass = "bg-yellow-100 text-yellow-800";
+                                if (Model.ActivityLog.ActivityType.Contains("Create")) badgeClass = "bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-200";
+                                else if (Model.ActivityLog.ActivityType.Contains("Update")) badgeClass = "bg-blue-100 dark:bg-blue-700 text-blue-800 dark:text-blue-200";
+                                else if (Model.ActivityLog.ActivityType.Contains("Delete")) badgeClass = "bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-200";
+                                else if (Model.ActivityLog.ActivityType.Contains("Login")) badgeClass = "bg-blue-100 dark:bg-blue-700 text-blue-800 dark:text-blue-200";
+                                else if (Model.ActivityLog.ActivityType.Contains("Failed")) badgeClass = "bg-yellow-100 dark:bg-yellow-700 text-yellow-800 dark:text-yellow-200";
                             }
 
                             <span class="px-2 py-1 text-xs font-medium rounded-full @badgeClass">@Model.ActivityLog.ActivityType</span>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">Kullanıcı</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Kullanıcı</div>
                         <div class="col-span-2">
-                            <a asp-action="UserActivities" asp-route-userId="@Model.ActivityLog.UserId" class="text-primary-600 hover:text-primary-700">
+                            <a asp-action="UserActivities" asp-route-userId="@Model.ActivityLog.UserId" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
                                 @Model.ActivityLog.UserName (@Model.ActivityLog.UserId)
                             </a>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">Varlık</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Varlık</div>
                         <div class="col-span-2">
                             @if (!string.IsNullOrEmpty(Model.ActivityLog.EntityType) && !string.IsNullOrEmpty(Model.ActivityLog.EntityId))
                             {
                                 <a asp-action="EntityActivities"
                                    asp-route-entityType="@Model.ActivityLog.EntityType"
                                    asp-route-entityId="@Model.ActivityLog.EntityId"
-                                   class="text-primary-600 hover:text-primary-700">
+                                   class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
                                     @Model.ActivityLog.EntityType (@Model.ActivityLog.EntityId)
                                 </a>
                             }
                             else
                             {
-                                <span class="text-gray-400">-</span>
+                                <span class="text-gray-400 dark:text-gray-500">-</span>
                             }
                         </div>
                     </div>
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">IP Adresi</div>
-                        <div class="col-span-2 font-mono">@Model.ActivityLog.IpAddress</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">IP Adresi</div>
+                        <div class="col-span-2 font-mono text-gray-900 dark:text-gray-200">@Model.ActivityLog.IpAddress</div>
                     </div>
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">Tarayıcı</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Tarayıcı</div>
                         <div class="col-span-2">
                             @if (!string.IsNullOrEmpty(Model.ActivityLog.UserAgent))
                             {
-                                <div class="text-sm text-gray-600 break-all">@Model.ActivityLog.UserAgent</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400 break-all">@Model.ActivityLog.UserAgent</div>
                             }
                             else
                             {
-                                <span class="text-gray-400">-</span>
+                                <span class="text-gray-400 dark:text-gray-500">-</span>
                             }
                         </div>
                     </div>
@@ -83,13 +83,13 @@
             </div>
 
             <div>
-                <h3 class="text-sm font-medium text-gray-500 mb-3">Detaylar</h3>
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Detaylar</h3>
                 @if (Model.DetailsObject != null)
                 {
-                    <div class="bg-gray-50 rounded-md border border-gray-200 shadow-sm">
+                    <div class="bg-gray-50 dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 shadow-sm">
                         @if (Model.DetailsObject is Dictionary<string, object> dict)
                         {
-                            <div class="divide-y divide-gray-200">
+                            <div class="divide-y divide-gray-200 dark:divide-gray-700">
                                 @{
                                     var counter = 0;
                                     foreach (var pair in dict)
@@ -97,9 +97,9 @@
                                         counter++;
                                         <div x-data="{ open: @(counter == 1 ? "true" : "false") }">
                                             <button @@click="open = !open"
-                                                    class="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-left text-gray-700 hover:bg-gray-100 focus:outline-none">
+                                                    class="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none">
                                                 <span>@pair.Key</span>
-                                                <svg class="w-5 h-5 text-gray-500 transition-transform duration-200"
+                                                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform duration-200"
                                                      :class="{ 'transform rotate-180': open }"
                                                      fill="none"
                                                      stroke="currentColor"
@@ -114,8 +114,8 @@
                                                  x-transition:leave="transition ease-in duration-150"
                                                  x-transition:leave-start="opacity-100"
                                                  x-transition:leave-end="opacity-0"
-                                                 class="px-4 py-3 bg-white border-t border-gray-200">
-                                                <pre class="text-xs overflow-auto bg-gray-100 p-3 rounded-md max-h-60"><code>@JsonSerializer.Serialize(pair.Value, new JsonSerializerOptions { WriteIndented = true })</code></pre>
+                                                 class="px-4 py-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+                                                <pre class="text-xs overflow-auto bg-gray-100 dark:bg-gray-900 p-3 rounded-md max-h-60 text-gray-800 dark:text-gray-300"><code>@JsonSerializer.Serialize(pair.Value, new JsonSerializerOptions { WriteIndented = true })</code></pre>
                                             </div>
                                         </div>
                                     }
@@ -125,22 +125,22 @@
                         else
                         {
                             <div class="p-4">
-                                <pre class="text-xs overflow-auto bg-gray-100 p-3 rounded-md max-h-96"><code>@(Model.DetailsObject is string ? Model.DetailsObject : JsonSerializer.Serialize(Model.DetailsObject, new JsonSerializerOptions { WriteIndented = true }))</code></pre>
+                                <pre class="text-xs overflow-auto bg-gray-100 dark:bg-gray-900 p-3 rounded-md max-h-96 text-gray-800 dark:text-gray-300"><code>@(Model.DetailsObject is string ? Model.DetailsObject : JsonSerializer.Serialize(Model.DetailsObject, new JsonSerializerOptions { WriteIndented = true }))</code></pre>
                             </div>
                         }
                     </div>
                 }
                 else
                 {
-                    <div class="flex items-center p-4 text-blue-800 border-l-4 border-blue-500 bg-blue-50 rounded-r-md">
+                    <div class="flex items-center p-4 text-blue-800 dark:text-blue-300 border-l-4 border-blue-500 dark:border-blue-700 bg-blue-50 dark:bg-blue-900 rounded-r-md">
                         <i class="fas fa-info-circle mr-2"></i> Bu aktivite için detay bilgisi bulunmamaktadır.
                     </div>
                 }
             </div>
         </div>
 
-        <div class="mt-6 border-t border-gray-200 pt-4">
-            <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md">
+        <div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
+            <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">
                 <i class="fas fa-arrow-left mr-2"></i> Listeye Dön
             </a>
         </div>
