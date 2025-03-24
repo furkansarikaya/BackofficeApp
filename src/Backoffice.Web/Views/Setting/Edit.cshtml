@@ -1,0 +1,113 @@
+@model Backoffice.Web.ViewModels.Settings.EditSettingViewModel
+@{
+    ViewData["Title"] = "Ayar Düzenle";
+}
+
+<div class="bg-white rounded-lg shadow-sm border border-gray-100">
+    <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-medium text-gray-900">Ayar Düzenle: @Model.Key</h2>
+    </div>
+    <div class="p-6">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="p-4 mb-4 text-red-700 bg-red-50 border-l-4 border-red-500"></div>
+
+            <input type="hidden" asp-for="Key" />
+            <input type="hidden" asp-for="DataType" />
+
+            <div class="space-y-6">
+                <!-- Anahtar gösterimi (salt okunur) -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Anahtar</label>
+                    <div class="mt-1">
+                        <div class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm text-gray-700">
+                            @Model.Key
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Değer alanı -->
+                <div>
+                    <label asp-for="Value" class="block text-sm font-medium text-gray-700">Değer</label>
+                    <div class="mt-1">
+                        @switch (Model.DataType)
+                        {
+                            case "boolean":
+                                <select asp-for="Value" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                                    <option value="true" selected="@(Model.Value.ToLower() == "true")">True</option>
+                                    <option value="false" selected="@(Model.Value.ToLower() == "false")">False</option>
+                                </select>
+                                break;
+                            case "number":
+                                <input type="number" asp-for="Value" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
+                                break;
+                            case "datetime":
+                                <input type="datetime-local" asp-for="Value" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
+                                break;
+                            case "json":
+                                <textarea asp-for="Value" rows="8" class="font-mono block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"></textarea>
+                                break;
+                            default:
+                                <textarea asp-for="Value" rows="4" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"></textarea>
+                                break;
+                        }
+                        <span asp-validation-for="Value" class="mt-1 text-sm text-red-600"></span>
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500">
+                        Algılanan Veri Tipi: <span class="font-medium">@Model.DataType</span>
+                    </p>
+                </div>
+
+                <!-- Açıklama alanı -->
+                <div>
+                    <label asp-for="Description" class="block text-sm font-medium text-gray-700">Açıklama</label>
+                    <div class="mt-1">
+                        <textarea asp-for="Description" rows="2" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                  placeholder="Bu ayarın ne amaçla kullanıldığını açıklayın"></textarea>
+                        <span asp-validation-for="Description" class="mt-1 text-sm text-red-600"></span>
+                    </div>
+                </div>
+
+                <!-- Şifreleme seçeneği -->
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input asp-for="ShouldEncrypt" type="checkbox" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" />
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label asp-for="ShouldEncrypt" class="font-medium text-gray-700">Değeri şifrele</label>
+                        <p class="text-gray-500">Hassas bilgiler (parola, API anahtarı vb.) için etkinleştirin.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-8 pt-5 border-t border-gray-200">
+                <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md">
+                    <i class="fas fa-arrow-left mr-2"></i> İptal
+                </a>
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <i class="fas fa-save mr-2"></i> Kaydet
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // JSON verilerini okunaklı hale getir (pretty-print)
+            if ('@Model.DataType' === 'json') {
+                const valueTextarea = document.getElementById('Value');
+                if (valueTextarea) {
+                    try {
+                        const jsonObj = JSON.parse(valueTextarea.value);
+                        valueTextarea.value = JSON.stringify(jsonObj, null, 2);
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                    }
+                }
+            }
+        });
+    </script>
+}

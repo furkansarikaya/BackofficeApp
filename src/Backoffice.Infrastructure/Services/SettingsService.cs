@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text.Json;
 using Backoffice.Application.Common.Interfaces;
 using Backoffice.Domain.Entities.Settings;
+using Backoffice.Domain.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -187,7 +188,7 @@ public class SettingsService(
         }
     }
     
-    public async Task<T> BindSettingsAsync<T>(T settings, string keyPrefix = null) where T : class, new()
+    public async Task<T> BindSettingsAsync<T>(T settings, string keyPrefix = null) where T : ISettings, new()
     {
         if (settings == null)
         {
@@ -224,7 +225,7 @@ public class SettingsService(
         return settings;
     }
     
-    public async Task<bool> SaveSettingsAsync<T>(T settings, string[] encryptedProps = null, string keyPrefix = null) where T : class
+    public async Task<bool> SaveSettingsAsync<T>(T settings, string[] encryptedProps = null, string keyPrefix = null) where T : ISettings
     {
         if (settings == null)
         {

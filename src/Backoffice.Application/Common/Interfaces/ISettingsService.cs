@@ -1,3 +1,5 @@
+using Backoffice.Domain.Settings;
+
 namespace Backoffice.Application.Common.Interfaces;
 
 /// <summary>
@@ -39,7 +41,7 @@ public interface ISettingsService
     /// <param name="settings">Settings object instance to populate</param>
     /// <param name="keyPrefix">Optional prefix override (defaults to class name)</param>
     /// <returns>The populated settings object</returns>
-    Task<T> BindSettingsAsync<T>(T settings, string keyPrefix = null) where T : class, new();
+    Task<T> BindSettingsAsync<T>(T settings, string keyPrefix = null) where T : ISettings, new();
     
     /// <summary>
     /// Saves a settings object to the database
@@ -49,7 +51,7 @@ public interface ISettingsService
     /// <param name="encrypt">Properties to encrypt (property names)</param>
     /// <param name="keyPrefix">Optional prefix override (defaults to class name)</param>
     /// <returns>True if successful</returns>
-    Task<bool> SaveSettingsAsync<T>(T settings, string[] encryptedProps = null, string keyPrefix = null) where T : class;
+    Task<bool> SaveSettingsAsync<T>(T settings, string[] encryptedProps = null, string keyPrefix = null) where T : ISettings;
     
     /// <summary>
     /// Deletes a setting by its key

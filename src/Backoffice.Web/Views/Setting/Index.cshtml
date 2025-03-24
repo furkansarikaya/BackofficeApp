@@ -1,0 +1,197 @@
+@model Backoffice.Web.ViewModels.Settings.SettingsListViewModel
+@{
+    ViewData["Title"] = "Sistem Ayarları";
+}
+
+@section PageActions {
+    <div class="flex space-x-2">
+        <a asp-action="Create" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700">
+            <i class="fas fa-plus mr-2"></i> Yeni Ayar
+        </a>
+        <a asp-action="AppSettings" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            <i class="fas fa-cogs mr-2"></i> Uygulama Ayarları
+        </a>
+    </div>
+}
+
+<div class="bg-white rounded-lg shadow-sm border border-gray-100">
+    <div class="p-5">
+        <form asp-action="Index" method="get" class="mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <div class="flex">
+                        <input type="text" class="flex-1 border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                               placeholder="Ayar anahtarı (kısmi arama yapabilirsiniz)..."
+                               name="searchTerm" value="@Model.SearchTerm">
+                        <button class="bg-gray-200 border border-gray-300 border-l-0 rounded-r-md px-3 py-2 hover:bg-gray-300" type="submit">
+                            <i class="fas fa-search"></i> Ara
+                        </button>
+                    </div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.SearchTerm))
+                {
+                    <div class="flex items-center">
+                        <a asp-action="Index" class="text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-times-circle mr-1"></i> Filtreyi Temizle
+                        </a>
+                    </div>
+                }
+            </div>
+        </form>
+        
+        @if (Model.Sections.Count == 0)
+        {
+            <div class="flex items-center p-4 text-blue-800 border-l-4 border-blue-500 bg-blue-50">
+                <i class="fas fa-info-circle mr-2"></i>
+                <span>Ayar bulunamadı.</span>
+            </div>
+        }
+        else
+        {
+            <!-- Accordion Sections -->
+            <div class="divide-y divide-gray-200" x-data="{ activeSection: '@(Model.Sections.FirstOrDefault()?.Name ?? "")' }">
+                @foreach (var section in Model.Sections)
+                {
+                    <div class="py-2">
+                        <!-- Section Header -->
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-md cursor-pointer"
+                             @@click="activeSection = activeSection === '@(section.Name)' ? '' : '@(section.Name)'">
+                            <h3 class="text-lg font-medium text-gray-800">
+                                @(char.ToUpper(section.Name[0]) + section.Name[1..])
+                            </h3>
+                            <i class="fas transition-transform duration-200"
+                               :class="activeSection === '@(section.Name)' ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                        </div>
+                        
+                        <!-- Section Content -->
+                        <div x-show="activeSection === '@(section.Name)'" x-transition>
+                            <div class="overflow-x-auto mt-2">
+                                <table class="w-full">
+                                    <thead class="text-xs font-medium text-gray-500 bg-gray-50 uppercase tracking-wider">
+                                    <tr>
+                                        <th class="px-5 py-3 text-left">Anahtar</th>
+                                        <th class="px-5 py-3 text-left">Değer</th>
+                                        <th class="px-5 py-3 text-right">İşlemler</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                    @foreach (var setting in section.Settings)
+                                    {
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-5 py-4 font-medium">
+                                                @setting.Key.Replace(section.Name + ".", "")
+                                            </td>
+                                            <td class="px-5 py-4 max-w-md truncate">
+                                                @if (setting.IsEncrypted)
+                                                {
+                                                    <span class="text-gray-400 italic">*****</span>
+                                                }
+                                                else
+                                                {
+                                                    @setting.Value
+                                                }
+                                            </td>
+                                            <td class="px-5 py-4 text-right">
+                                                <div class="flex justify-end space-x-1">
+                                                    <a asp-action="Edit" asp-route-key="@setting.Key"
+                                                       class="p-1.5 text-white bg-yellow-500 rounded-md hover:bg-yellow-600" title="Düzenle">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <button type="button"
+                                                            class="p-1.5 text-white bg-red-500 rounded-md hover:bg-red-600"
+                                                            title="Sil"
+                                                            data-modal-target="delete-modal"
+                                                            data-modal-toggle="delete-modal"
+                                                            data-key="@setting.Key">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Silme Modal -->
+<div id="delete-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                <h3 class="text-lg font-semibold text-gray-900">
+                    Ayar Silme
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="delete-modal">
+                    <i class="fas fa-times"></i>
+                    <span class="sr-only">Kapat</span>
+                </button>
+            </div>
+            <div class="p-4 md:p-5">
+                <p class="mb-3 text-gray-700">
+                    <span id="setting-key"></span> ayarını silmek istediğinize emin misiniz?
+                </p>
+                <div class="flex items-center text-red-600 mt-3">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span>Bu işlem geri alınamaz.</span>
+                </div>
+            </div>
+            <div class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b">
+                <button data-modal-hide="delete-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-md border border-gray-300 hover:bg-gray-300 focus:z-10">İptal</button>
+                <form asp-action="Delete" method="post" class="ml-2">
+                    <input type="hidden" name="key" id="setting-key-input" />
+                    <button type="submit" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center">Sil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Silme butonlarını dinle
+            const deleteButtons = document.querySelectorAll('[data-modal-target="delete-modal"]');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const key = button.getAttribute('data-key');
+                    
+                    // Modal içindeki alanlara verileri doldur
+                    document.getElementById('setting-key').textContent = key;
+                    document.getElementById('setting-key-input').value = key;
+                    
+                    // Modal'ı göster
+                    const modal = document.getElementById('delete-modal');
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                });
+            });
+
+            // Modal kapatma butonları
+            const closeButtons = document.querySelectorAll('[data-modal-hide="delete-modal"]');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const modal = document.getElementById('delete-modal');
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                });
+            });
+
+            // Dışarı tıklayarak kapatma
+            const modal = document.getElementById('delete-modal');
+            modal.addEventListener('click', function(event) {
+                if (event.target === this) {
+                    this.classList.add('hidden');
+                    this.classList.remove('flex');
+                }
+            });
+        });
+    </script>
+}
