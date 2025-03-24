@@ -9,10 +9,10 @@
                 <li x-data="{ open: @(menuItem.IsExpanded.ToString().ToLower()) }" class="mt-4">
                     <!-- Section Header -->
                     <button @@click="open = !open"
-                            class="flex items-center justify-between w-full px-3 py-2 text-xs font-medium uppercase tracking-wider text-gray-400 hover:text-white focus:outline-none"
-                            x-bind:class="{ 
+                            class="flex items-center justify-between w-full px-3 py-2 text-xs font-medium uppercase tracking-wider text-gray-400 dark:text-gray-300 hover:text-white focus:outline-none"
+                            x-bind:class="{
                                 'justify-center px-0': sidebarMini && window.innerWidth >= 1024,
-                                'text-white': open 
+                                'text-white': open
                             }">
                         <!-- Icon -->
                         @if (!string.IsNullOrEmpty(menuItem.Icon))
@@ -25,9 +25,9 @@
 
                         <!-- Arrow -->
                         <i class="fas fa-chevron-down text-xs transition-transform duration-200"
-                           x-bind:class="{ 
-                               'transform rotate-180': open, 
-                               'hidden': sidebarMini && window.innerWidth >= 1024 
+                           x-bind:class="{
+                               'transform rotate-180': open,
+                               'hidden': sidebarMini && window.innerWidth >= 1024
                            }"></i>
                     </button>
 
@@ -55,11 +55,11 @@
                     <li x-data="{ open: @(menuItem.IsExpanded.ToString().ToLower()) }">
                         <!-- Collapsible Menu -->
                         <button @@click="open = !open"
-                                class="flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-800 focus:outline-none"
-                                x-bind:class="{ 
+                                class="flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none"
+                                x-bind:class="{
                                     'justify-center px-2': sidebarMini && window.innerWidth >= 1024,
-                                    'text-white bg-gray-800': open || @(menuItem.IsCurrentPage.ToString().ToLower()),
-                                    'text-gray-300': !(open || @(menuItem.IsCurrentPage.ToString().ToLower()))
+                                    'text-white bg-gray-800 dark:bg-gray-700': open || @(menuItem.IsCurrentPage.ToString().ToLower()),
+                                    'text-gray-300 dark:text-gray-400': !(open || @(menuItem.IsCurrentPage.ToString().ToLower()))
                                 }">
                             <!-- Icon -->
                             @if (!string.IsNullOrEmpty(menuItem.Icon))
@@ -76,9 +76,9 @@
 
                             <!-- Arrow -->
                             <i class="fas fa-chevron-down text-xs transition-transform duration-200"
-                               x-bind:class="{ 
-                                   'transform rotate-180': open, 
-                                   'hidden': sidebarMini && window.innerWidth >= 1024 
+                               x-bind:class="{
+                                   'transform rotate-180': open,
+                                   'hidden': sidebarMini && window.innerWidth >= 1024
                                }"></i>
                         </button>
 
@@ -91,8 +91,8 @@
                              x-transition:leave-start="opacity-100 translate-y-0"
                              x-transition:leave-end="opacity-0 -translate-y-1"
                              class="pl-10 mt-1 space-y-1"
-                             x-bind:class="{ 
-                                 'pl-0 absolute left-full top-0 min-w-[200px] bg-gray-900 shadow-lg rounded-md mt-0 ml-1 py-2': sidebarMini && window.innerWidth >= 1024 
+                             x-bind:class="{
+                                 'pl-0 absolute left-full top-0 min-w-[200px] bg-gray-900 dark:bg-gray-800 shadow-lg rounded-md mt-0 ml-1 py-2': sidebarMini && window.innerWidth >= 1024
                              }">
                             @await Html.PartialAsync("_CollapsibleMenuItems", menuItem.Children)
                         </div>
@@ -103,11 +103,11 @@
                     <li>
                         <!-- Regular Menu Item -->
                         <a href="@menuItem.GetUrl()"
-                           class="flex items-center px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-800 focus:outline-none"
-                           x-bind:class="{ 
+                           class="flex items-center px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none"
+                           x-bind:class="{
                                'justify-center px-2': sidebarMini && window.innerWidth >= 1024,
                                'text-white bg-primary-700': @(menuItem.IsCurrentPage.ToString().ToLower()),
-                               'text-gray-300': !@(menuItem.IsCurrentPage.ToString().ToLower())
+                               'text-gray-300 dark:text-gray-400': !@(menuItem.IsCurrentPage.ToString().ToLower())
                            }">
                             <!-- Icon -->
                             @if (!string.IsNullOrEmpty(menuItem.Icon))

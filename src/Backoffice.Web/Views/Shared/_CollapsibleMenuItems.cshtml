@@ -7,10 +7,10 @@
         <div x-data="{ open: @(menuItem.IsExpanded.ToString().ToLower()) }">
             <!-- Collapsible Submenu Item -->
             <button @@click.stop="open = !open"
-                    class="flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-800 focus:outline-none"
+                    class="flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none"
                     x-bind:class="{ 
-                        'text-white bg-gray-800': open || @(menuItem.IsCurrentPage.ToString().ToLower()),
-                        'text-gray-300': !(open || @(menuItem.IsCurrentPage.ToString().ToLower()))
+                        'text-white bg-gray-800 dark:bg-gray-700': open || @(menuItem.IsCurrentPage.ToString().ToLower()),
+                        'text-gray-300 dark:text-gray-400': !(open || @(menuItem.IsCurrentPage.ToString().ToLower()))
                     }">
                 <!-- Icon -->
                 @if (!string.IsNullOrEmpty(menuItem.Icon))
@@ -38,7 +38,7 @@
                  x-transition:leave="transition ease-in duration-150"
                  x-transition:leave-start="opacity-100 translate-y-0"
                  x-transition:leave-end="opacity-0 -translate-y-1"
-                 class="pl-4 mt-1 space-y-1 border-l border-gray-700">
+                 class="pl-4 mt-1 space-y-1 border-l border-gray-700 dark:border-gray-600">
                 @await Html.PartialAsync("_TailwindMenuItems", menuItem.Children)
             </div>
         </div>
@@ -47,10 +47,10 @@
     {
         <!-- Regular Submenu Item -->
         <a href="@menuItem.GetUrl()"
-           class="flex items-center px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-800 focus:outline-none"
+           class="flex items-center px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-800 dark:hover:bg-gray-700 focus:outline-none"
            x-bind:class="{ 
                'text-white bg-primary-700': @(menuItem.IsCurrentPage.ToString().ToLower()),
-               'text-gray-300': !@(menuItem.IsCurrentPage.ToString().ToLower())
+               'text-gray-300 dark:text-gray-400': !@(menuItem.IsCurrentPage.ToString().ToLower())
            }">
             <!-- Icon -->
             @if (!string.IsNullOrEmpty(menuItem.Icon))
