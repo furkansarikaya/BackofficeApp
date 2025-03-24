@@ -5,14 +5,14 @@
 <div class="space-y-6">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-            <label asp-for="Name" class="block text-sm font-medium text-gray-700">Menü Adı</label>
-            <input asp-for="Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-            <span asp-validation-for="Name" class="mt-1 text-sm text-red-600"></span>
+            <label asp-for="Name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Menü Adı</label>
+            <input asp-for="Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+            <span asp-validation-for="Name" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
         </div>
         <div>
-            <label asp-for="Icon" class="block text-sm font-medium text-gray-700">İkon (FontAwesome sınıfı)</label>
+            <label asp-for="Icon" class="block text-sm font-medium text-gray-700 dark:text-gray-300">İkon (FontAwesome sınıfı)</label>
             <div class="mt-1 flex rounded-md shadow-sm">
-                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 w-12 justify-center">
+                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400 w-12 justify-center">
                     @if (!string.IsNullOrEmpty(Model.Icon))
                     {
                         <i class="@Model.Icon text-lg"></i>
@@ -22,88 +22,88 @@
                         <i class="fas fa-icons text-lg"></i>
                     }
                 </span>
-                <input asp-for="Icon" class="flex-1 block w-full rounded-none rounded-r-md border-gray-300 focus:ring-primary-500 focus:border-primary-500" placeholder="fas fa-home" />
+                <input asp-for="Icon" class="flex-1 block w-full rounded-none rounded-r-md border-gray-300 dark:border-gray-600 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" placeholder="fas fa-home" />
             </div>
-            <span asp-validation-for="Icon" class="mt-1 text-sm text-red-600"></span>
-            <p class="mt-1 text-sm text-gray-500">Font Awesome ikon sınıfı girin (örn: fas fa-home)</p>
-            <p class="text-sm text-gray-500">Boş bırakılırsa ve bölüm başlığı değil ise "far fa-dot-circle" gelir</p>
+            <span asp-validation-for="Icon" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Font Awesome ikon sınıfı girin (örn: fas fa-home)</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Boş bırakılırsa ve bölüm başlığı değil ise "far fa-dot-circle" gelir</p>
         </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-            <label asp-for="ParentId" class="block text-sm font-medium text-gray-700">Üst Menü</label>
+            <label asp-for="ParentId" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Üst Menü</label>
             <div class="relative">
-                <select asp-for="ParentId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded-md appearance-none bg-white" 
+                <select asp-for="ParentId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 rounded-md appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" 
                         asp-items="Model.ParentMenuItems"></select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 mt-1 text-gray-500">
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 mt-1 text-gray-500 dark:text-gray-400">
                     <i class="fas fa-chevron-down"></i>
                 </div>
             </div>
-            <span asp-validation-for="ParentId" class="mt-1 text-sm text-red-600"></span>
-            <p class="mt-1 text-sm text-gray-500">Bu menü öğesinin üst menüsünü seçin</p>
+            <span asp-validation-for="ParentId" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Bu menü öğesinin üst menüsünü seçin</p>
         </div>
         <div>
-            <label asp-for="DisplayOrder" class="block text-sm font-medium text-gray-700">Görüntüleme Sırası</label>
-            <input asp-for="DisplayOrder" type="number" min="1" max="1000" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-            <span asp-validation-for="DisplayOrder" class="mt-1 text-sm text-red-600"></span>
-            <p class="mt-1 text-sm text-gray-500">Menüdeki sıralama (küçük değerler üstte gösterilir)</p>
+            <label asp-for="DisplayOrder" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Görüntüleme Sırası</label>
+            <input asp-for="DisplayOrder" type="number" min="1" max="1000" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+            <span asp-validation-for="DisplayOrder" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Menüdeki sıralama (küçük değerler üstte gösterilir)</p>
         </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-            <label asp-for="Controller" class="block text-sm font-medium text-gray-700">Controller</label>
-            <input asp-for="Controller" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-            <span asp-validation-for="Controller" class="mt-1 text-sm text-red-600"></span>
+            <label asp-for="Controller" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Controller</label>
+            <input asp-for="Controller" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+            <span asp-validation-for="Controller" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
         </div>
         <div>
-            <label asp-for="Action" class="block text-sm font-medium text-gray-700">Action</label>
-            <input asp-for="Action" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-            <span asp-validation-for="Action" class="mt-1 text-sm text-red-600"></span>
+            <label asp-for="Action" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Action</label>
+            <input asp-for="Action" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+            <span asp-validation-for="Action" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
         </div>
     </div>
 
     <div>
-        <label asp-for="Url" class="block text-sm font-medium text-gray-700">URL</label>
-        <input asp-for="Url" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-        <span asp-validation-for="Url" class="mt-1 text-sm text-red-600"></span>
-        <p class="mt-1 text-sm text-gray-500">Eğer Controller/Action kullanmak yerine doğrudan URL belirtmek istiyorsanız doldurun</p>
+        <label asp-for="Url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">URL</label>
+        <input asp-for="Url" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+        <span asp-validation-for="Url" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Eğer Controller/Action kullanmak yerine doğrudan URL belirtmek istiyorsanız doldurun</p>
     </div>
 
     <div>
-        <label asp-for="RequiredPermissionCode" class="block text-sm font-medium text-gray-700">Gerekli İzin Kodu</label>
+        <label asp-for="RequiredPermissionCode" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gerekli İzin Kodu</label>
         <div class="relative">
-            <select asp-for="RequiredPermissionCode" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded-md appearance-none bg-white" 
+            <select asp-for="RequiredPermissionCode" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 rounded-md appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" 
                     asp-items="Model.PermissionCodes"></select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 mt-1 text-gray-500">
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 mt-1 text-gray-500 dark:text-gray-400">
                 <i class="fas fa-chevron-down"></i>
             </div>
         </div>
-        <span asp-validation-for="RequiredPermissionCode" class="mt-1 text-sm text-red-600"></span>
-        <p class="mt-1 text-sm text-gray-500">Bu menü öğesini görmek için gerekli izin</p>
+        <span asp-validation-for="RequiredPermissionCode" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Bu menü öğesini görmek için gerekli izin</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
             <div class="flex items-start">
                 <div class="flex items-center h-5">
-                    <input asp-for="IsSectionHeader" id="IsSectionHeader" type="checkbox" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" />
+                    <input asp-for="IsSectionHeader" id="IsSectionHeader" type="checkbox" class="h-4 w-4 text-primary-600 dark:text-primary-500 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 dark:focus:ring-primary-400" />
                 </div>
                 <div class="ml-3 text-sm">
-                    <label asp-for="IsSectionHeader" class="font-medium text-gray-700">Bölüm Başlığı</label>
-                    <p class="text-gray-500">Bölüm başlıkları tıklanamaz, sadece gruplama amaçlıdır</p>
+                    <label asp-for="IsSectionHeader" class="font-medium text-gray-700 dark:text-gray-300">Bölüm Başlığı</label>
+                    <p class="text-gray-500 dark:text-gray-400">Bölüm başlıkları tıklanamaz, sadece gruplama amaçlıdır</p>
                 </div>
             </div>
         </div>
         <div>
             <div class="flex items-start">
                 <div class="flex items-center h-5">
-                    <input asp-for="IsActive" id="IsActive" type="checkbox" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" />
+                    <input asp-for="IsActive" id="IsActive" type="checkbox" class="h-4 w-4 text-primary-600 dark:text-primary-500 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 dark:focus:ring-primary-400" />
                 </div>
                 <div class="ml-3 text-sm">
-                    <label asp-for="IsActive" class="font-medium text-gray-700">Aktif</label>
-                    <p class="text-gray-500">Pasif menü öğeleri gösterilmez</p>
+                    <label asp-for="IsActive" class="font-medium text-gray-700 dark:text-gray-300">Aktif</label>
+                    <p class="text-gray-500 dark:text-gray-400">Pasif menü öğeleri gösterilmez</p>
                 </div>
             </div>
         </div>
