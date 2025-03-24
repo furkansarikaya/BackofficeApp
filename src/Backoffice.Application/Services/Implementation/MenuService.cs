@@ -11,8 +11,7 @@ namespace Backoffice.Application.Services.Implementation;
 public class MenuService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ICurrentUserService currentUserService,
-    ILogger<MenuService> logger)
+    ICurrentUserService currentUserService)
     : IMenuService
 {
     public async Task<List<MenuItemDto>> GetAllMenuItemsAsync()
@@ -89,106 +88,76 @@ public class MenuService(
 
     public async Task<Result<int>> CreateMenuItemAsync(CreateUpdateMenuItemDto dto)
     {
-        try
-        {
-            var repository = unitOfWork.Repository<MenuItem, int>();
+        var repository = unitOfWork.Repository<MenuItem, int>();
 
-            // Map DTO to entity
-            var menuItem = mapper.Map<MenuItem>(dto);
+        // Map DTO to entity
+        var menuItem = mapper.Map<MenuItem>(dto);
 
-            // Add to repository
-            await repository.AddAsync(menuItem);
-            await unitOfWork.SaveChangesAsync();
+        // Add to repository
+        await repository.AddAsync(menuItem);
+        await unitOfWork.SaveChangesAsync();
 
-            logger.LogInformation("Created menu item: {Name}", menuItem.Name);
-
-            return Result<int>.Success(menuItem.Id);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Error creating menu item");
-            return Result<int>.Failure(["Failed to create menu item: " + ex.Message]);
-        }
+        return Result<int>.Success(menuItem.Id);
     }
 
     public async Task<Result> UpdateMenuItemAsync(CreateUpdateMenuItemDto dto)
     {
-        try
+        if (dto.Id == null)
         {
-            if (dto.Id == null)
-            {
-                return Result.Failure(["Menu item ID is required for update"]);
-            }
-
-            var repository = unitOfWork.Repository<MenuItem, int>();
-
-            // Get existing menu item
-            var menuItem = await repository.GetByIdAsync(dto.Id.Value);
-
-            if (menuItem == null)
-            {
-                return Result.Failure([$"Menu item with ID {dto.Id} not found"]);
-            }
-
-            // Check for circular reference
-            if (dto.ParentId.HasValue && dto.ParentId.Value == dto.Id.Value)
-            {
-                return Result.Failure(["Menu item cannot be its own parent"]);
-            }
-
-            // Update properties
-            mapper.Map(dto, menuItem);
-
-            // Update in repository
-            await repository.UpdateAsync(menuItem);
-            await unitOfWork.SaveChangesAsync();
-
-            logger.LogInformation("Updated menu item: {Name} (ID: {Id})", menuItem.Name, menuItem.Id);
-
-            return Result.Success();
+            return Result.Failure(["Menu item ID is required for update"]);
         }
-        catch (Exception ex)
+
+        var repository = unitOfWork.Repository<MenuItem, int>();
+
+        // Get existing menu item
+        var menuItem = await repository.GetByIdAsync(dto.Id.Value);
+
+        if (menuItem == null)
         {
-            logger.LogError(ex, "Error updating menu item");
-            return Result.Failure(["Failed to update menu item: " + ex.Message]);
+            return Result.Failure([$"Menu item with ID {dto.Id} not found"]);
         }
+
+        // Check for circular reference
+        if (dto.ParentId.HasValue && dto.ParentId.Value == dto.Id.Value)
+        {
+            return Result.Failure(["Menu item cannot be its own parent"]);
+        }
+
+        // Update properties
+        mapper.Map(dto, menuItem);
+
+        // Update in repository
+        await repository.UpdateAsync(menuItem);
+        await unitOfWork.SaveChangesAsync();
+
+        return Result.Success();
     }
 
     public async Task<Result> DeleteMenuItemAsync(int id)
     {
-        try
+        var repository = unitOfWork.Repository<MenuItem, int>();
+
+        // Get menu item
+        var menuItem = await repository.GetByIdAsync(id);
+
+        if (menuItem == null)
         {
-            var repository = unitOfWork.Repository<MenuItem, int>();
-
-            // Get menu item
-            var menuItem = await repository.GetByIdAsync(id);
-
-            if (menuItem == null)
-            {
-                return Result.Failure([$"Menu item with ID {id} not found"]);
-            }
-
-            // Check if it has children
-            var childrenCount = await repository.CountAsync(m => m.ParentId == id);
-
-            if (childrenCount > 0)
-            {
-                return Result.Failure(["Cannot delete menu item with children. Please delete or reassign children first."]);
-            }
-
-            // Delete from repository
-            await repository.DeleteAsync(menuItem);
-            await unitOfWork.SaveChangesAsync();
-
-            logger.LogInformation("Deleted menu item: {Name} (ID: {Id})", menuItem.Name, menuItem.Id);
-
-            return Result.Success();
+            return Result.Failure([$"Menu item with ID {id} not found"]);
         }
-        catch (Exception ex)
+
+        // Check if it has children
+        var childrenCount = await repository.CountAsync(m => m.ParentId == id);
+
+        if (childrenCount > 0)
         {
-            logger.LogError(ex, "Error deleting menu item");
-            return Result.Failure(["Failed to delete menu item: " + ex.Message]);
+            return Result.Failure(["Cannot delete menu item with children. Please delete or reassign children first."]);
         }
+
+        // Delete from repository
+        await repository.DeleteAsync(menuItem);
+        await unitOfWork.SaveChangesAsync();
+        
+        return Result.Success();
     }
 
     public async Task<List<MenuItemDto>> GetParentMenuItemsAsync(int? excludeId = null)

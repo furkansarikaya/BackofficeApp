@@ -14,7 +14,6 @@ namespace Backoffice.Web.Controllers;
 public class AccountController(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager,
-    ILogger<AccountController> logger,
     IActivityLogService activityLogService,
     ICurrentUserService currentUserService)
     : Controller
@@ -40,8 +39,6 @@ public class AccountController(
 
         if (result.Succeeded)
         {
-            logger.LogInformation("Kullanıcı giriş yaptı: {Email}", model.Email);
-                
             var user = await userManager.FindByEmailAsync(model.Email);
                 
             if (user != null)
@@ -68,7 +65,6 @@ public class AccountController(
             
         if (result.IsLockedOut)
         {
-            logger.LogWarning("Kullanıcı hesabı kilitlendi: {Email}", model.Email);
             var user = await userManager.FindByEmailAsync(model.Email);
             if (user != null)
                 await activityLogService.LogActivityAsync(new CreateActivityLogDto
@@ -114,7 +110,6 @@ public class AccountController(
     {
         var userId = currentUserService.UserId;
         await signInManager.SignOutAsync();
-        logger.LogInformation("Kullanıcı çıkış yaptı.");
         await activityLogService.LogActivityAsync(new CreateActivityLogDto
         {
             Category = ActivityCategories.Authentication,

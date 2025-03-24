@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backoffice.Web.Controllers;
 
-public class HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager,IActivityLogService activityLogService,IDateTimeService dateTimeService) : BaseController
+public class HomeController(UserManager<ApplicationUser> userManager,IActivityLogService activityLogService,IDateTimeService dateTimeService) : BaseController
 {
     public async Task<IActionResult> Index()
     {
@@ -56,9 +56,6 @@ public class HomeController(ILogger<HomeController> logger, UserManager<Applicat
             UserStatistics = new UserStatistics(totalUsers, activeUsers, Math.Round(userIncrease, 1)),
             RecentActivities = recentActivities
         };
-        
-        var zero = 0;
-        var error = 10/zero; // This will throw a DivideByZeroException
         
         return View(viewModel);
     }

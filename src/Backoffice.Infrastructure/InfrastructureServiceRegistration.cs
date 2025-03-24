@@ -52,12 +52,13 @@ public class InfrastructureServiceRegistration : IServiceRegistration
         services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
-
+        // Loglama Servisi
+        services.AddScoped<IDbLoggerService, DbLoggerService>();
+        
         // Diğer servisler
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IDateTimeService, DateTimeService>();
-        services.AddScoped<IDbLoggerService, DbLoggerService>();
         services.AddScoped<MenuSeedService>();
     }
 

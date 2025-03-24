@@ -1,6 +1,6 @@
+using Backoffice.Application.Common.Interfaces;
 using Backoffice.Domain.Entities.Menu;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Backoffice.Infrastructure.Data;
 
@@ -9,7 +9,7 @@ namespace Backoffice.Infrastructure.Data;
 /// </summary>
 public class MenuSeedService(
     ApplicationDbContext dbContext,
-    ILogger<MenuSeedService> logger)
+    IDbLoggerService logger)
 {
     /// <summary>
     /// Seeds the default menu items if no menu items exist
@@ -21,11 +21,11 @@ public class MenuSeedService(
             // Only seed if no menu items exist
             if (await dbContext.MenuItems.AnyAsync())
             {
-                logger.LogInformation("Menu items already exist, skipping seeding");
+                await logger.LogInformationAsync("Menu items already exist, skipping seeding", "DatabaseSeed");
                 return;
             }
 
-            logger.LogInformation("Seeding menu items...");
+            await logger.LogInformationAsync("Seeding menu items...", "DatabaseSeed");
 
             // Add default menu items
             var menuItems = new List<MenuItem>
@@ -134,11 +134,11 @@ public class MenuSeedService(
             await dbContext.MenuItems.AddRangeAsync(menuItems);
             await dbContext.SaveChangesAsync();
 
-            logger.LogInformation("Menu items seeded successfully");
+            await logger.LogInformationAsync("Menu items seed complete", "DatabaseSeed");
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error seeding menu items");
+            await logger.LogErrorAsync("Error seeding menu items", "DatabaseSeed", ex);
             throw;
         }
     }

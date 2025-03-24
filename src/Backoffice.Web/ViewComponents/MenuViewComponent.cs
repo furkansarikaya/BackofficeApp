@@ -1,4 +1,5 @@
 using AutoMapper;
+using Backoffice.Application.Common.Interfaces;
 using Backoffice.Application.Services.Interfaces;
 using Backoffice.Web.ViewModels.Menu;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace Backoffice.Web.ViewComponents;
 public class MenuViewComponent(
     IMenuService menuService,
     IMapper mapper,
-    ILogger<MenuViewComponent> logger)
+    IDbLoggerService logger)
     : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync()
@@ -28,7 +29,7 @@ public class MenuViewComponent(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Menü öğeleri yüklenirken hata oluştu");
+            await logger.LogErrorAsync("Menü öğeleri yüklenirken hata oluştu", "MenuViewComponent", ex);
             return View(new List<MenuViewModel>());
         }
     }

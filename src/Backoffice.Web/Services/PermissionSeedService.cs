@@ -1,4 +1,5 @@
 using System.Reflection;
+using Backoffice.Application.Common.Interfaces;
 using Backoffice.Domain.Enums;
 using Backoffice.Infrastructure.Data;
 using Backoffice.Infrastructure.Identity;
@@ -16,7 +17,7 @@ namespace Backoffice.Web.Services;
 public class PermissionSeedService(
     ApplicationDbContext dbContext,
     IActionDescriptorCollectionProvider actionDescriptorCollectionProvider,
-    ILogger<PermissionSeedService> logger)
+   IDbLoggerService logger)
 {
     /// <summary>
     /// Uygulama başladığında tüm izinleri otomatik keşfeder ve veritabanına kaydeder
@@ -25,7 +26,7 @@ public class PermissionSeedService(
     {
         try
         {
-            logger.LogInformation("İzinler veritabanına kaydediliyor...");
+            await logger.LogInformationAsync("İzinler veritabanına kaydediliyor...", "DatabaseSeed");
             
             var permissions = new List<Permission>();
             var descriptors = actionDescriptorCollectionProvider.ActionDescriptors.Items
@@ -68,7 +69,7 @@ public class PermissionSeedService(
                     
                 if (existingPermission == null)
                 {
-                    logger.LogInformation("Yeni izin ekleniyor: {Code}", permission.Code);
+                    await logger.LogInformationAsync($"Yeni izin ekleniyor: {permission.Code}", "DatabaseSeed");
                     existingPermissions.Add(permission);
                     await dbContext.Permissions.AddAsync(permission);
                 }
@@ -83,11 +84,11 @@ public class PermissionSeedService(
             }
 
             await dbContext.SaveChangesAsync();
-            logger.LogInformation("İzinler başarıyla kaydedildi");
+            await logger.LogInformationAsync("İzinler başarıyla kaydedildi","DatabaseSeed");
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "İzinler kaydedilirken hata oluştu");
+            await logger.LogErrorAsync("İzinler kaydedilirken hata oluştu", "DatabaseSeed", ex);
         }
     }
     

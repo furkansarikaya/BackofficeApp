@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Backoffice.Web.Middleware;
 
-public class IpFilterMiddleware(RequestDelegate next, ILogger<IpFilterMiddleware> logger)
+public class IpFilterMiddleware(RequestDelegate next)
 {
-    public async Task InvokeAsync(HttpContext context, IIpFilterService ipFilterService,ICurrentUserService currentUserService)
+    public async Task InvokeAsync(HttpContext context, IIpFilterService ipFilterService, ICurrentUserService currentUserService, IDbLoggerService logger)
     {
         var ipAddress = currentUserService.GetClientIp;
 
@@ -23,7 +23,7 @@ public class IpFilterMiddleware(RequestDelegate next, ILogger<IpFilterMiddleware
         }
 
         // IP engellenmişse erişimi reddet ve özel bir sayfa göster
-        logger.LogWarning("IP adresi engellendi: {IpAddress}", ipAddress);
+        await logger.LogWarningAsync($"IP adresi engellendi: {ipAddress}", "IpFilter");
 
         context.Response.StatusCode = StatusCodes.Status403Forbidden;
         context.Response.ContentType = "text/html; charset=utf-8";

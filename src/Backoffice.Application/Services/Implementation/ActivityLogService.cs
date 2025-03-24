@@ -14,7 +14,7 @@ public class ActivityLogService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     ICurrentUserService currentUserService,
-    ILogger<ActivityLogService> logger)
+    IDbLoggerService logger)
     : IActivityLogService
 {
     public async Task LogActivityAsync(CreateActivityLogDto dto)
@@ -42,7 +42,7 @@ public class ActivityLogService(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Aktivite logu kaydedilirken hata oluştu: {Message}", ex.Message);
+            await logger.LogErrorAsync($"Aktivite logu kaydedilirken hata oluştu: {ex.Message}", "ActivityLogService", ex);
             // Log işlemi başarısız olsa bile uygulamanın çalışmasını engellememek için
             // exception fırlatmıyoruz, sadece hata logunu kaydediyoruz
         }

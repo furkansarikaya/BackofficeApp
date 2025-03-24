@@ -14,8 +14,7 @@ namespace Backoffice.Web.Controllers;
 
 public class RoleController(
     IUnitOfWork unitOfWork,
-    RoleManager<ApplicationRole> roleManager,
-    ILogger<RoleController> logger)
+    RoleManager<ApplicationRole> roleManager)
     : BaseController
 {
     // GET: /Role
@@ -57,7 +56,6 @@ public class RoleController(
             
         if (result.Succeeded)
         {
-            logger.LogInformation("Rol oluşturuldu: {Name}", viewModel.Name);
             NotificationService.AddSuccessNotification("Rol başarıyla oluşturuldu.");
             return RedirectToAction(nameof(Index));
         }
@@ -125,8 +123,6 @@ public class RoleController(
             
         if (result.Succeeded)
         {
-            logger.LogInformation("Rol güncellendi: {Name}", viewModel.Name);
-            
             NotificationService.AddSuccessNotification("Rol başarıyla güncellendi.");
             return RedirectToAction(nameof(Index));
         }
@@ -245,9 +241,6 @@ public class RoleController(
                 await roleManager.AddClaimAsync(role, new Claim("Permission", code));
             }
         }
-        
-        logger.LogInformation("Rol izinleri güncellendi: {Name}", role.Name);
-        
         NotificationService.AddSuccessNotification("Rol izinleri başarıyla güncellendi.");
         return RedirectToAction(nameof(Index));
     }
@@ -274,13 +267,9 @@ public class RoleController(
         }
 
         var result = await roleManager.DeleteAsync(role);
-        
+
         if (result.Succeeded)
-        {
-            logger.LogInformation("Rol silindi: {Name}", role.Name);
-            
             NotificationService.AddSuccessNotification("Rol başarıyla silindi.");
-        }
         else
         {
             foreach (var error in result.Errors)

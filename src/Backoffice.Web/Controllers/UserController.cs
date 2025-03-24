@@ -14,8 +14,7 @@ namespace Backoffice.Web.Controllers;
 
 public class UserController(
     UserManager<ApplicationUser> userManager,
-    RoleManager<ApplicationRole> roleManager,
-    ILogger<UserController> logger)
+    RoleManager<ApplicationRole> roleManager)
     : BaseController
 {
     // GET: /User
@@ -154,8 +153,6 @@ public class UserController(
 
             if (result.Succeeded)
             {
-                logger.LogInformation("Yeni kullanıcı oluşturuldu: {UserName}", user.UserName);
-
                 // Rolleri ekle
                 if (viewModel.SelectedRoles != null && viewModel.SelectedRoles.Any())
                 {
@@ -265,7 +262,6 @@ public class UserController(
                     await userManager.AddToRolesAsync(user, rolesToAdd);
                 }
 
-                logger.LogInformation("Kullanıcı güncellendi: {UserName}", user.UserName);
                 NotificationService.AddSuccessNotification("Kullanıcı başarıyla güncellendi.");
                 return RedirectToAction(nameof(Details), new { id = user.Id });
             }
@@ -325,7 +321,6 @@ public class UserController(
 
             if (result.Succeeded)
             {
-                logger.LogInformation("Kullanıcı şifresi değiştirildi: {UserName}", user.UserName);
                 NotificationService.AddSuccessNotification("Kullanıcı şifresi başarıyla değiştirildi.");
                 return RedirectToAction(nameof(Details), new { id = user.Id });
             }
@@ -366,7 +361,6 @@ public class UserController(
 
         if (result.Succeeded)
         {
-            logger.LogInformation("Kullanıcı durumu değiştirildi: {UserName}, Aktif: {IsActive}", user.UserName, user.IsActive);
             NotificationService.AddSuccessNotification($"Kullanıcı {(user.IsActive ? "aktif" : "pasif")} duruma getirildi.");
         }
         else
@@ -406,7 +400,6 @@ public class UserController(
 
         if (result.Succeeded)
         {
-            logger.LogInformation("Kullanıcı silindi: {UserName}", user.UserName);
             NotificationService.AddSuccessNotification("Kullanıcı başarıyla silindi.");
             return RedirectToAction(nameof(Index));
         }
