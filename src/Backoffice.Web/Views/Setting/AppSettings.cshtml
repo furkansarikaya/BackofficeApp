@@ -3,39 +3,39 @@
     ViewData["Title"] = "Uygulama Ayarları";
 }
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-medium text-gray-900">Uygulama Ayarları</h2>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Uygulama Ayarları</h2>
     </div>
     <div class="p-6">
         <form asp-action="AppSettings" method="post">
-            <div asp-validation-summary="ModelOnly" class="p-4 mb-4 text-red-700 bg-red-50 border-l-4 border-red-500"></div>
+            <div asp-validation-summary="ModelOnly" class="p-4 mb-4 text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900 border-l-4 border-red-500 dark:border-red-700"></div>
 
             <!-- Tablar -->
             <div class="mb-6" x-data="{ activeTab: 'general' }">
-                <div class="border-b border-gray-200">
+                <div class="border-b border-gray-200 dark:border-gray-700">
                     <nav class="flex -mb-px space-x-8">
-                        <button type="button" 
+                        <button type="button"
                                 class="py-4 px-1 border-b-2 font-medium text-sm focus:outline-none"
-                                :class="activeTab === 'general' ? 'border-primary-500 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                                :class="activeTab === 'general' ? 'border-primary-500 text-primary-600 dark:border-primary-400 dark:text-primary-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'"
                                 @@click.prevent="activeTab = 'general'">
                             <i class="fas fa-cog mr-2"></i> Genel
                         </button>
-                        <button type="button" 
+                        <button type="button"
                                 class="py-4 px-1 border-b-2 font-medium text-sm focus:outline-none"
-                                :class="activeTab === 'security' ? 'border-primary-500 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                                :class="activeTab === 'security' ? 'border-primary-500 text-primary-600 dark:border-primary-400 dark:text-primary-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'"
                                 @@click.prevent="activeTab = 'security'">
                             <i class="fas fa-shield-alt mr-2"></i> Güvenlik
                         </button>
-                        <button type="button" 
+                        <button type="button"
                                 class="py-4 px-1 border-b-2 font-medium text-sm focus:outline-none"
-                                :class="activeTab === 'mail' ? 'border-primary-500 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                                :class="activeTab === 'mail' ? 'border-primary-500 text-primary-600 dark:border-primary-400 dark:text-primary-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'"
                                 @@click.prevent="activeTab = 'mail'">
                             <i class="fas fa-envelope mr-2"></i> E-posta
                         </button>
-                        <button type="button" 
+                        <button type="button"
                                 class="py-4 px-1 border-b-2 font-medium text-sm focus:outline-none"
-                                :class="activeTab === 'other' ? 'border-primary-500 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                                :class="activeTab === 'other' ? 'border-primary-500 text-primary-600 dark:border-primary-400 dark:text-primary-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'"
                                 @@click.prevent="activeTab = 'other'">
                             <i class="fas fa-sliders-h mr-2"></i> Diğer
                         </button>
@@ -43,179 +43,179 @@
                 </div>
 
                 <div class="py-6">
-                    <!-- Genel Ayarlar Tab -->
+                    <!-- Genel Ayarlar Tab Content -->
                     <div x-show="activeTab === 'general'" x-transition>
                         <div class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label asp-for="SiteName" class="block text-sm font-medium text-gray-700">Site Adı</label>
-                                    <input asp-for="SiteName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                    <span asp-validation-for="SiteName" class="mt-1 text-sm text-red-600"></span>
-                                    <p class="mt-1 text-sm text-gray-500">Sitenin başlık kısmında görünecek isim</p>
+                                    <label asp-for="SiteName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Site Adı</label>
+                                    <input asp-for="SiteName" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                    <span asp-validation-for="SiteName" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Sitenin başlık kısmında görünecek isim</p>
                                 </div>
-                                
+
                                 <div>
-                                    <label asp-for="SiteDescription" class="block text-sm font-medium text-gray-700">Site Açıklaması</label>
-                                    <input asp-for="SiteDescription" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                    <span asp-validation-for="SiteDescription" class="mt-1 text-sm text-red-600"></span>
-                                    <p class="mt-1 text-sm text-gray-500">Meta açıklama için kullanılır</p>
+                                    <label asp-for="SiteDescription" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Site Açıklaması</label>
+                                    <input asp-for="SiteDescription" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                    <span asp-validation-for="SiteDescription" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Meta açıklama için kullanılır</p>
                                 </div>
                             </div>
-                            
+
                             <div>
-                                <label asp-for="AdminEmail" class="block text-sm font-medium text-gray-700">Admin E-posta</label>
-                                <input asp-for="AdminEmail" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                <span asp-validation-for="AdminEmail" class="mt-1 text-sm text-red-600"></span>
-                                <p class="mt-1 text-sm text-gray-500">Sistem bildirimleri için kullanılacak e-posta adresi</p>
+                                <label asp-for="AdminEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Admin E-posta</label>
+                                <input asp-for="AdminEmail" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                <span asp-validation-for="AdminEmail" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Sistem bildirimleri için kullanılacak e-posta adresi</p>
                             </div>
-                            
+
                             <div>
-                                <label asp-for="CdnUrl" class="block text-sm font-medium text-gray-700">CDN URL</label>
-                                <input asp-for="CdnUrl" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                <span asp-validation-for="CdnUrl" class="mt-1 text-sm text-red-600"></span>
-                                <p class="mt-1 text-sm text-gray-500">Statik dosyalar için CDN URL (boş bırakılırsa yerel sunucu kullanılır)</p>
+                                <label asp-for="CdnUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300">CDN URL</label>
+                                <input asp-for="CdnUrl" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                <span asp-validation-for="CdnUrl" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Statik dosyalar için CDN URL (boş bırakılırsa yerel sunucu kullanılır)</p>
                             </div>
-                            
+
                             <div class="flex items-start">
                                 <div class="flex items-center h-5">
-                                    <input asp-for="DebugMode" type="checkbox" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" />
+                                    <input asp-for="DebugMode" type="checkbox" class="h-4 w-4 text-primary-600 dark:text-primary-400 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 dark:focus:ring-primary-400" />
                                 </div>
                                 <div class="ml-3 text-sm">
-                                    <label asp-for="DebugMode" class="font-medium text-gray-700">Debug Modu</label>
-                                    <p class="text-gray-500">Hata ayıklama modunu etkinleştirir (yalnızca geliştirme ortamında kullanın)</p>
+                                    <label asp-for="DebugMode" class="font-medium text-gray-700 dark:text-gray-300">Debug Modu</label>
+                                    <p class="text-gray-500 dark:text-gray-400">Hata ayıklama modunu etkinleştirir (yalnızca geliştirme ortamında kullanın)</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Güvenlik Ayarları Tab -->
+                    <!-- Güvenlik Ayarları Tab Content -->
                     <div x-show="activeTab === 'security'" x-transition>
                         <div class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label asp-for="SessionTimeoutMinutes" class="block text-sm font-medium text-gray-700">Oturum Süresi (Dakika)</label>
-                                    <input asp-for="SessionTimeoutMinutes" type="number" min="5" max="1440" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                    <span asp-validation-for="SessionTimeoutMinutes" class="mt-1 text-sm text-red-600"></span>
-                                    <p class="mt-1 text-sm text-gray-500">Kullanıcı oturumunun ne kadar süre aktif kalacağı</p>
+                                    <label asp-for="SessionTimeoutMinutes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Oturum Süresi (Dakika)</label>
+                                    <input asp-for="SessionTimeoutMinutes" type="number" min="5" max="1440" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                    <span asp-validation-for="SessionTimeoutMinutes" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Kullanıcı oturumunun ne kadar süre aktif kalacağı</p>
                                 </div>
-                                
+
                                 <div>
-                                    <label asp-for="MaxFailedLoginAttempts" class="block text-sm font-medium text-gray-700">Maksimum Hatalı Giriş</label>
-                                    <input asp-for="MaxFailedLoginAttempts" type="number" min="1" max="10" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                    <span asp-validation-for="MaxFailedLoginAttempts" class="mt-1 text-sm text-red-600"></span>
-                                    <p class="mt-1 text-sm text-gray-500">Hesap kilitlenmeden önce izin verilen maksimum hatalı giriş sayısı</p>
+                                    <label asp-for="MaxFailedLoginAttempts" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Maksimum Hatalı Giriş</label>
+                                    <input asp-for="MaxFailedLoginAttempts" type="number" min="1" max="10" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                    <span asp-validation-for="MaxFailedLoginAttempts" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Hesap kilitlenmeden önce izin verilen maksimum hatalı giriş sayısı</p>
                                 </div>
                             </div>
-                            
+
                             <div>
-                                <label asp-for="AccountLockoutMinutes" class="block text-sm font-medium text-gray-700">Hesap Kilitleme Süresi (Dakika)</label>
-                                <input asp-for="AccountLockoutMinutes" type="number" min="5" max="1440" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                <span asp-validation-for="AccountLockoutMinutes" class="mt-1 text-sm text-red-600"></span>
-                                <p class="mt-1 text-sm text-gray-500">Çok sayıda hatalı giriş yapıldığında hesabın kilitli kalacağı süre</p>
+                                <label asp-for="AccountLockoutMinutes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hesap Kilitleme Süresi (Dakika)</label>
+                                <input asp-for="AccountLockoutMinutes" type="number" min="5" max="1440" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                <span asp-validation-for="AccountLockoutMinutes" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Çok sayıda hatalı giriş yapıldığında hesabın kilitli kalacağı süre</p>
                             </div>
-                            
+
                             <div>
-                                <label asp-for="ApiKey" class="block text-sm font-medium text-gray-700">API Anahtarı</label>
-                                <input asp-for="ApiKey" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                <span asp-validation-for="ApiKey" class="mt-1 text-sm text-red-600"></span>
-                                <p class="mt-1 text-sm text-gray-500">Dış sistemlerle entegrasyon için API anahtarı</p>
+                                <label asp-for="ApiKey" class="block text-sm font-medium text-gray-700 dark:text-gray-300">API Anahtarı</label>
+                                <input asp-for="ApiKey" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                <span asp-validation-for="ApiKey" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Dış sistemlerle entegrasyon için API anahtarı</p>
                             </div>
-                            
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="flex items-start">
                                     <div class="flex items-center h-5">
-                                        <input asp-for="IpFilteringEnabled" type="checkbox" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" />
+                                        <input asp-for="IpFilteringEnabled" type="checkbox" class="h-4 w-4 text-primary-600 dark:text-primary-400 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 dark:focus:ring-primary-400" />
                                     </div>
                                     <div class="ml-3 text-sm">
-                                        <label asp-for="IpFilteringEnabled" class="font-medium text-gray-700">IP Filtreleme Aktif</label>
-                                        <p class="text-gray-500">IP filtreleme özelliğini aktif/pasif yapar</p>
+                                        <label asp-for="IpFilteringEnabled" class="font-medium text-gray-700 dark:text-gray-300">IP Filtreleme Aktif</label>
+                                        <p class="text-gray-500 dark:text-gray-400">IP filtreleme özelliğini aktif/pasif yapar</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-start">
                                     <div class="flex items-center h-5">
-                                        <input asp-for="TwoFactorAuthEnabled" type="checkbox" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" />
+                                        <input asp-for="TwoFactorAuthEnabled" type="checkbox" class="h-4 w-4 text-primary-600 dark:text-primary-400 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 dark:focus:ring-primary-400" />
                                     </div>
                                     <div class="ml-3 text-sm">
-                                        <label asp-for="TwoFactorAuthEnabled" class="font-medium text-gray-700">İki Faktörlü Kimlik Doğrulama</label>
-                                        <p class="text-gray-500">İki faktörlü kimlik doğrulamayı etkinleştirir</p>
+                                        <label asp-for="TwoFactorAuthEnabled" class="font-medium text-gray-700 dark:text-gray-300">İki Faktörlü Kimlik Doğrulama</label>
+                                        <p class="text-gray-500 dark:text-gray-400">İki faktörlü kimlik doğrulamayı etkinleştirir</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- E-posta Ayarları Tab -->
+                    <!-- E-posta Ayarları Tab Content -->
                     <div x-show="activeTab === 'mail'" x-transition>
                         <div class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label asp-for="SmtpServer" class="block text-sm font-medium text-gray-700">SMTP Sunucu</label>
-                                    <input asp-for="SmtpServer" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                    <span asp-validation-for="SmtpServer" class="mt-1 text-sm text-red-600"></span>
+                                    <label asp-for="SmtpServer" class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Sunucu</label>
+                                    <input asp-for="SmtpServer" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                    <span asp-validation-for="SmtpServer" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                                 </div>
-                                
+
                                 <div>
-                                    <label asp-for="SmtpPort" class="block text-sm font-medium text-gray-700">SMTP Port</label>
-                                    <input asp-for="SmtpPort" type="number" min="1" max="65535" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                    <span asp-validation-for="SmtpPort" class="mt-1 text-sm text-red-600"></span>
-                                </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label asp-for="SmtpUsername" class="block text-sm font-medium text-gray-700">SMTP Kullanıcı Adı</label>
-                                    <input asp-for="SmtpUsername" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                    <span asp-validation-for="SmtpUsername" class="mt-1 text-sm text-red-600"></span>
-                                </div>
-                                
-                                <div>
-                                    <label asp-for="SmtpPassword" class="block text-sm font-medium text-gray-700">SMTP Şifre</label>
-                                    <input asp-for="SmtpPassword" type="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                    <span asp-validation-for="SmtpPassword" class="mt-1 text-sm text-red-600"></span>
+                                    <label asp-for="SmtpPort" class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Port</label>
+                                    <input asp-for="SmtpPort" type="number" min="1" max="65535" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                    <span asp-validation-for="SmtpPort" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label asp-for="SmtpFromEmail" class="block text-sm font-medium text-gray-700">Gönderen E-posta</label>
-                                    <input asp-for="SmtpFromEmail" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                    <span asp-validation-for="SmtpFromEmail" class="mt-1 text-sm text-red-600"></span>
+                                    <label asp-for="SmtpUsername" class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Kullanıcı Adı</label>
+                                    <input asp-for="SmtpUsername" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                    <span asp-validation-for="SmtpUsername" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                                 </div>
-                                
+
                                 <div>
-                                    <label asp-for="SmtpFromName" class="block text-sm font-medium text-gray-700">Gönderen Adı</label>
-                                    <input asp-for="SmtpFromName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-                                    <span asp-validation-for="SmtpFromName" class="mt-1 text-sm text-red-600"></span>
+                                    <label asp-for="SmtpPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Şifre</label>
+                                    <input asp-for="SmtpPassword" type="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                    <span asp-validation-for="SmtpPassword" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                                 </div>
                             </div>
-                            
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label asp-for="SmtpFromEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gönderen E-posta</label>
+                                    <input asp-for="SmtpFromEmail" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                    <span asp-validation-for="SmtpFromEmail" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                                </div>
+
+                                <div>
+                                    <label asp-for="SmtpFromName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gönderen Adı</label>
+                                    <input asp-for="SmtpFromName" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                    <span asp-validation-for="SmtpFromName" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                                </div>
+                            </div>
+
                             <div class="flex items-start">
                                 <div class="flex items-center h-5">
-                                    <input asp-for="SmtpUseSsl" type="checkbox" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" />
+                                    <input asp-for="SmtpUseSsl" type="checkbox" class="h-4 w-4 text-primary-600 dark:text-primary-400 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 dark:focus:ring-primary-400" />
                                 </div>
                                 <div class="ml-3 text-sm">
-                                    <label asp-for="SmtpUseSsl" class="font-medium text-gray-700">SSL Kullan</label>
-                                    <p class="text-gray-500">SMTP bağlantısında SSL kullanımını etkinleştirir</p>
+                                    <label asp-for="SmtpUseSsl" class="font-medium text-gray-700 dark:text-gray-300">SSL Kullan</label>
+                                    <p class="text-gray-500 dark:text-gray-400">SMTP bağlantısında SSL kullanımını etkinleştirir</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Diğer Ayarlar Tab -->
+                    <!-- Diğer Ayarlar Tab Content -->
                     <div x-show="activeTab === 'other'" x-transition>
-                        <div class="flex py-10 items-center justify-center text-gray-500">
+                        <div class="flex py-10 items-center justify-center text-gray-500 dark:text-gray-400">
                             <p class="text-lg">Diğer ayarlar için henüz ekstra kategori ayarı yapılmamıştır.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex justify-between mt-8 pt-5 border-t border-gray-200">
-                <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md">
+            <div class="flex justify-between mt-8 pt-5 border-t border-gray-200 dark:border-gray-700">
+                <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">
                     <i class="fas fa-arrow-left mr-2"></i> Geri
                 </a>
-                <button type="submit" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400">
                     <i class="fas fa-save mr-2"></i> Ayarları Kaydet
                 </button>
             </div>

@@ -3,62 +3,62 @@
     ViewData["Title"] = "Yeni Ayar Oluştur";
 }
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-medium text-gray-900">Yeni Ayar Oluştur</h2>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Yeni Ayar Oluştur</h2>
     </div>
     <div class="p-6">
         <form asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="p-4 mb-4 text-red-700 bg-red-50 border-l-4 border-red-500"></div>
+            <div asp-validation-summary="ModelOnly" class="p-4 mb-4 text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900 border-l-4 border-red-500 dark:border-red-700"></div>
 
             <div class="space-y-6">
                 <!-- Anahtar alanı -->
                 <div>
-                    <label asp-for="Key" class="block text-sm font-medium text-gray-700">Anahtar</label>
+                    <label asp-for="Key" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Anahtar</label>
                     <div class="mt-1">
-                        <input asp-for="Key" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" 
+                        <input asp-for="Key" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" 
                                placeholder="örn: mail.smtp.host veya sistem.site.baslik" />
-                        <span asp-validation-for="Key" class="mt-1 text-sm text-red-600"></span>
+                        <span asp-validation-for="Key" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                     </div>
-                    <p class="mt-1 text-sm text-gray-500">Nokta (.) kullanarak hiyerarşik anahtarlar oluşturun. Örn: "sistem.site.baslik" gibi.</p>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Nokta (.) kullanarak hiyerarşik anahtarlar oluşturun. Örn: "sistem.site.baslik" gibi.</p>
                 </div>
 
                 <!-- Değer alanı -->
                 <div>
-                    <label asp-for="Value" class="block text-sm font-medium text-gray-700">Değer</label>
+                    <label asp-for="Value" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Değer</label>
                     <div class="mt-1">
-                        <textarea asp-for="Value" rows="4" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"></textarea>
-                        <span asp-validation-for="Value" class="mt-1 text-sm text-red-600"></span>
+                        <textarea asp-for="Value" rows="4" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"></textarea>
+                        <span asp-validation-for="Value" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                     </div>
                 </div>
 
                 <!-- Açıklama alanı -->
                 <div>
-                    <label asp-for="Description" class="block text-sm font-medium text-gray-700">Açıklama</label>
+                    <label asp-for="Description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Açıklama</label>
                     <div class="mt-1">
-                        <textarea asp-for="Description" rows="2" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                        <textarea asp-for="Description" rows="2" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                                   placeholder="Bu ayarın ne amaçla kullanıldığını açıklayın"></textarea>
-                        <span asp-validation-for="Description" class="mt-1 text-sm text-red-600"></span>
+                        <span asp-validation-for="Description" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                     </div>
                 </div>
 
                 <!-- Şifreleme seçeneği -->
                 <div class="flex items-start">
                     <div class="flex items-center h-5">
-                        <input asp-for="ShouldEncrypt" type="checkbox" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" />
+                        <input asp-for="ShouldEncrypt" type="checkbox" class="h-4 w-4 text-primary-600 dark:text-primary-400 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 dark:focus:ring-primary-400" />
                     </div>
                     <div class="ml-3 text-sm">
-                        <label asp-for="ShouldEncrypt" class="font-medium text-gray-700">Değeri şifrele</label>
-                        <p class="text-gray-500">Hassas bilgiler (parola, API anahtarı vb.) için etkinleştirin.</p>
+                        <label asp-for="ShouldEncrypt" class="font-medium text-gray-700 dark:text-gray-300">Değeri şifrele</label>
+                        <p class="text-gray-500 dark:text-gray-400">Hassas bilgiler (parola, API anahtarı vb.) için etkinleştirin.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="flex justify-between mt-8 pt-5 border-t border-gray-200">
-                <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md">
+            <div class="flex justify-between mt-8 pt-5 border-t border-gray-200 dark:border-gray-700">
+                <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">
                     <i class="fas fa-arrow-left mr-2"></i> İptal
                 </a>
-                <button type="submit" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400">
                     <i class="fas fa-save mr-2"></i> Kaydet
                 </button>
             </div>
