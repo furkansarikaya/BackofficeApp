@@ -17,62 +17,81 @@
                 <div>
                     <label asp-for="Filter.Category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kategori</label>
                     <div class="relative mt-1">
-                        <select asp-for="Filter.Category" id="categorySelect" class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 rounded-md appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        <select asp-for="Filter.Category" id="categorySelect"
+                                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 rounded-md appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                             <option value="">-- Tüm Kategoriler --</option>
                             @foreach (var category in Model.Categories)
                             {
                                 <option value="@category">@category</option>
                             }
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-gray-400">
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-gray-400">
                             <i class="fas fa-chevron-down"></i>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label asp-for="Filter.ActivityType" class="block text-sm font-medium text-gray-700 dark:text-gray-300">İşlem Tipi</label>
+                    <label asp-for="Filter.ActivityType"
+                           class="block text-sm font-medium text-gray-700 dark:text-gray-300">İşlem Tipi</label>
                     <div class="relative mt-1">
-                        <select asp-for="Filter.ActivityType" id="activityTypeSelect" class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 rounded-md appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        <select asp-for="Filter.ActivityType" id="activityTypeSelect"
+                                class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 rounded-md appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                             <option value="">-- Tüm İşlemler --</option>
                             @foreach (var activityType in Model.ActivityTypes)
                             {
                                 <option value="@activityType">@activityType</option>
                             }
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-gray-400">
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-gray-400">
                             <i class="fas fa-chevron-down"></i>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label asp-for="Filter.EntityType" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Varlık Tipi</label>
-                    <input asp-for="Filter.EntityType" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" placeholder="Ör: User, Role, Menu" />
+                    <label asp-for="Filter.EntityType"
+                           class="block text-sm font-medium text-gray-700 dark:text-gray-300">Varlık Tipi</label>
+                    <input asp-for="Filter.EntityType"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                           placeholder="Ör: User, Role, Menu"/>
                 </div>
 
                 <div>
-                    <label asp-for="Filter.EntityId" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Varlık ID</label>
-                    <input asp-for="Filter.EntityId" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" placeholder="Ör: 5, abc123" />
+                    <label asp-for="Filter.EntityId" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Varlık
+                        ID</label>
+                    <input asp-for="Filter.EntityId"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                           placeholder="Ör: 5, abc123"/>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 <div>
-                    <label asp-for="Filter.FromDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Başlangıç Tarihi</label>
-                    <input asp-for="Filter.FromDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    <label asp-for="Filter.FromDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Başlangıç
+                        Tarihi</label>
+                    <input asp-for="Filter.FromDate" type="date"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"/>
                 </div>
 
                 <div>
-                    <label asp-for="Filter.ToDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Bitiş Tarihi</label>
-                    <input asp-for="Filter.ToDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    <label asp-for="Filter.ToDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Bitiş
+                        Tarihi</label>
+                    <input asp-for="Filter.ToDate" type="date"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"/>
                 </div>
 
                 <div>
-                    <label asp-for="Filter.SearchTerm" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Arama</label>
+                    <label asp-for="Filter.SearchTerm"
+                           class="block text-sm font-medium text-gray-700 dark:text-gray-300">Arama</label>
                     <div class="mt-1 flex">
-                        <input asp-for="Filter.SearchTerm" class="flex-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" placeholder="Kullanıcı adı, açıklama veya varlık ID ile ara..." />
-                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-r-md text-white bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400">
+                        <input asp-for="Filter.SearchTerm"
+                               class="flex-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                               placeholder="Kullanıcı adı, açıklama veya varlık ID ile ara..."/>
+                        <button type="submit"
+                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-r-md text-white bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400">
                             <i class="fas fa-search mr-2"></i> Ara
                         </button>
                     </div>
@@ -81,7 +100,7 @@
 
             @if (ViewData["UserName"] != null)
             {
-                <input type="hidden" asp-for="Filter.UserId" />
+                <input type="hidden" asp-for="Filter.UserId"/>
             }
         </form>
     </div>
@@ -91,7 +110,8 @@
     <div class="p-6">
         @if (Model.ActivityLogs == null || !Model.ActivityLogs.Items.Any())
         {
-            <div class="flex items-center p-4 text-blue-800 dark:text-blue-300 border-l-4 border-blue-500 dark:border-blue-700 bg-blue-50 dark:bg-blue-900">
+            <div
+                class="flex items-center p-4 text-blue-800 dark:text-blue-300 border-l-4 border-blue-500 dark:border-blue-700 bg-blue-50 dark:bg-blue-900">
                 <i class="fas fa-info-circle mr-2"></i> Aktivite logu bulunamadı.
             </div>
         }
@@ -99,7 +119,8 @@
         {
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 uppercase tracking-wider">
+                    <thead
+                        class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 uppercase tracking-wider">
                     <tr>
                         <th class="px-5 py-3 text-left">Tarih</th>
                         <th class="px-5 py-3 text-left">Kullanıcı</th>
@@ -116,7 +137,8 @@
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-5 py-4 text-sm text-gray-900 dark:text-gray-300">@log.Timestamp.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
                             <td class="px-5 py-4">
-                                <a asp-action="UserActivities" asp-route-userId="@log.UserId" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
+                                <a asp-action="UserActivities" asp-route-userId="@log.UserId"
+                                   class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
                                     @log.UserName
                                 </a>
                             </td>
@@ -132,7 +154,8 @@
                                     else if (log.ActivityType.Contains("Failed")) badgeClass = "bg-yellow-100 dark:bg-yellow-700 text-yellow-800 dark:text-yellow-200";
                                 }
 
-                                <span class="px-2 py-1 text-xs font-medium rounded-full @badgeClass">@log.ActivityType</span>
+                                <span
+                                    class="px-2 py-1 text-xs font-medium rounded-full @badgeClass">@log.ActivityType</span>
                             </td>
                             <td class="px-5 py-4 text-gray-900 dark:text-gray-300">
                                 @if (!string.IsNullOrEmpty(log.EntityType) && !string.IsNullOrEmpty(log.EntityId))
@@ -151,7 +174,9 @@
                             </td>
                             <td class="px-5 py-4 font-mono text-sm text-gray-900 dark:text-gray-300">@log.IpAddress</td>
                             <td class="px-5 py-4">
-                                <a asp-action="Details" asp-route-id="@log.Id" class="inline-flex items-center p-1.5 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700" title="Detay Görüntüle">
+                                <a asp-action="Details" asp-route-id="@log.Id"
+                                   class="inline-flex items-center p-1.5 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700"
+                                   title="Detay Görüntüle">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             </td>
@@ -161,22 +186,24 @@
                 </table>
             </div>
             
-            @await Component.InvokeAsync("Pagination", new PaginationViewModel {
+            @await Component.InvokeAsync("Pagination", new PaginationViewModel
+            {
                 CurrentPage = Model.ActivityLogs.PageIndex,
                 TotalPages = Model.ActivityLogs.TotalPages,
                 TotalItems = Model.ActivityLogs.TotalCount,
                 PageSize = Model.ActivityLogs.PageSize,
                 ControllerName = "ActivityLog",
                 ActionName = "Index",
-                RouteValues = new Dictionary<string, object?> {
-                    {"Category", Model.Filter.Category ?? "" },
-                    {"ActivityType", Model.Filter.ActivityType ?? "" },
-                    {"EntityType", Model.Filter.EntityType ?? "" },
-                    {"EntityId", Model.Filter.EntityId ?? "" },
-                    {"SearchTerm", Model.Filter.SearchTerm ?? "" },
-                    {"UserId", Model.Filter.UserId ?? "" },
-                    {"FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
-                    {"ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
+                RouteValues = new Dictionary<string, object?>
+                {
+                    { "Category", Model.Filter.Category ?? "" },
+                    { "ActivityType", Model.Filter.ActivityType ?? "" },
+                    { "EntityType", Model.Filter.EntityType ?? "" },
+                    { "EntityId", Model.Filter.EntityId ?? "" },
+                    { "SearchTerm", Model.Filter.SearchTerm ?? "" },
+                    { "UserId", Model.Filter.UserId ?? "" },
+                    { "FromDate", Model.Filter.FromDate?.ToString("yyyy-MM-dd") ?? "" },
+                    { "ToDate", Model.Filter.ToDate?.ToString("yyyy-MM-dd") ?? "" }
                 }
             })
         }
@@ -185,13 +212,13 @@
 
 @section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Kategori değiştiğinde işlem tiplerini güncelle
             const categorySelect = document.getElementById('categorySelect');
             const activityTypeSelect = document.getElementById('activityTypeSelect');
 
             if (categorySelect && activityTypeSelect) {
-                categorySelect.addEventListener('change', function() {
+                categorySelect.addEventListener('change', function () {
                     const category = this.value;
 
                     if (category) {
@@ -213,6 +240,7 @@
                                     const option = document.createElement('option');
                                     option.value = item;
                                     option.textContent = item;
+                                    option.selected = item === '@Model.Filter.ActivityType';
                                     activityTypeSelect.appendChild(option);
                                 });
                             })
