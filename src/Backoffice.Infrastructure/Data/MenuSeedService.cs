@@ -133,8 +133,18 @@ public class MenuSeedService(
                             Icon = "",
                             Controller = "Setting",
                             Action = "Index",
-                            DisplayOrder = 904,
+                            DisplayOrder = 905,
                             RequiredPermissionCode = "Settings.List",
+                            IsActive = true
+                        },
+                        new MenuItem
+                        {
+                            Name = "Zamanlanmış Görevler",
+                            Icon = "",
+                            Controller = "ScheduledTask",
+                            Action = "Index",
+                            DisplayOrder = 906,
+                            RequiredPermissionCode = "ScheduledTasks.List",
                             IsActive = true
                         }
                     }

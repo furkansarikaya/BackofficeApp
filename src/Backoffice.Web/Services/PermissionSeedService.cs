@@ -97,7 +97,7 @@ public class PermissionSeedService(
     /// </summary>
     private async Task CreateDefaultPermissionsForControllers(List<Permission> permissions)
     {
-        var controllerNames = new[] { "User", "Role", "Menu", "IpFilter", "ActivityLog", "DbLog", "Setting" };
+        var controllerNames = new[] { "User", "Role", "Menu", "IpFilter", "ActivityLog", "DbLog", "Setting", "ScheduledTask" };
         var permissionTypes = Enum.GetValues<PermissionType>().Cast<PermissionType>();
         
         foreach (var controller in controllerNames)

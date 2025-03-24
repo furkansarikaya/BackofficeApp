@@ -57,4 +57,8 @@ public interface IGenericRepository<T,TKey> where T : BaseEntity<TKey> where TKe
     
     // Raw IQueryable (ileri düzey LINQ sorguları için)
     IQueryable<T> GetQueryable(bool disableTracking = true);
+    
+    // SQL Sorguları
+    Task<int> ExecuteNativeQueryAsync(string query, params object[] parameters);
+
 }

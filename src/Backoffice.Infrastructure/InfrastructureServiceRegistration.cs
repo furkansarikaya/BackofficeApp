@@ -1,4 +1,5 @@
 using Backoffice.Application.Common.Interfaces;
+using Backoffice.Infrastructure.BackgroundServices;
 using Backoffice.Infrastructure.Data;
 using Backoffice.Infrastructure.Data.Interceptors;
 using Backoffice.Infrastructure.Data.Repositories;
@@ -64,6 +65,10 @@ public class InfrastructureServiceRegistration : IServiceRegistration
         services.AddScoped<MenuSeedService>();
         services.AddSingleton<ICryptographyService, CryptographyService>();
         services.AddScoped<ISettingsService, SettingsService>();
+        
+        // Background service ve scheduled task servisi
+        services.AddScoped<IScheduledTaskService, ScheduledTaskService>();
+        services.AddHostedService<ScheduledTaskHostedService>();
         
         // Tüm ISettings implementasyonlarını otomatik ekle
         services.AddAllSettings();

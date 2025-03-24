@@ -151,6 +151,11 @@ public class GenericRepository<T,TKey> : IGenericRepository<T,TKey>
         return disableTracking ? _dbSet.AsNoTracking() : _dbSet;
     }
     
+    public async Task<int> ExecuteNativeQueryAsync(string query, params object[] parameters)
+    {
+        return await DbContext.Database.ExecuteSqlRawAsync(query, parameters);
+    }
+    
     private IQueryable<T> ApplySpecification(BaseSpecification<T> spec)
     {
         IQueryable<T> query = _dbSet;

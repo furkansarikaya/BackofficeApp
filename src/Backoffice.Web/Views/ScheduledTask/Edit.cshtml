@@ -1,0 +1,92 @@
+@model Backoffice.Web.ViewModels.ScheduledTask.ScheduledTaskEditViewModel
+@{
+    ViewData["Title"] = "Görev Düzenle";
+}
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Görev Bilgileri</h2>
+    </div>
+    <div class="p-6">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="p-4 mb-4 text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900 border-l-4 border-red-500 dark:border-red-700"></div>
+            
+            <input type="hidden" asp-for="Id" />
+            
+            <div class="space-y-6">
+                <div>
+                    <label asp-for="Name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ad</label>
+                    <input asp-for="Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    <span asp-validation-for="Name" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Açıklama</label>
+                    <textarea asp-for="Description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"></textarea>
+                    <span asp-validation-for="Description" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                </div>
+
+                <div>
+                    <div class="flex items-center">
+                        <label asp-for="IsActive" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Aktif</label>
+                        <div class="ml-2">
+                            <input type="checkbox" asp-for="IsActive" class="h-4 w-4 text-primary-600 dark:text-primary-400 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 dark:focus:ring-primary-400" />
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Çalışma Aralığı</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-1">
+                        <div>
+                            <label asp-for="IntervalHours" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Saat</label>
+                            <input asp-for="IntervalHours" type="number" min="0" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            <span asp-validation-for="IntervalHours" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                        </div>
+                        <div>
+                            <label asp-for="IntervalMinutes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Dakika</label>
+                            <input asp-for="IntervalMinutes" type="number" min="0" max="59" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                            <span asp-validation-for="IntervalMinutes" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="NextRunTime" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sonraki Çalışma Zamanı</label>
+                    <input asp-for="NextRunTime" type="datetime-local" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    <span asp-validation-for="NextRunTime" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Parametreler</label>
+                    <div class="mt-2 space-y-3">
+                        @foreach (var param in Model.Parameters)
+                        {
+                            <div class="grid grid-cols-3 gap-2">
+                                <div>
+                                    <input type="text" name="Parameters.Keys" value="@param.Key" readonly class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
+                                </div>
+                                <div class="col-span-2">
+                                    <input type="text" name="Parameters.Values" value="@param.Value" class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-8 pt-5 border-t border-gray-200 dark:border-gray-700">
+                <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">
+                    <i class="fas fa-arrow-left mr-2"></i> Geri
+                </a>
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400">
+                    <i class="fas fa-save mr-2"></i> Kaydet
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

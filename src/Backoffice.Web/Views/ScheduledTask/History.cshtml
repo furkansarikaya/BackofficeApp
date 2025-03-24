@@ -1,0 +1,294 @@
+@model Backoffice.Web.ViewModels.ScheduledTask.ScheduledTaskHistoryViewModel
+@{
+    ViewData["Title"] = $"{Model.Task.Name} - Çalışma Geçmişi";
+}
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-600 flex justify-between items-center">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Görev Bilgileri</h2>
+    </div>
+    <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Temel Bilgiler</h3>
+                <div
+                    class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-sm divide-y divide-gray-200 dark:divide-gray-700">
+                    <div class="grid grid-cols-3 px-4 py-3">
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Ad</div>
+                        <div class="col-span-2 text-gray-900 dark:text-gray-200">@Model.Task.Name</div>
+                    </div>
+                    <div class="grid grid-cols-3 px-4 py-3">
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Açıklama</div>
+                        <div class="col-span-2 text-gray-900 dark:text-gray-200">@Model.Task.Description</div>
+                    </div>
+                    <div class="grid grid-cols-3 px-4 py-3">
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Durum</div>
+                        <div class="col-span-2">
+                            @if (Model.Task.IsRunning)
+                            {
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-200">
+                                    Çalışıyor
+                                </span>
+                            }
+                            else if (Model.Task.IsActive)
+                            {
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-200">
+                                    Aktif
+                                </span>
+                            }
+                            else
+                            {
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                                    Pasif
+                                </span>
+                            }
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 px-4 py-3">
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Çalışma Aralığı</div>
+                        <div class="col-span-2 text-gray-900 dark:text-gray-200">
+                            @{
+                                var hours = Model.Task.Interval.Hours;
+                                var minutes = Model.Task.Interval.Minutes;
+                                var days = (int)Model.Task.Interval.TotalDays;
+                            }
+
+                            @if (days >= 1)
+                            {
+                                <span>@days gün</span>
+                            }
+                            else if (hours > 0 && minutes > 0)
+                            {
+                                <span>@hours saat @minutes dakika</span>
+                            }
+                            else if (hours > 0)
+                            {
+                                <span>@hours saat</span>
+                            }
+                            else
+                            {
+                                <span>@minutes dakika</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 px-4 py-3">
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Son Çalışma</div>
+                        <div class="col-span-2 text-gray-900 dark:text-gray-200">
+                            @if (Model.Task.LastRunTime.HasValue)
+                            {
+                                <span>@Model.Task.LastRunTime.Value.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</span>
+                            }
+                            else
+                            {
+                                <span class="text-gray-400 dark:text-gray-500">Hiç çalışmadı</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 px-4 py-3">
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Sonraki Çalışma</div>
+                        <div class="col-span-2 text-gray-900 dark:text-gray-200">
+                            @if (Model.Task.NextRunTime.HasValue)
+                            {
+                                <span>@Model.Task.NextRunTime.Value.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</span>
+                            }
+                            else
+                            {
+                                <span class="text-gray-400 dark:text-gray-500">-</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Parametreler</h3>
+                <div
+                    class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-sm divide-y divide-gray-200 dark:divide-gray-700">
+                    @if (Model.Task.Parameters.Any())
+                    {
+                        @foreach (var param in Model.Task.Parameters)
+                        {
+                            <div class="grid grid-cols-3 px-4 py-3">
+                                <div class="font-medium text-gray-700 dark:text-gray-300">@param.Key</div>
+                                <div class="col-span-2 text-gray-900 dark:text-gray-200">@param.Value</div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="px-4 py-3 text-gray-500 dark:text-gray-400">
+                            Bu görev için tanımlanmış parametre bulunmamaktadır.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-600 flex justify-between items-center">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Çalışma Geçmişi</h2>
+        <form asp-action="RunNow" asp-route-id="@Model.Task.Id" method="post" class="inline-flex">
+            <button type="submit"
+                    class="inline-flex items-center px-4 py-2 bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-800 text-white rounded-md"
+                    @(Model.Task.IsRunning ? "disabled" : "")>
+                <i class="fas fa-play mr-2"></i> Şimdi Çalıştır
+            </button>
+        </form>
+    </div>
+    <div class="p-6">
+        @if (!Model.History.Any())
+        {
+            <div
+                class="flex items-center p-4 text-blue-800 dark:text-blue-300 border-l-4 border-blue-500 dark:border-blue-700 bg-blue-50 dark:bg-blue-900">
+                <i class="fas fa-info-circle mr-2"></i> Bu görev henüz hiç çalıştırılmamış.
+            </div>
+        }
+        else
+        {
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead
+                        class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 uppercase tracking-wider">
+                    <tr>
+                        <th class="px-5 py-3 text-left">Başlangıç</th>
+                        <th class="px-5 py-3 text-left">Bitiş</th>
+                        <th class="px-5 py-3 text-left">Süre</th>
+                        <th class="px-5 py-3 text-left">Durum</th>
+                        <th class="px-5 py-3 text-left">Sonuç</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                    @foreach (var execution in Model.History)
+                    {
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="px-5 py-4 text-sm text-gray-900 dark:text-gray-300">
+                                @execution.StartTime.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")
+                            </td>
+                            <td class="px-5 py-4 text-sm text-gray-900 dark:text-gray-300">
+                                @if (execution.EndTime.HasValue)
+                                {
+                                    @execution.EndTime.Value.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")
+                                }
+                                else
+                                {
+                                    <span class="text-gray-400 dark:text-gray-500">Çalışıyor</span>
+                                }
+                            </td>
+                            <td class="px-5 py-4 text-sm text-gray-900 dark:text-gray-300">
+                                @if (execution.EndTime.HasValue)
+                                {
+                                    var duration = execution.EndTime.Value - execution.StartTime;
+                                    if (duration.TotalSeconds < 1)
+                                    {
+                                        <span>@duration.TotalMilliseconds.ToString("0.00") ms</span>
+                                    }
+                                    else if (duration.TotalMinutes < 1)
+                                    {
+                                        <span>@duration.TotalSeconds.ToString("0.00") sn</span>
+                                    }
+                                    else if (duration.TotalHours < 1)
+                                    {
+                                        <span>@duration.TotalMinutes.ToString("0.00") dk</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@duration.TotalHours.ToString("0.00") saat</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-gray-400 dark:text-gray-500">-</span>
+                                }
+                            </td>
+                            <td class="px-5 py-4">
+                                @if (!execution.EndTime.HasValue)
+                                {
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-200">
+                                        Çalışıyor
+                                    </span>
+                                }
+                                else if (execution.IsSuccess)
+                                {
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-200">
+                                        Başarılı
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-700 dark:text-red-200">
+                                        Başarısız
+                                    </span>
+                                }
+                            </td>
+                            <td class="px-5 py-4 text-sm text-gray-900 dark:text-gray-300">
+                                <div x-data="{ open: false }" class="relative">
+                                    @if (execution.IsSuccess && !string.IsNullOrEmpty(execution.Result))
+                                    {
+                                        <button @@click="open = !open"
+                                                class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+                                            Sonucu Göster
+                                        </button>
+                                        <div x-show="open"
+                                             @@click.away="open = false"
+                                             x-transition:enter="transition ease-out duration-100"
+                                             x-transition:enter-start="opacity-0 scale-95"
+                                             x-transition:enter-end="opacity-100 scale-100"
+                                             x-transition:leave="transition ease-in duration-75"
+                                             x-transition:leave-start="opacity-100 scale-100"
+                                             x-transition:leave-end="opacity-0 scale-95"
+                                             class="absolute z-10 left-0 mt-2 p-4 w-96 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700">
+                                            <div
+                                                class="text-sm text-gray-700 dark:text-gray-300 max-h-60 overflow-y-auto">
+                                                <pre>@execution.Result</pre>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (!execution.IsSuccess && !string.IsNullOrEmpty(execution.ErrorMessage))
+                                    {
+                                        <button @@click="open = !open"
+                                                class="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">
+                                            Hatayı Göster
+                                        </button>
+                                        <div x-show="open"
+                                             @@click.away="open = false"
+                                             x-transition:enter="transition ease-out duration-100"
+                                             x-transition:enter-start="opacity-0 scale-95"
+                                             x-transition:enter-end="opacity-100 scale-100"
+                                             x-transition:leave="transition ease-in duration-75"
+                                             x-transition:leave-start="opacity-100 scale-100"
+                                             x-transition:leave-end="opacity-0 scale-95"
+                                             class="absolute z-10 left-0 mt-2 p-4 w-96 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-red-200 dark:border-red-700">
+                                            <div
+                                                class="text-sm text-red-700 dark:text-red-300 max-h-60 overflow-y-auto">
+                                                <pre>@execution.ErrorMessage</pre>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-gray-400 dark:text-gray-500">-</span>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+    <div class="p-4 border-t border-gray-200 dark:border-gray-600">
+        <a asp-action="Index"
+           class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">
+            <i class="fas fa-arrow-left mr-2"></i> Listeye Dön
+        </a>
+    </div>
+</div>
