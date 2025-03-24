@@ -7,12 +7,14 @@ using Backoffice.Application.DTOs.Security;
 using Backoffice.Application.Services.Interfaces;
 using Backoffice.Domain.Entities.Security;
 using Backoffice.Domain.Enums;
+using Backoffice.Domain.Settings;
 
 namespace Backoffice.Application.Services.Implementation;
 
 public class IpFilterService(
     IUnitOfWork unitOfWork,
-    IMapper mapper)
+    IMapper mapper,
+    AppSettings appSettings)
     : IIpFilterService
 {
     public async Task<List<IpFilterDto>> GetAllIpFiltersAsync()
@@ -159,6 +161,12 @@ public class IpFilterService(
         if (!IPAddress.TryParse(ipAddress, out IPAddress? parsedIpAddress))
         {
             return false;
+        }
+        
+        // Uygulama ayarlarından IP filtreleme özelliğini kontrol et
+        if(!appSettings.IpFilteringEnabled)
+        {
+            return true; // IP filtreleme devre dışı bırakılmışsa herkese izin ver
         }
 
         var repository = unitOfWork.Repository<IpFilter, int>();

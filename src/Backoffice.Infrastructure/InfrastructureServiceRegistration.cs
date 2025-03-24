@@ -2,6 +2,7 @@ using Backoffice.Application.Common.Interfaces;
 using Backoffice.Infrastructure.Data;
 using Backoffice.Infrastructure.Data.Interceptors;
 using Backoffice.Infrastructure.Data.Repositories;
+using Backoffice.Infrastructure.Extensions;
 using Backoffice.Infrastructure.Identity;
 using Backoffice.Infrastructure.Logging;
 using Backoffice.Infrastructure.Services;
@@ -22,6 +23,7 @@ public class InfrastructureServiceRegistration : IServiceRegistration
 
         // Interceptor'lar
         services.AddScoped<AuditableEntityInterceptor>();
+        services.AddScoped<SettingsChangeInterceptor>();
 
         // DbContext
         services.AddDbContext<ApplicationDbContext>(options =>
@@ -62,6 +64,9 @@ public class InfrastructureServiceRegistration : IServiceRegistration
         services.AddScoped<MenuSeedService>();
         services.AddSingleton<ICryptographyService, CryptographyService>();
         services.AddScoped<ISettingsService, SettingsService>();
+        
+        // Tüm ISettings implementasyonlarını otomatik ekle
+        services.AddAllSettings();
     }
 
     public int Order => 1;

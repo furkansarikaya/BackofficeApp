@@ -81,10 +81,10 @@ public class SettingsService(
                 
             var setting = existingSettings.FirstOrDefault();
             
-            string stringValue = ConvertToString(value);
+            var stringValue = ConvertToString(value);
             
             // Encrypt if requested
-            string storedValue = encrypt ? cryptographyService.Encrypt(stringValue) : stringValue;
+            var storedValue = encrypt ? cryptographyService.Encrypt(stringValue) : stringValue;
             
             if (setting == null)
             {
@@ -261,7 +261,7 @@ public class SettingsService(
                 }
                     
                 // Use SetSetting to handle type conversion and saving
-                await SetSettingAsync(key, value, encrypt, description);
+                await SetSettingWithTypeAsync(key, value, property.PropertyType, encrypt, description);
             }
             
             return true;
@@ -470,6 +470,16 @@ public class SettingsService(
         
         // For complex types, serialize to JSON
         return JsonSerializer.Serialize(value);
+    }
+    
+    private async Task<bool> SetSettingWithTypeAsync(string key, object value, Type propertyType, bool encrypt, string description)
+    {
+        // Tip-güvenli generic metodu dinamik çağırma
+        var method = typeof(SettingsService)
+            .GetMethod(nameof(SetSettingAsync), BindingFlags.Public | BindingFlags.Instance)
+            .MakeGenericMethod(propertyType);
+
+        return (bool)await (Task<bool>)method.Invoke(this, new[] { key, value, encrypt, description });
     }
     
     #endregion
