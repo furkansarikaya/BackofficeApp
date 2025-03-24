@@ -114,7 +114,7 @@ public class MenuSeedService(
                             Controller = "ActivityLog",
                             Action = "Index",
                             DisplayOrder = 903,
-                            RequiredPermissionCode = "ActivityLogs.View",
+                            RequiredPermissionCode = "ActivityLogs.List",
                             IsActive = true
                         },
                         new MenuItem
@@ -124,7 +124,17 @@ public class MenuSeedService(
                             Controller = "DbLog",
                             Action = "Index",
                             DisplayOrder = 904,
-                            RequiredPermissionCode = "DbLogs.View",
+                            RequiredPermissionCode = "DbLogs.List",
+                            IsActive = true
+                        },
+                        new MenuItem
+                        {
+                            Name = "Ayarlar",
+                            Icon = "",
+                            Controller = "Setting",
+                            Action = "Index",
+                            DisplayOrder = 904,
+                            RequiredPermissionCode = "Settings.List",
                             IsActive = true
                         }
                     }

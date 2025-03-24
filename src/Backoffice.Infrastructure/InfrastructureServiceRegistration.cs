@@ -20,10 +20,10 @@ public class InfrastructureServiceRegistration : IServiceRegistration
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         
         services.AddHttpContextAccessor();
+        services.AddMemoryCache();
 
         // Interceptor'lar
         services.AddScoped<AuditableEntityInterceptor>();
-        services.AddScoped<SettingsChangeInterceptor>();
 
         // DbContext
         services.AddDbContext<ApplicationDbContext>(options =>

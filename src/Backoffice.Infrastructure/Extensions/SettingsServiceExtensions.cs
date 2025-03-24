@@ -9,6 +9,10 @@ public static class SettingsServiceExtensions
 {
     public static IServiceCollection AddAllSettings(this IServiceCollection services)
     {
+        //Tüm ayarları yükle
+        var settingsService = services.BuildServiceProvider().GetRequiredService<ISettingsService>();
+        settingsService.GetAllSettingsAsync().GetAwaiter().GetResult();
+
         // Çalışan uygulamadaki tüm assembly'leri al
         var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
 
@@ -22,8 +26,8 @@ public static class SettingsServiceExtensions
         if (referencedAssemblies != null)
         {
             assemblies.AddRange(referencedAssemblies);
-        }  
-            
+        }
+
         // ISettings'i uygulayan tüm concrete sınıfları bul
         var settingsTypes = assemblies
             .SelectMany(a => a.GetTypes())
@@ -39,7 +43,7 @@ public static class SettingsServiceExtensions
                 .MakeGenericMethod(settingsType)
                 .Invoke(null, new object[] { services });
         }
-            
+
         return services;
     }
 
@@ -47,9 +51,10 @@ public static class SettingsServiceExtensions
     private static void AddSettingType<T>(IServiceCollection services) where T : class, ISettings, new()
     {
         // Singleton olarak kaydet
-        services.AddScoped(provider =>
+        services.AddScoped(_ =>
         {
-            var settingsService = provider.GetRequiredService<ISettingsService>();
+            var settingsService = services.BuildServiceProvider().GetRequiredService<ISettingsService>();
+            
             // Ayarları veritabanından yükle
             var settings = new T();
             settingsService.BindSettingsAsync(settings).GetAwaiter().GetResult();

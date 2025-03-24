@@ -148,10 +148,7 @@ public class GenericRepository<T,TKey> : IGenericRepository<T,TKey>
 
     public virtual IQueryable<T> GetQueryable(bool disableTracking = true)
     {
-        if (disableTracking)
-            return _dbSet.AsNoTracking();
-            
-        return _dbSet;
+        return disableTracking ? _dbSet.AsNoTracking() : _dbSet;
     }
     
     private IQueryable<T> ApplySpecification(BaseSpecification<T> spec)

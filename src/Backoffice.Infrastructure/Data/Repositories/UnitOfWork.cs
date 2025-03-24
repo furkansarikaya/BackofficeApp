@@ -27,14 +27,12 @@ public class UnitOfWork(ApplicationDbContext dbContext,IServiceProvider serviceP
     public async Task<int> SaveChangesAsync()
     {
         var result = await dbContext.SaveChangesAsync();
-        await RefreshAllSettingsInstancesAsync();
         return result;
     }
 
     public async Task<bool> SaveChangesAndClearCacheAsync(params string[] cacheKeys)
     {
         var result = await dbContext.SaveChangesAsync();
-        await RefreshAllSettingsInstancesAsync();
         return result > 0;
     }
 
@@ -73,58 +71,5 @@ public class UnitOfWork(ApplicationDbContext dbContext,IServiceProvider serviceP
     {
         dbContext.Dispose();
         GC.SuppressFinalize(this);
-    }
-    
-    private async Task RefreshAllSettingsInstancesAsync()
-    {
-        try
-        {
-            // Tüm register edilmiş ISettings uygulamalarını yenile
-            using var scope = serviceProvider.CreateScope();
-            var settingsService = scope.ServiceProvider.GetService<ISettingsService>();
-            // Çalışan uygulamadaki tüm assembly'leri al
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
-
-            // Henüz yüklenmemiş assembly'leri yükle
-            var referencedAssemblies = Assembly.GetEntryAssembly()?
-                .GetReferencedAssemblies()
-                .Where(a => assemblies.All(loaded => loaded.GetName().Name != a.Name))
-                .Select(Assembly.Load)
-                .ToList();
-
-            if (referencedAssemblies != null)
-            {
-                assemblies.AddRange(referencedAssemblies);
-            }  
-            
-            var settingsTypes = assemblies
-                .SelectMany(a => a.GetTypes())
-                .Where(t => typeof(ISettings).IsAssignableFrom(t) && t is { IsInterface: false, IsAbstract: false })
-                .ToList();
-
-            foreach (var settingsType in settingsTypes)
-            {
-                try
-                {
-                    // Generik olmayan tip için object olarak al, sonra doğru tipe cast edeceğiz
-                    var settings = scope.ServiceProvider.GetService(settingsType);
-                    if (settings != null)
-                    {
-                        // Reflection ile BindSettingsAsync metodunu çağır
-                        var bindMethod = typeof(ISettingsService).GetMethod(nameof(ISettingsService.BindSettingsAsync));
-                        var genericBindMethod = bindMethod.MakeGenericMethod(settingsType);
-                        await (Task)genericBindMethod.Invoke(settingsService, new[] { settings, null });
-                    }
-                }
-                catch
-                {
-                    // Loglama eklenebilir
-                }
-            }
-        }
-        catch
-        {
-            // Global hata durumunda loglama eklenebilir
-        }
     }
 }

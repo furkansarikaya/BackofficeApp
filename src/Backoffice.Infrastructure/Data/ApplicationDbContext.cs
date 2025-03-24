@@ -13,8 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Backoffice.Infrastructure.Data;
 public class ApplicationDbContext(
     DbContextOptions<ApplicationDbContext> options,
-    AuditableEntityInterceptor auditableEntityInterceptor,
-    SettingsChangeInterceptor settingsChangeInterceptor)
+    AuditableEntityInterceptor auditableEntityInterceptor)
     : IdentityDbContext<ApplicationUser, ApplicationRole, string>(options)
 {
     public DbSet<Permission> Permissions { get; set; } = null!;
@@ -52,7 +51,6 @@ public class ApplicationDbContext(
     {
         // Interceptor'ı ekle
         optionsBuilder.AddInterceptors(auditableEntityInterceptor);
-        optionsBuilder.AddInterceptors(settingsChangeInterceptor);
         base.OnConfiguring(optionsBuilder);
     }
 
