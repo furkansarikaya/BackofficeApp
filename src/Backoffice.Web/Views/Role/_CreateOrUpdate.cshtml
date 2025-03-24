@@ -4,16 +4,16 @@
 
 <div class="space-y-6">
     <div>
-        <label asp-for="Name" class="block text-sm font-medium text-gray-700">Rol Adı</label>
-        <input asp-for="Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
-        <span asp-validation-for="Name" class="mt-1 text-sm text-red-600"></span>
-        <p class="mt-1 text-sm text-gray-500">Rol adı benzersiz olmalıdır.</p>
+        <label asp-for="Name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rol Adı</label>
+        <input asp-for="Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+        <span asp-validation-for="Name" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Rol adı benzersiz olmalıdır.</p>
     </div>
 
     <div>
-        <label asp-for="Description" class="block text-sm font-medium text-gray-700">Açıklama</label>
-        <textarea asp-for="Description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" rows="3"></textarea>
-        <span asp-validation-for="Description" class="mt-1 text-sm text-red-600"></span>
-        <p class="mt-1 text-sm text-gray-500">Rolün ne amaçla kullanılacağını açıklayınız.</p>
+        <label asp-for="Description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Açıklama</label>
+        <textarea asp-for="Description" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" rows="3"></textarea>
+        <span asp-validation-for="Description" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Rolün ne amaçla kullanılacağını açıklayınız.</p>
     </div>
 </div>
