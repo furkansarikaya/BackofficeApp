@@ -245,7 +245,7 @@ public class SettingController(
             NotificationService.AddErrorNotification("Ayarlar kaydedilirken bir hata oluştu.");
         }
 
-        return View(model);
+        return RedirectToAction(nameof(AppSettings));
     }
     
     // Helper method to determine data type from a value
