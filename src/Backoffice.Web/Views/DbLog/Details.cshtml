@@ -6,28 +6,28 @@
     var timestamp = Model.LogEntry.Timestamp.ToLocalTime();
 }
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h2 class="text-lg font-medium text-gray-900">Log #@Model.LogEntry.Id</h2>
-        <span class="text-sm text-gray-500">@timestamp.ToString("dd.MM.yyyy HH:mm:ss")</span>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Log #@Model.LogEntry.Id</h2>
+        <span class="text-sm text-gray-500 dark:text-gray-400">@timestamp.ToString("dd.MM.yyyy HH:mm:ss")</span>
     </div>
     <div class="p-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
-                <h3 class="text-sm font-medium text-gray-500 mb-3">Temel Bilgiler</h3>
-                <div class="bg-white border border-gray-200 rounded-md shadow-sm divide-y divide-gray-200">
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Temel Bilgiler</h3>
+                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-sm divide-y divide-gray-200 dark:divide-gray-700">
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">Seviye</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Seviye</div>
                         <div class="col-span-2">
                             @{
                                 var badgeClass = Model.LogEntry.Level switch
                                 {
-                                    LogLevel.Debug => "bg-gray-100 text-gray-800",
-                                    LogLevel.Information => "bg-blue-100 text-blue-800",
-                                    LogLevel.Warning => "bg-yellow-100 text-yellow-800",
-                                    LogLevel.Error => "bg-red-100 text-red-800",
-                                    LogLevel.Critical => "bg-red-200 text-red-800 font-bold",
-                                    _ => "bg-gray-200 text-gray-800"
+                                    LogLevel.Debug => "bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-300",
+                                    LogLevel.Information => "bg-blue-100 dark:bg-blue-700 text-blue-800 dark:text-blue-200",
+                                    LogLevel.Warning => "bg-yellow-100 dark:bg-yellow-700 text-yellow-800 dark:text-yellow-200",
+                                    LogLevel.Error => "bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-200",
+                                    LogLevel.Critical => "bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 font-bold",
+                                    _ => "bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-300"
                                 };
                             }
 
@@ -35,46 +35,46 @@
                         </div>
                     </div>
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">Kategori</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Kategori</div>
                         <div class="col-span-2">
-                            <a asp-action="CategoryLogs" asp-route-category="@Model.LogEntry.Category" class="text-primary-600 hover:text-primary-700">
+                            <a asp-action="CategoryLogs" asp-route-category="@Model.LogEntry.Category" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
                                 @Model.LogEntry.Category
                             </a>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">Kullanıcı</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Kullanıcı</div>
                         <div class="col-span-2">
                             @if (!string.IsNullOrEmpty(Model.LogEntry.UserId))
                             {
-                                <a asp-action="UserLogs" asp-route-userId="@Model.LogEntry.UserId" class="text-primary-600 hover:text-primary-700">
+                                <a asp-action="UserLogs" asp-route-userId="@Model.LogEntry.UserId" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
                                     @(string.IsNullOrEmpty(Model.LogEntry.UserName) ? Model.LogEntry.UserId : Model.LogEntry.UserName)
                                 </a>
                             }
                             else
                             {
-                                <span class="text-gray-400">-</span>
+                                <span class="text-gray-400 dark:text-gray-500">-</span>
                             }
                         </div>
                     </div>
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">IP Adresi</div>
-                        <div class="col-span-2 font-mono">@Model.LogEntry.IpAddress</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">IP Adresi</div>
+                        <div class="col-span-2 font-mono text-gray-900 dark:text-gray-200">@Model.LogEntry.IpAddress</div>
                     </div>
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">Log Zamanı</div>
-                        <div class="col-span-2">@Model.LogEntry.Timestamp.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss.fff")</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">Log Zamanı</div>
+                        <div class="col-span-2 text-gray-900 dark:text-gray-200">@Model.LogEntry.Timestamp.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss.fff")</div>
                     </div>
                     <div class="grid grid-cols-3 px-4 py-3">
-                        <div class="font-medium text-gray-700">URL</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300">URL</div>
                         <div class="col-span-2">
                             @if (!string.IsNullOrEmpty(Model.LogEntry.RequestPath))
                             {
-                                <span class="font-mono">@Model.LogEntry.RequestPath</span>
+                                <span class="font-mono text-gray-900 dark:text-gray-200">@Model.LogEntry.RequestPath</span>
                             }
                             else
                             {
-                                <span class="text-gray-400">-</span>
+                                <span class="text-gray-400 dark:text-gray-500">-</span>
                             }
                         </div>
                     </div>
@@ -82,17 +82,17 @@
             </div>
 
             <div>
-                <h3 class="text-sm font-medium text-gray-500 mb-3">Detaylar</h3>
-                <div class="bg-white border border-gray-200 rounded-md shadow-sm p-4">
-                    <div class="font-medium text-gray-700 mb-2">Log Mesajı</div>
-                    <div class="p-3 bg-gray-50 rounded border border-gray-200 mb-4">
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Detaylar</h3>
+                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-sm p-4">
+                    <div class="font-medium text-gray-700 dark:text-gray-300 mb-2">Log Mesajı</div>
+                    <div class="p-3 bg-gray-50 dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700 mb-4 text-gray-900 dark:text-gray-200">
                         @Model.LogEntry.Message
                     </div>
                     
                     @if (Model.LogEntry.Exception != null)
                     {
-                        <div class="font-medium text-gray-700 mb-2">Hata Detayı</div>
-                        <div class="p-3 bg-red-50 rounded border border-red-200 mb-4 text-red-700 font-mono text-sm overflow-auto max-h-60">
+                        <div class="font-medium text-gray-700 dark:text-gray-300 mb-2">Hata Detayı</div>
+                        <div class="p-3 bg-red-50 dark:bg-red-900 rounded border border-red-200 dark:border-red-800 mb-4 text-red-700 dark:text-red-200 font-mono text-sm overflow-auto max-h-60">
                             <div class="font-bold mb-2">@Model.LogEntry.Exception.GetType().Name</div>
                             <div>@Model.LogEntry.Exception</div>
                             <div class="mt-2 text-xs">@Model.LogEntry.StackTrace</div>
@@ -101,16 +101,16 @@
                     
                     @if (Model.AdditionalDataObject != null)
                     {
-                        <div class="font-medium text-gray-700 mb-2">Ek Veri</div>
+                        <div class="font-medium text-gray-700 dark:text-gray-300 mb-2">Ek Veri</div>
                         <div x-data="{ open: true }">
-                            <button @@click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none mb-2">
+                            <button @@click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-medium text-left text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md focus:outline-none mb-2">
                                 <span>Ek Veriyi Göster/Gizle</span>
-                                <svg class="w-5 h-5 text-gray-500 transition-transform duration-200" :class="{ 'transform rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform duration-200" :class="{ 'transform rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
                             </button>
-                            <div x-show="open" class="p-3 bg-gray-50 rounded border border-gray-200 overflow-auto max-h-60">
-                                <pre class="text-xs text-gray-700"><code>@(JsonSerializer.Serialize(Model.AdditionalDataObject, new JsonSerializerOptions { WriteIndented = true }))</code></pre>
+                            <div x-show="open" class="p-3 bg-gray-50 dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700 overflow-auto max-h-60">
+                                <pre class="text-xs text-gray-700 dark:text-gray-300"><code>@(JsonSerializer.Serialize(Model.AdditionalDataObject, new JsonSerializerOptions { WriteIndented = true }))</code></pre>
                             </div>
                         </div>
                     }
@@ -118,8 +118,8 @@
             </div>
         </div>
 
-        <div class="mt-6 border-t border-gray-200 pt-4">
-            <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md">
+        <div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
+            <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">
                 <i class="fas fa-arrow-left mr-2"></i> Listeye Dön
             </a>
         </div>

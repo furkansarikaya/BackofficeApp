@@ -3,62 +3,62 @@
     ViewData["Title"] = "Log Yönetimi";
 }
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-100 mb-6">
-    <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-medium text-gray-900">Filtreler</h2>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Filtreler</h2>
     </div>
     <div class="p-6">
         <form asp-action="Index" method="get" id="filterForm">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                    <label asp-for="Filter.Level" class="block text-sm font-medium text-gray-700">Seviye</label>
+                    <label asp-for="Filter.Level" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Seviye</label>
                     <div class="relative mt-1">
-                        <select asp-for="Filter.Level" id="levelSelect" class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded-md appearance-none bg-white">
+                        <select asp-for="Filter.Level" id="levelSelect" class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 rounded-md appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                             <option value="">-- Tüm Seviyeler --</option>
                             @foreach (var level in Enum.GetValues<LogLevel>().Where(l => l != LogLevel.None))
                             {
                                 <option value="@level">@level</option>
                             }
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-gray-400">
                             <i class="fas fa-chevron-down"></i>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label asp-for="Filter.Category" class="block text-sm font-medium text-gray-700">Kategori</label>
+                    <label asp-for="Filter.Category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kategori</label>
                     <div class="relative mt-1">
-                        <select asp-for="Filter.Category" id="categorySelect" class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded-md appearance-none bg-white">
+                        <select asp-for="Filter.Category" id="categorySelect" class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 rounded-md appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                             <option value="">-- Tüm Kategoriler --</option>
                             @foreach (var category in Model.Categories)
                             {
                                 <option value="@category">@category</option>
                             }
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-gray-400">
                             <i class="fas fa-chevron-down"></i>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label asp-for="Filter.FromDate" class="block text-sm font-medium text-gray-700">Başlangıç Tarihi</label>
-                    <input asp-for="Filter.FromDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
+                    <label asp-for="Filter.FromDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Başlangıç Tarihi</label>
+                    <input asp-for="Filter.FromDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 </div>
 
                 <div>
-                    <label asp-for="Filter.ToDate" class="block text-sm font-medium text-gray-700">Bitiş Tarihi</label>
-                    <input asp-for="Filter.ToDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
+                    <label asp-for="Filter.ToDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Bitiş Tarihi</label>
+                    <input asp-for="Filter.ToDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
                 </div>
             </div>
 
             <div class="mt-4 flex">
                 <div class="flex-1">
-                    <label asp-for="Filter.SearchTerm" class="block text-sm font-medium text-gray-700">Arama</label>
+                    <label asp-for="Filter.SearchTerm" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Arama</label>
                     <div class="mt-1 flex">
-                        <input asp-for="Filter.SearchTerm" class="flex-1 block w-full px-3 py-2 border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" placeholder="Log içeriği, kullanıcı adı veya kategori ara..." />
-                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-r-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <input asp-for="Filter.SearchTerm" class="flex-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" placeholder="Log içeriği, kullanıcı adı veya kategori ara..." />
+                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-r-md text-white bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400">
                             <i class="fas fa-search mr-2"></i> Ara
                         </button>
                     </div>
@@ -73,17 +73,17 @@
     </div>
 </div>
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h2 class="text-lg font-medium text-gray-900">Log Kayıtları</h2>
-        <a href="@Url.Action("Statistics")" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Log Kayıtları</h2>
+        <a href="@Url.Action("Statistics")" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-800">
             <i class="fas fa-chart-bar mr-2"></i> İstatistikler
         </a>
     </div>
     <div class="p-6">
         @if (Model.Logs == null || !Model.Logs.Items.Any())
         {
-            <div class="flex items-center p-4 text-blue-800 border-l-4 border-blue-500 bg-blue-50">
+            <div class="flex items-center p-4 text-blue-800 dark:text-blue-300 border-l-4 border-blue-500 dark:border-blue-700 bg-blue-50 dark:bg-blue-900">
                 <i class="fas fa-info-circle mr-2"></i> Log kaydı bulunamadı.
             </div>
         }
@@ -91,7 +91,7 @@
         {
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="text-xs font-medium text-gray-500 bg-gray-50 uppercase tracking-wider">
+                    <thead class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 uppercase tracking-wider">
                     <tr>
                         <th class="px-5 py-3 text-left">Tarih</th>
                         <th class="px-5 py-3 text-left">Kullanıcı</th>
@@ -102,49 +102,49 @@
                         <th class="px-5 py-3 text-left">İşlemler</th>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                     @foreach (var log in Model.Logs.Items)
                     {
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-5 py-4 text-sm">@log.Timestamp.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="px-5 py-4 text-sm text-gray-900 dark:text-gray-300">@log.Timestamp.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
                             <td class="px-5 py-4">
                                 @if (!string.IsNullOrEmpty(log.UserId))
                                 {
-                                    <a asp-action="UserLogs" asp-route-userId="@log.UserId" class="text-primary-600 hover:text-primary-700 font-medium">
+                                    <a asp-action="UserLogs" asp-route-userId="@log.UserId" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
                                         @(string.IsNullOrEmpty(log.UserName) ? log.UserId : log.UserName)
                                     </a>
                                 }
                                 else
                                 {
-                                    <span class="text-gray-400">-</span>
+                                    <span class="text-gray-400 dark:text-gray-500">-</span>
                                 }
                             </td>
                             <td class="px-5 py-4">
                                 @{
                                     var badgeClass = log.Level switch
                                     {
-                                        LogLevel.Debug => "bg-gray-100 text-gray-800",
-                                        LogLevel.Information => "bg-blue-100 text-blue-800",
-                                        LogLevel.Warning => "bg-yellow-100 text-yellow-800",
-                                        LogLevel.Error => "bg-red-100 text-red-800",
-                                        LogLevel.Critical => "bg-red-200 text-red-800 font-bold",
-                                        _ => "bg-gray-200 text-gray-800"
+                                        LogLevel.Debug => "bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-300",
+                                        LogLevel.Information => "bg-blue-100 dark:bg-blue-700 text-blue-800 dark:text-blue-200",
+                                        LogLevel.Warning => "bg-yellow-100 dark:bg-yellow-700 text-yellow-800 dark:text-yellow-200",
+                                        LogLevel.Error => "bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-200",
+                                        LogLevel.Critical => "bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 font-bold",
+                                        _ => "bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-300"
                                     };
                                 }
 
                                 <span class="px-2 py-1 text-xs font-medium rounded-full @badgeClass">@log.Level</span>
                             </td>
                             <td class="px-5 py-4">
-                                <a asp-action="CategoryLogs" asp-route-category="@log.Category" class="text-primary-600 hover:text-primary-700">
+                                <a asp-action="CategoryLogs" asp-route-category="@log.Category" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
                                     @log.Category
                                 </a>
                             </td>
-                            <td class="px-5 py-4 text-sm">
+                            <td class="px-5 py-4 text-sm text-gray-900 dark:text-gray-300">
                                 <div class="max-w-xs truncate" title="@log.Message">@log.Message</div>
                             </td>
-                            <td class="px-5 py-4 font-mono text-sm">@log.IpAddress</td>
+                            <td class="px-5 py-4 font-mono text-sm text-gray-900 dark:text-gray-300">@log.IpAddress</td>
                             <td class="px-5 py-4">
-                                <a asp-action="Details" asp-route-id="@log.Id" class="inline-flex items-center p-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600" title="Detay Görüntüle">
+                                <a asp-action="Details" asp-route-id="@log.Id" class="inline-flex items-center p-1.5 bg-blue-500 dark:bg-blue-600 text-white rounded-md hover:bg-blue-600 dark:hover:bg-blue-700" title="Detay Görüntüle">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             </td>
@@ -155,7 +155,7 @@
             </div>
 
             <div class="flex flex-col md:flex-row justify-between items-center mt-6">
-                <div class="mb-4 md:mb-0">
+                <div class="mb-4 md:mb-0 text-gray-700 dark:text-gray-300">
                     Toplam: <span class="font-semibold">@Model.Logs.TotalCount</span> log kaydı
                 </div>
 
@@ -164,7 +164,7 @@
                     <nav aria-label="Page navigation">
                         <ul class="flex">
                             <li class="@(!Model.Logs.HasPreviousPage ? "opacity-50 pointer-events-none" : "")">
-                                <a class="px-3 py-2 border border-gray-300 rounded-l-md bg-white text-gray-600 hover:bg-gray-100"
+                                <a class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                                    asp-action="Index"
                                    asp-all-route-data="@(new Dictionary<string, string> {
                                                            {"pageNumber", (Model.Logs.PageIndex - 1).ToString() },
@@ -182,7 +182,7 @@
                             @for (var i = 1; i <= Model.Logs.TotalPages; i++)
                             {
                                 <li>
-                                    <a class="px-3 py-2 border border-gray-300 border-l-0 bg-white @(i == Model.Logs.PageIndex ? "text-primary-600 font-medium" : "text-gray-600 hover:bg-gray-100")"
+                                    <a class="px-3 py-2 border border-gray-300 dark:border-gray-600 border-l-0 bg-white dark:bg-gray-800 @(i == Model.Logs.PageIndex ? "text-primary-600 dark:text-primary-400 font-medium" : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700")"
                                        asp-action="Index"
                                        asp-all-route-data="@(new Dictionary<string, string> {
                                                                {"pageNumber", i.ToString() },
@@ -199,7 +199,7 @@
                             }
 
                             <li class="@(!Model.Logs.HasNextPage ? "opacity-50 pointer-events-none" : "")">
-                                <a class="px-3 py-2 border border-gray-300 border-l-0 rounded-r-md bg-white text-gray-600 hover:bg-gray-100"
+                                <a class="px-3 py-2 border border-gray-300 dark:border-gray-600 border-l-0 rounded-r-md bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                                    asp-action="Index"
                                    asp-all-route-data="@(new Dictionary<string, string> {
                                                            {"pageNumber", (Model.Logs.PageIndex + 1).ToString() },

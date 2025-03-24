@@ -3,22 +3,22 @@
     ViewData["Title"] = "Log İstatistikleri";
 }
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-100 mb-6">
-    <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-medium text-gray-900">Tarih Aralığı</h2>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Tarih Aralığı</h2>
     </div>
     <div class="p-6">
         <form asp-action="Statistics" method="get" class="flex flex-col sm:flex-row gap-4">
             <div>
-                <label asp-for="FromDate" class="block text-sm font-medium text-gray-700">Başlangıç Tarihi</label>
-                <input asp-for="FromDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
+                <label asp-for="FromDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Başlangıç Tarihi</label>
+                <input asp-for="FromDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
             </div>
             <div>
-                <label asp-for="ToDate" class="block text-sm font-medium text-gray-700">Bitiş Tarihi</label>
-                <input asp-for="ToDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
+                <label asp-for="ToDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Bitiş Tarihi</label>
+                <input asp-for="ToDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
             </div>
             <div class="sm:self-end">
-                <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400">
                     <i class="fas fa-filter mr-2"></i> Filtrele
                 </button>
             </div>
@@ -28,64 +28,64 @@
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
     <!-- Özet Kartları -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-        <h3 class="text-lg font-medium text-gray-800 mb-4">Genel Bakış</h3>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+        <h3 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">Genel Bakış</h3>
         <div class="space-y-4">
             <div class="flex justify-between items-center">
-                <div class="text-gray-600">Toplam Log</div>
-                <div class="text-2xl font-bold">@Model.TotalLogCount</div>
+                <div class="text-gray-600 dark:text-gray-400">Toplam Log</div>
+                <div class="text-2xl font-bold text-gray-900 dark:text-gray-100">@Model.TotalLogCount</div>
             </div>
             <div class="flex justify-between items-center">
-                <div class="text-gray-600">Son 24 Saat</div>
-                <div class="text-2xl font-bold">@Model.LogCountLast24Hours</div>
+                <div class="text-gray-600 dark:text-gray-400">Son 24 Saat</div>
+                <div class="text-2xl font-bold text-gray-900 dark:text-gray-100">@Model.LogCountLast24Hours</div>
             </div>
             <div class="flex justify-between items-center">
-                <div class="text-gray-600">Son 7 Gün</div>
-                <div class="text-2xl font-bold">@Model.LogCountLast7Days</div>
+                <div class="text-gray-600 dark:text-gray-400">Son 7 Gün</div>
+                <div class="text-2xl font-bold text-gray-900 dark:text-gray-100">@Model.LogCountLast7Days</div>
             </div>
         </div>
     </div>
     
     <!-- Log Seviyelerine Göre Dağılım -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-        <h3 class="text-lg font-medium text-gray-800 mb-4">Seviyeye Göre Dağılım</h3>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+        <h3 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">Seviyeye Göre Dağılım</h3>
         <div class="space-y-3">
             @foreach (var level in Model.TotalsByLevel.Where(x => x.Key != LogLevel.None))
             {
                 var percentage = Model.TotalLogCount > 0 ? (level.Value * 100.0 / Model.TotalLogCount) : 0;
-                var colorClass = "bg-gray-500";
-                var textColorClass = "text-gray-700";
+                var colorClass = "bg-gray-500 dark:bg-gray-600";
+                var textColorClass = "text-gray-700 dark:text-gray-300";
                 
                 switch (level.Key)
                 {
                     case LogLevel.Debug:
-                        colorClass = "bg-gray-300";
-                        textColorClass = "text-gray-700";
+                        colorClass = "bg-gray-300 dark:bg-gray-500";
+                        textColorClass = "text-gray-700 dark:text-gray-300";
                         break;
                     case LogLevel.Information:
-                        colorClass = "bg-blue-500";
-                        textColorClass = "text-blue-700";
+                        colorClass = "bg-blue-500 dark:bg-blue-600";
+                        textColorClass = "text-blue-700 dark:text-blue-300";
                         break;
                     case LogLevel.Warning:
-                        colorClass = "bg-yellow-500";
-                        textColorClass = "text-yellow-700";
+                        colorClass = "bg-yellow-500 dark:bg-yellow-600";
+                        textColorClass = "text-yellow-700 dark:text-yellow-300";
                         break;
                     case LogLevel.Error:
-                        colorClass = "bg-red-500";
-                        textColorClass = "text-red-700";
+                        colorClass = "bg-red-500 dark:bg-red-600";
+                        textColorClass = "text-red-700 dark:text-red-300";
                         break;
                     case LogLevel.Critical:
-                        colorClass = "bg-red-700";
-                        textColorClass = "text-red-700";
+                        colorClass = "bg-red-700 dark:bg-red-800";
+                        textColorClass = "text-red-700 dark:text-red-300";
                         break;
                 }
                 
                 <div>
                     <div class="flex justify-between items-center mb-1">
                         <div class="@textColorClass">@level.Key</div>
-                        <div class="text-gray-700 font-medium">@level.Value (@percentage.ToString("0.0")%)</div>
+                        <div class="text-gray-700 dark:text-gray-300 font-medium">@level.Value (@percentage.ToString("0.0")%)</div>
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
                         <div class="@colorClass h-2.5 rounded-full" style="width: @percentage%"></div>
                     </div>
                 </div>
@@ -94,22 +94,22 @@
     </div>
     
     <!-- Grafik -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-        <h3 class="text-lg font-medium text-gray-800 mb-4">Log Seviye Dağılımı</h3>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+        <h3 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">Log Seviye Dağılımı</h3>
         <div class="h-60 flex items-center justify-center" id="logLevelChart">
-            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 dark:border-blue-400"></div>
         </div>
     </div>
 </div>
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-medium text-gray-900">Kategorilere Göre İstatistikler</h2>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Kategorilere Göre İstatistikler</h2>
     </div>
     <div class="p-6">
         <div class="overflow-x-auto">
             <table class="w-full">
-                <thead class="text-xs font-medium text-gray-500 bg-gray-50 uppercase tracking-wider">
+                <thead class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 uppercase tracking-wider">
                     <tr>
                         <th class="px-5 py-3 text-left">Kategori</th>
                         <th class="px-5 py-3 text-center">Debug</th>
@@ -120,39 +120,39 @@
                         <th class="px-5 py-3 text-center">Toplam</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                     @foreach (var category in Model.StatisticsByCategory)
                     {
                         var categoryTotal = category.Value.Values.Sum();
                         
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-5 py-4">
-                                <a asp-action="CategoryLogs" asp-route-category="@category.Key" class="text-primary-600 hover:text-primary-700 font-medium">
+                                <a asp-action="CategoryLogs" asp-route-category="@category.Key" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
                                     @category.Key
                                 </a>
                             </td>
-                            <td class="px-5 py-4 text-center">
+                            <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
                                 @(category.Value.TryGetValue(LogLevel.Debug, out var debugCount) ? debugCount : 0)
                             </td>
-                            <td class="px-5 py-4 text-center">
+                            <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
                                 @(category.Value.TryGetValue(LogLevel.Information, out var infoCount) ? infoCount : 0)
                             </td>
-                            <td class="px-5 py-4 text-center">
+                            <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
                                 @(category.Value.TryGetValue(LogLevel.Warning, out var warnCount) ? warnCount : 0)
                             </td>
-                            <td class="px-5 py-4 text-center">
+                            <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
                                 @(category.Value.TryGetValue(LogLevel.Error, out var errorCount) ? errorCount : 0)
                             </td>
-                            <td class="px-5 py-4 text-center">
+                            <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
                                 @(category.Value.TryGetValue(LogLevel.Critical, out var criticalCount) ? criticalCount : 0)
                             </td>
-                            <td class="px-5 py-4 text-center font-bold">
+                            <td class="px-5 py-4 text-center font-bold text-gray-900 dark:text-gray-200">
                                 @categoryTotal
                             </td>
                         </tr>
                     }
                 </tbody>
-                <tfoot class="bg-gray-50 font-medium text-gray-700">
+                <tfoot class="bg-gray-50 dark:bg-gray-700 font-medium text-gray-700 dark:text-gray-300">
                     <tr>
                         <td class="px-5 py-4">Tüm Kategoriler</td>
                         <td class="px-5 py-4 text-center">
@@ -178,8 +178,8 @@
             </table>
         </div>
         
-        <div class="mt-6 border-t border-gray-200 pt-4">
-            <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md">
+        <div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
+            <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">
                 <i class="fas fa-arrow-left mr-2"></i> Log Listesine Dön
             </a>
         </div>
@@ -201,6 +201,8 @@
                         const ctx = document.createElement('canvas');
                         document.getElementById('logLevelChart').innerHTML = '';
                         document.getElementById('logLevelChart').appendChild(ctx);
+                        
+                        const isDarkMode = document.documentElement.classList.contains('dark');
                         
                         const backgroundColors = [
                             'rgba(156, 163, 175, 0.5)', // Debug - gray
@@ -235,7 +237,10 @@
                                 maintainAspectRatio: false,
                                 plugins: {
                                     legend: {
-                                        position: 'bottom'
+                                        position: 'bottom',
+                                        labels: {
+                                            color: isDarkMode ? '#e5e7eb' : '#1f2937'
+                                        }
                                     },
                                     tooltip: {
                                         callbacks: {
@@ -255,7 +260,7 @@
                     .catch(error => {
                         console.error('Error fetching log data:', error);
                         document.getElementById('logLevelChart').innerHTML = 
-                            '<div class="text-red-500 text-center"><i class="fas fa-exclamation-triangle mr-2"></i> Veri yüklenirken hata oluştu.</div>';
+                            '<div class="text-red-500 dark:text-red-400 text-center"><i class="fas fa-exclamation-triangle mr-2"></i> Veri yüklenirken hata oluştu.</div>';
                     });
             }
             
@@ -271,6 +276,17 @@
                             loadLogLevelChart();
                         })
                         .catch(error => console.error('Error:', error));
+                });
+            }
+            
+            // Dark mode değiştiğinde grafiği güncelle
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', loadLogLevelChart);
+            
+            // Özel dark mode toggle varsa dinle
+            const darkModeToggle = document.querySelector('[data-toggle="dark-mode"]');
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('click', function() {
+                    setTimeout(loadLogLevelChart, 100); // Kısa bir gecikme ile grafiği güncelle
                 });
             }
         });
