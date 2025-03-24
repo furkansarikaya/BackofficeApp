@@ -83,8 +83,10 @@ public class MenuViewComponent(
         foreach (var item in menuItems)
         {
             // Aktif sayfa bu menü öğesi mi?
-            var isActive = string.Equals(item.Controller, currentController, StringComparison.OrdinalIgnoreCase) &&
-                           string.Equals(item.Action, currentAction, StringComparison.OrdinalIgnoreCase);
+            // var isActive = string.Equals(item.Controller, currentController, StringComparison.OrdinalIgnoreCase) &&
+            //                string.Equals(item.Action, currentAction, StringComparison.OrdinalIgnoreCase);
+
+            var isActive = string.Equals(item.Controller, currentController, StringComparison.OrdinalIgnoreCase);
             
             if (isActive)
             {
