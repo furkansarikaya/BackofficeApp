@@ -3,68 +3,68 @@
     ViewData["Title"] = "Kullanıcı Düzenle";
 }
 
-<div class="bg-white rounded-lg shadow-sm">
-    <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-medium text-gray-900">@Model.UserName Kullanıcısını Düzenle</h2>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">@Model.UserName Kullanıcısını Düzenle</h2>
     </div>
     <div class="p-6">
         <form asp-action="Edit" method="post">
-            <div asp-validation-summary="ModelOnly" class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700"></div>
-            
+            <div asp-validation-summary="ModelOnly" class="mb-4 p-4 bg-red-50 dark:bg-red-900 border-l-4 border-red-500 text-red-700 dark:text-red-200"></div>
+
             <input type="hidden" asp-for="Id" />
-            
+
             <div class="space-y-6">
                 <div>
-                    <label asp-for="UserName" class="block text-sm font-medium text-gray-700">Kullanıcı Adı</label>
-                    <input asp-for="UserName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-                    <span asp-validation-for="UserName" class="mt-1 text-sm text-red-600"></span>
+                    <label asp-for="UserName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kullanıcı Adı</label>
+                    <input asp-for="UserName" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    <span asp-validation-for="UserName" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                 </div>
-                
+
                 <div>
-                    <label asp-for="Email" class="block text-sm font-medium text-gray-700">E-posta</label>
-                    <input asp-for="Email" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-                    <span asp-validation-for="Email" class="mt-1 text-sm text-red-600"></span>
+                    <label asp-for="Email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">E-posta</label>
+                    <input asp-for="Email" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                    <span asp-validation-for="Email" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                 </div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label asp-for="FirstName" class="block text-sm font-medium text-gray-700">Ad</label>
-                        <input asp-for="FirstName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-                        <span asp-validation-for="FirstName" class="mt-1 text-sm text-red-600"></span>
+                        <label asp-for="FirstName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ad</label>
+                        <input asp-for="FirstName" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        <span asp-validation-for="FirstName" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                     </div>
-                    
+
                     <div>
-                        <label asp-for="LastName" class="block text-sm font-medium text-gray-700">Soyad</label>
-                        <input asp-for="LastName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-                        <span asp-validation-for="LastName" class="mt-1 text-sm text-red-600"></span>
+                        <label asp-for="LastName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Soyad</label>
+                        <input asp-for="LastName" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                        <span asp-validation-for="LastName" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
                     </div>
                 </div>
-                
+
                 <div>
-                    <label asp-for="SelectedRoles" class="block text-sm font-medium text-gray-700">Roller</label>
-                    <select asp-for="SelectedRoles" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 select2-multiple"
+                    <label asp-for="SelectedRoles" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Roller</label>
+                    <select asp-for="SelectedRoles" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 select2-multiple"
                             asp-items="Model.AvailableRoles" multiple>
                     </select>
-                    <span asp-validation-for="SelectedRoles" class="mt-1 text-sm text-red-600"></span>
-                    <p class="mt-2 text-sm text-gray-500">Birden fazla rol seçebilirsiniz</p>
+                    <span asp-validation-for="SelectedRoles" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Birden fazla rol seçebilirsiniz</p>
                 </div>
-                
+
                 <div class="flex items-start">
                     <div class="flex items-center h-5">
-                        <input asp-for="IsActive" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                        <input asp-for="IsActive" type="checkbox" class="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-indigo-600 dark:text-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400" />
                     </div>
                     <div class="ml-3 text-sm">
-                        <label asp-for="IsActive" class="font-medium text-gray-700">Aktif</label>
-                        <p class="text-gray-500">Pasif kullanıcılar sisteme giriş yapamaz</p>
+                        <label asp-for="IsActive" class="font-medium text-gray-700 dark:text-gray-300">Aktif</label>
+                        <p class="text-gray-500 dark:text-gray-400">Pasif kullanıcılar sisteme giriş yapamaz</p>
                     </div>
                 </div>
             </div>
-            
-            <div class="mt-8 pt-5 border-t border-gray-200 flex justify-between">
-                <a asp-action="Details" asp-route-id="@Model.Id" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+
+            <div class="mt-8 pt-5 border-t border-gray-200 dark:border-gray-600 flex justify-between">
+                <a asp-action="Details" asp-route-id="@Model.Id" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-indigo-400">
                     <i class="fas fa-arrow-left mr-2"></i> İptal
                 </a>
-                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-indigo-400">
                     <i class="fas fa-save mr-2"></i> Kaydet
                 </button>
             </div>
@@ -74,7 +74,7 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Select2 for multiple select if available
@@ -86,26 +86,26 @@
                     width: '100%'
                 });
             }
-            
+
             // Administrator rolünü pasif yapma kontrolü
             const isActiveCheckbox = document.getElementById('IsActive');
             const adminUserCheck = () => {
                 const selectElement = document.getElementById('SelectedRoles');
                 if (!selectElement) return;
-                
+
                 const selectedRoles = Array.from(selectElement.selectedOptions)
                     .map(option => option.text);
-                
+
                 if (selectedRoles.includes('Administrator') && !isActiveCheckbox.checked) {
                     alert('Administrator rolündeki kullanıcılar pasif yapılamaz.');
                     isActiveCheckbox.checked = true;
                 }
             };
-            
+
             if (isActiveCheckbox) {
                 isActiveCheckbox.addEventListener('change', adminUserCheck);
             }
-            
+
             // Form submit öncesi kontrol
             const form = document.querySelector('form');
             if (form) {

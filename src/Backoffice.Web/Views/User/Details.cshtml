@@ -6,33 +6,33 @@
 <div class="flex justify-between items-center mb-6">
     <div class="flex space-x-2">
         <a asp-action="Edit" asp-route-id="@Model.Id"
-           class="inline-flex items-center px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
+           class="inline-flex items-center px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700">
             <i class="fas fa-edit mr-2"></i> Düzenle
         </a>
         <a asp-action="ChangePassword" asp-route-id="@Model.Id"
-           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">
             <i class="fas fa-key mr-2"></i> Şifre Değiştir
         </a>
         <div class="relative" x-data="{ open: false }">
             <button @@click="open = !open" type="button"
-                    class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">
+                    class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-800">
                 <i class="fas fa-cog mr-2"></i> İşlemler
                 <i class="fas fa-chevron-down ml-2 text-xs"></i>
             </button>
             <div x-show="open"
                  @@click.away="open = false"
-                 class="absolute right-0 z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5">
+                 class="absolute right-0 z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 dark:bg-gray-800">
                 <form asp-action="ToggleActive" asp-route-id="@Model.Id" method="post" class="block">
                     @if (Model.IsActive)
                     {
-                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:text-red-400 dark:hover:bg-gray-700"
                                 @(Model.Roles.Contains("Administrator") ? "disabled" : "")>
                             <i class="fas fa-user-slash mr-2"></i> Pasif Yap
                         </button>
                     }
                     else
                     {
-                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-green-600 hover:bg-gray-100">
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-green-600 hover:bg-gray-100 dark:text-green-400 dark:hover:bg-gray-700">
                             <i class="fas fa-user-check mr-2"></i> Aktif Yap
                         </button>
                     }
@@ -40,7 +40,7 @@
                 @if (!Model.Roles.Contains("Administrator"))
                 {
                     <button type="button"
-                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:text-red-400 dark:hover:bg-gray-700"
                             data-modal-target="delete-modal"
                             data-modal-toggle="delete-modal"
                             data-user-id="@Model.Id"
@@ -53,24 +53,24 @@
     </div>
 </div>
 
-<div class="bg-white rounded-lg shadow mb-6">
+<div class="bg-white rounded-lg shadow mb-6 dark:bg-gray-800">
     <!-- Tab Navigation -->
-    <div class="border-b border-gray-200">
+    <div class="border-b border-gray-200 dark:border-gray-700">
         <ul class="flex flex-wrap -mb-px">
             <li class="mr-2">
-                <button class="inline-block p-4 border-b-2 border-blue-600 text-blue-600 active"
+                <button class="inline-block p-4 border-b-2 border-blue-600 text-blue-600 active dark:border-blue-500 dark:text-blue-500"
                         id="user-info-tab" aria-controls="user-info" aria-selected="true">
                     Kullanıcı Bilgileri
                 </button>
             </li>
             <li class="mr-2">
-                <button class="inline-block p-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                <button class="inline-block p-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600"
                         id="user-roles-tab" aria-controls="user-roles" aria-selected="false">
                     Roller
                 </button>
             </li>
             <li class="mr-2">
-                <button class="inline-block p-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                <button class="inline-block p-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600"
                         id="user-activities-tab" aria-controls="user-activities" aria-selected="false">
                     Aktiviteler
                 </button>
@@ -86,39 +86,39 @@
                 <div>
                     <div class="space-y-4">
                         <div>
-                            <p class="text-sm font-medium text-gray-500">Kullanıcı Adı:</p>
-                            <p class="mt-1 font-medium">@Model.UserName</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Kullanıcı Adı:</p>
+                            <p class="mt-1 font-medium text-gray-900 dark:text-gray-200">@Model.UserName</p>
                         </div>
 
                         <div>
-                            <p class="text-sm font-medium text-gray-500">Ad:</p>
-                            <p class="mt-1">@(string.IsNullOrEmpty(Model.FirstName) ? "-" : Model.FirstName)</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Ad:</p>
+                            <p class="mt-1 text-gray-900 dark:text-gray-200">@(string.IsNullOrEmpty(Model.FirstName) ? "-" : Model.FirstName)</p>
                         </div>
 
                         <div>
-                            <p class="text-sm font-medium text-gray-500">Durum:</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Durum:</p>
                             <p class="mt-1">
                                 @if (Model.IsActive)
                                 {
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Aktif</span>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-200">Aktif</span>
                                 }
                                 else
                                 {
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Pasif</span>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800 dark:bg-red-700 dark:text-red-200">Pasif</span>
                                 }
                             </p>
                         </div>
 
                         <div>
-                            <p class="text-sm font-medium text-gray-500">Son Giriş:</p>
-                            <p class="mt-1">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Son Giriş:</p>
+                            <p class="mt-1 text-gray-900 dark:text-gray-200">
                                 @if (Model.LastLoginAt.HasValue)
                                 {
                                     @Model.LastLoginAt.Value.ToString("dd.MM.yyyy HH:mm")
                                 }
                                 else
                                 {
-                                    <span class="text-gray-400">Henüz giriş yapmadı</span>
+                                    <span class="text-gray-400 dark:text-gray-600">Henüz giriş yapmadı</span>
                                 }
                             </p>
                         </div>
@@ -128,18 +128,18 @@
                 <div>
                     <div class="space-y-4">
                         <div>
-                            <p class="text-sm font-medium text-gray-500">E-posta:</p>
-                            <p class="mt-1">@Model.Email</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">E-posta:</p>
+                            <p class="mt-1 text-gray-900 dark:text-gray-200">@Model.Email</p>
                         </div>
 
                         <div>
-                            <p class="text-sm font-medium text-gray-500">Soyad:</p>
-                            <p class="mt-1">@(string.IsNullOrEmpty(Model.LastName) ? "-" : Model.LastName)</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Soyad:</p>
+                            <p class="mt-1 text-gray-900 dark:text-gray-200">@(string.IsNullOrEmpty(Model.LastName) ? "-" : Model.LastName)</p>
                         </div>
 
                         <div>
-                            <p class="text-sm font-medium text-gray-500">Kayıt Tarihi:</p>
-                            <p class="mt-1">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</p>
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Kayıt Tarihi:</p>
+                            <p class="mt-1 text-gray-900 dark:text-gray-200">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</p>
                         </div>
                     </div>
                 </div>
@@ -153,11 +153,11 @@
                 <div class="flex flex-wrap gap-2">
                     @foreach (var role in Model.Roles)
                     {
-                        <div class="flex items-center space-x-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-md">
-                            <span class="font-medium text-blue-700">@role</span>
+                        <div class="flex items-center space-x-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-md dark:bg-blue-900 dark:border-blue-700">
+                            <span class="font-medium text-blue-700 dark:text-blue-300">@role</span>
                             @if (role == "Administrator")
                             {
-                                <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-800">Yönetici</span>
+                                <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-800 dark:bg-red-700 dark:text-red-200">Yönetici</span>
                             }
                         </div>
                     }
@@ -165,7 +165,7 @@
             }
             else
             {
-                <div class="p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
+                <div class="p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700 dark:bg-yellow-900 dark:border-yellow-600 dark:text-yellow-300">
                     <div class="flex">
                         <i class="fas fa-exclamation-triangle mr-2"></i>
                         <span>Bu kullanıcının atanmış rolü bulunmuyor.</span>
@@ -179,7 +179,7 @@
             <div class="flex justify-center items-center py-6">
                 <div class="flex flex-col items-center">
                     <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
-                    <p class="mt-3 text-gray-600">Aktiviteler yükleniyor...</p>
+                    <p class="mt-3 text-gray-600 dark:text-gray-400">Aktiviteler yükleniyor...</p>
                 </div>
             </div>
         </div>
@@ -187,7 +187,7 @@
 </div>
 
 <div class="mt-6">
-    <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md">
+    <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200">
         <i class="fas fa-arrow-left mr-2"></i> Listeye Dön
     </a>
 </div>
@@ -221,7 +221,7 @@
             </div>
             <!-- Modal footer -->
             <div class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button data-modal-hide="delete-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-md border border-gray-300 hover:bg-gray-300 focus:z-10">İptal</button>
+                <button data-modal-hide="delete-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-md border border-gray-300 hover:bg-gray-300 focus:z-10 dark:bg-gray-600 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">İptal</button>
                 <form asp-action="Delete" method="post" class="ml-2">
                     <input type="hidden" name="id" id="userId" />
                     <button type="submit" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Sil</button>
@@ -248,7 +248,7 @@
                 // Reset all tabs
                 [userInfoTab, userRolesTab, userActivitiesTab].forEach(tab => {
                     tab.classList.remove('border-blue-600', 'text-blue-600');
-                    tab.classList.add('border-transparent', 'text-gray-500');
+                    tab.classList.add('border-transparent', 'text-gray-500', 'dark:text-gray-400');
                 });
 
                 // Reset all contents
@@ -257,8 +257,8 @@
                 });
 
                 // Activate selected tab
-                activeTab.classList.remove('border-transparent', 'text-gray-500');
-                activeTab.classList.add('border-blue-600', 'text-blue-600');
+                activeTab.classList.remove('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+                activeTab.classList.add('border-blue-600', 'text-blue-600', 'dark:border-blue-500', 'dark:text-blue-500');
 
                 // Show selected content
                 activeContent.classList.remove('hidden');
@@ -312,7 +312,7 @@
                         userActivitiesContent.innerHTML = html;
                     })
                     .catch(() => {
-                        userActivitiesContent.innerHTML = '<div class="p-4 text-red-700 bg-red-100 rounded-md">Aktivite verileri yüklenirken bir hata oluştu.</div>';
+                        userActivitiesContent.innerHTML = '<div class="p-4 text-red-700 bg-red-100 rounded-md dark:text-red-400 dark:bg-red-900">Aktivite verileri yüklenirken bir hata oluştu.</div>';
                     });
             }
         });
