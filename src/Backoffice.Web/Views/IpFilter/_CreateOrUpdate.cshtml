@@ -5,28 +5,28 @@
 <div class="space-y-6">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-            <label asp-for="IpAddress" class="block text-sm font-medium text-gray-700">IP Adresi</label>
-            <input asp-for="IpAddress" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" placeholder="Örn: 192.168.1.1 veya 192.168.1.0/24" />
-            <span asp-validation-for="IpAddress" class="mt-1 text-sm text-red-600"></span>
-            <div class="mt-1 text-sm text-gray-500">
+            <label asp-for="IpAddress" class="block text-sm font-medium text-gray-700 dark:text-gray-300">IP Adresi</label>
+            <input asp-for="IpAddress" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 dark:bg-gray-700 dark:text-gray-100" placeholder="Örn: 192.168.1.1 veya 192.168.1.0/24" />
+            <span asp-validation-for="IpAddress" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+            <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 <p>Tek bir IP adresi için: 192.168.1.1</p>
                 <p>CIDR notasyonu için: 192.168.1.0/24 (192.168.1.0-192.168.1.255 aralığı)</p>
             </div>
         </div>
 
         <div>
-            <label asp-for="FilterType" class="block text-sm font-medium text-gray-700">Filtre Tipi</label>
+            <label asp-for="FilterType" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filtre Tipi</label>
             <div class="relative">
-                <select asp-for="FilterType" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded-md appearance-none bg-white">
+                <select asp-for="FilterType" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 rounded-md appearance-none bg-white dark:bg-gray-700 dark:text-gray-100">
                     <option value="@FilterType.Allow">İzin Ver</option>
                     <option value="@FilterType.Deny">Engelle</option>
                 </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 mt-1 text-gray-500">
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 mt-1 text-gray-500 dark:text-gray-400">
                     <i class="fas fa-chevron-down"></i>
                 </div>
             </div>
-            <span asp-validation-for="FilterType" class="mt-1 text-sm text-red-600"></span>
-            <div class="mt-1 text-sm text-gray-500">
+            <span asp-validation-for="FilterType" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+            <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 <p>İzin Ver: Sadece belirtilen IP'lere erişim izni verir</p>
                 <p>Engelle: Belirtilen IP'lerin erişimini engeller</p>
             </div>
@@ -34,19 +34,19 @@
     </div>
 
     <div>
-        <label asp-for="Description" class="block text-sm font-medium text-gray-700">Açıklama</label>
-        <input asp-for="Description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500" placeholder="Örn: Şirket Ofisi" />
-        <span asp-validation-for="Description" class="mt-1 text-sm text-red-600"></span>
+        <label asp-for="Description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Açıklama</label>
+        <input asp-for="Description" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 dark:bg-gray-700 dark:text-gray-100" placeholder="Örn: Şirket Ofisi" />
+        <span asp-validation-for="Description" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
     </div>
 
     <div>
         <div class="flex items-start">
             <div class="flex items-center h-5">
-                <input asp-for="IsActive" id="IsActive" type="checkbox" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" />
+                <input asp-for="IsActive" id="IsActive" type="checkbox" class="h-4 w-4 text-primary-600 dark:text-primary-400 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 dark:focus:ring-primary-400" />
             </div>
             <div class="ml-3 text-sm">
-                <label asp-for="IsActive" class="font-medium text-gray-700">Aktif</label>
-                <p class="text-gray-500">Filtre aktif olduğunda kurallar uygulanır, pasif olduğunda göz ardı edilir</p>
+                <label asp-for="IsActive" class="font-medium text-gray-700 dark:text-gray-300">Aktif</label>
+                <p class="text-gray-500 dark:text-gray-400">Filtre aktif olduğunda kurallar uygulanır, pasif olduğunda göz ardı edilir</p>
             </div>
         </div>
     </div>

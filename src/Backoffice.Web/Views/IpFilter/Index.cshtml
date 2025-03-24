@@ -5,22 +5,22 @@
 
 @section PageActions {
     <div>
-        <a asp-action="Create" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700">
+        <a asp-action="Create" class="inline-flex items-center px-4 py-2 bg-primary-600 dark:bg-primary-700 text-white rounded-md hover:bg-primary-700 dark:hover:bg-primary-800">
             <i class="fas fa-plus mr-2"></i> Yeni IP Filtresi
         </a>
     </div>
 }
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-100">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
     <div class="p-5">
         <form asp-action="Index" method="get" class="mb-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <div class="flex">
-                        <input type="text" class="flex-1 border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        <input type="text" class="flex-1 border border-gray-300 dark:border-gray-600 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 dark:bg-gray-700 dark:text-gray-100"
                                placeholder="IP adresi veya açıklama..."
                                name="searchTerm" value="@Model.SearchTerm">
-                        <button class="bg-gray-200 border border-gray-300 border-l-0 rounded-r-md px-3 py-2 hover:bg-gray-300" type="submit">
+                        <button class="bg-gray-200 dark:bg-gray-600 border border-gray-300 dark:border-gray-600 border-l-0 rounded-r-md px-3 py-2 hover:bg-gray-300 dark:hover:bg-gray-700 dark:text-gray-300" type="submit">
                             <i class="fas fa-search"></i> Ara
                         </button>
                     </div>
@@ -30,7 +30,7 @@
 
         @if (Model.IpFilters == null || !Model.IpFilters.Items.Any())
         {
-            <div class="flex items-center p-4 text-blue-800 border-l-4 border-blue-500 bg-blue-50">
+            <div class="flex items-center p-4 text-blue-800 dark:text-blue-400 border-l-4 border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900">
                 <i class="fas fa-info-circle mr-2"></i>
                 <span>IP filtresi bulunamadı.</span>
             </div>
@@ -39,7 +39,7 @@
         {
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="text-xs font-medium text-gray-500 bg-gray-50 uppercase tracking-wider">
+                    <thead class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 uppercase tracking-wider">
                     <tr>
                         <th class="px-5 py-3 text-left">IP Adresi</th>
                         <th class="px-5 py-3 text-left">Açıklama</th>
@@ -49,48 +49,48 @@
                         <th class="px-5 py-3 text-left">İşlemler</th>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                     @foreach (var ipFilter in Model.IpFilters.Items)
                     {
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-5 py-4 font-medium">@ipFilter.IpAddress</td>
-                            <td class="px-5 py-4">@ipFilter.Description</td>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="px-5 py-4 font-medium text-gray-900 dark:text-gray-200">@ipFilter.IpAddress</td>
+                            <td class="px-5 py-4 text-gray-900 dark:text-gray-200">@ipFilter.Description</td>
                             <td class="px-5 py-4">
                                 @if (ipFilter.FilterType == FilterType.Allow)
                                 {
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">İzin Ver</span>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-200">İzin Ver</span>
                                 }
                                 else
                                 {
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Engelle</span>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-200">Engelle</span>
                                 }
                             </td>
                             <td class="px-5 py-4">
                                 @if (ipFilter.IsActive)
                                 {
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Aktif</span>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-200">Aktif</span>
                                 }
                                 else
                                 {
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Pasif</span>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-200">Pasif</span>
                                 }
                             </td>
-                            <td class="px-5 py-4 text-sm text-gray-500">@ipFilter.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td class="px-5 py-4 text-sm text-gray-500 dark:text-gray-400">@ipFilter.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
                             <td class="px-5 py-4">
                                 <div class="flex space-x-1">
                                     <a asp-action="Edit" asp-route-id="@ipFilter.Id"
-                                       class="p-1.5 text-white bg-yellow-500 rounded-md hover:bg-yellow-600" title="Düzenle">
+                                       class="p-1.5 text-white bg-yellow-500 dark:bg-yellow-600 rounded-md hover:bg-yellow-600 dark:hover:bg-yellow-700" title="Düzenle">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form asp-action="ToggleStatus" asp-route-id="@ipFilter.Id" method="post" class="inline">
                                         <button type="submit"
-                                                class="p-1.5 text-white @(ipFilter.IsActive ? "bg-gray-500 hover:bg-gray-600" : "bg-green-500 hover:bg-green-600") rounded-md"
+                                                class="p-1.5 text-white @(ipFilter.IsActive ? "bg-gray-500 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700" : "bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700") rounded-md"
                                                 title="@(ipFilter.IsActive ? "Pasif Yap" : "Aktif Yap")">
                                             <i class="fas @(ipFilter.IsActive ? "fa-toggle-off" : "fa-toggle-on")"></i>
                                         </button>
                                     </form>
                                     <button type="button"
-                                            class="p-1.5 text-white bg-red-500 rounded-md hover:bg-red-600"
+                                            class="p-1.5 text-white bg-red-500 dark:bg-red-600 rounded-md hover:bg-red-600 dark:hover:bg-red-700"
                                             title="Sil"
                                             data-modal-target="delete-modal"
                                             data-modal-toggle="delete-modal"
@@ -107,7 +107,7 @@
             </div>
 
             <div class="flex justify-between items-center mt-4">
-                <div>
+                <div class="text-gray-700 dark:text-gray-300">
                     Toplam: <span class="font-semibold">@Model.IpFilters.TotalCount</span> IP filtresi
                 </div>
 
@@ -116,7 +116,7 @@
                     <nav aria-label="Page navigation">
                         <ul class="flex">
                             <li class="@(!Model.IpFilters.HasPreviousPage ? "opacity-50 pointer-events-none" : "")">
-                                <a class="px-3 py-2 border border-gray-300 rounded-l-md bg-white text-gray-600 hover:bg-gray-100"
+                                <a class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                                    asp-action="Index"
                                    asp-route-pageNumber="@(Model.IpFilters.PageIndex - 1)"
                                    asp-route-searchTerm="@Model.SearchTerm">
@@ -127,7 +127,7 @@
                             @for (int i = 1; i <= Model.IpFilters.TotalPages; i++)
                             {
                                 <li>
-                                    <a class="px-3 py-2 border border-gray-300 border-l-0 bg-white @(i == Model.IpFilters.PageIndex ? "text-primary-600 font-medium" : "text-gray-600 hover:bg-gray-100")"
+                                    <a class="px-3 py-2 border border-gray-300 dark:border-gray-600 border-l-0 bg-white dark:bg-gray-800 @(i == Model.IpFilters.PageIndex ? "text-primary-600 dark:text-primary-400 font-medium" : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700")"
                                        asp-action="Index"
                                        asp-route-pageNumber="@i"
                                        asp-route-searchTerm="@Model.SearchTerm">
@@ -137,7 +137,7 @@
                             }
 
                             <li class="@(!Model.IpFilters.HasNextPage ? "opacity-50 pointer-events-none" : "")">
-                                <a class="px-3 py-2 border border-gray-300 border-l-0 rounded-r-md bg-white text-gray-600 hover:bg-gray-100"
+                                <a class="px-3 py-2 border border-gray-300 dark:border-gray-600 border-l-0 rounded-r-md bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                                    asp-action="Index"
                                    asp-route-pageNumber="@(Model.IpFilters.PageIndex + 1)"
                                    asp-route-searchTerm="@Model.SearchTerm">
@@ -156,7 +156,7 @@
 <div id="delete-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white dark:bg-gray-700 rounded-lg shadow">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
@@ -181,10 +181,10 @@
             </div>
             <!-- Modal footer -->
             <div class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button data-modal-hide="delete-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-md border border-gray-300 hover:bg-gray-300 focus:z-10">İptal</button>
+                <button data-modal-hide="delete-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 dark:text-gray-300 focus:outline-none bg-gray-200 dark:bg-gray-600 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-700 focus:z-10">İptal</button>
                 <form asp-action="Delete" method="post" class="ml-2">
                     <input type="hidden" name="id" id="ipFilterId" />
-                    <button type="submit" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Sil</button>
+                    <button type="submit" class="text-white bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-md text-sm px-5 py-2.5 text-center">Sil</button>
                 </form>
             </div>
         </div>
