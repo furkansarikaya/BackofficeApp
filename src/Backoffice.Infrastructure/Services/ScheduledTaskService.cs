@@ -44,7 +44,7 @@ public class ScheduledTaskService(
             Description = taskInstance.Description,
             IsActive = true,
             Interval = TimeSpan.FromHours(24), // Varsayılan 24 saat
-            NextRunTime = DateTime.UtcNow,
+            NextRunTime = DateTime.UtcNow.AddHours(24),
             Parameters = parameters
         };
 

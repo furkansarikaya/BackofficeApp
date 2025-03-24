@@ -105,8 +105,10 @@ public class ScheduledTaskController(
             IsActive = task.IsActive,
             IntervalHours = (int)task.Interval.TotalHours,
             IntervalMinutes = task.Interval.Minutes,
-            NextRunTime = task.NextRunTime,
+            NextRunTime = task.NextRunTime?.ToLocalTime(),
             Parameters = task.Parameters
+                .Select(kvp => new KeyValuePair<string, string>(kvp.Key, kvp.Value))
+                .ToList()
         };
 
         return View(viewModel);
@@ -139,8 +141,8 @@ public class ScheduledTaskController(
         task.Description = viewModel.Description;
         task.IsActive = viewModel.IsActive;
         task.Interval = TimeSpan.FromHours(viewModel.IntervalHours).Add(TimeSpan.FromMinutes(viewModel.IntervalMinutes));
-        task.NextRunTime = viewModel.NextRunTime;
-        task.Parameters = viewModel.Parameters;
+        task.NextRunTime = viewModel.NextRunTime?.ToUniversalTime();
+        task.Parameters = task.Parameters = viewModel.Parameters.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
         await taskService.UpdateTaskAsync(task);
         NotificationService.AddSuccessNotification("Task başarıyla güncellendi.");

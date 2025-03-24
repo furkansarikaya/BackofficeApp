@@ -27,11 +27,16 @@ public class ScheduledTaskHostedService(
         {
             try
             {
+                logger.LogInformation("Görev timerları güncelleniyor");
                 await SyncTaskTimers(stoppingToken);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Görev timerları güncellenirken hata oluştu");
+            }
+            finally
+            {
+                logger.LogInformation("Görev timerları güncellenmeye devam ediyor");
             }
         }
     }

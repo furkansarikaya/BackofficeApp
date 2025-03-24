@@ -9,5 +9,5 @@ public class ScheduledTaskEditViewModel
     public int IntervalHours { get; set; }
     public int IntervalMinutes { get; set; }
     public DateTime? NextRunTime { get; set; }
-    public Dictionary<string, string> Parameters { get; set; } = new();
+    public List<KeyValuePair<string, string>> Parameters { get; set; } = [];
 }
