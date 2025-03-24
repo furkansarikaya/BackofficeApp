@@ -10,15 +10,20 @@
     <div class="p-6">
         <form asp-action="Statistics" method="get" class="flex flex-col sm:flex-row gap-4">
             <div>
-                <label asp-for="FromDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Başlangıç Tarihi</label>
-                <input asp-for="FromDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                <label asp-for="FromDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Başlangıç
+                    Tarihi</label>
+                <input asp-for="FromDate" type="date"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"/>
             </div>
             <div>
-                <label asp-for="ToDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Bitiş Tarihi</label>
-                <input asp-for="ToDate" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" />
+                <label asp-for="ToDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Bitiş
+                    Tarihi</label>
+                <input asp-for="ToDate" type="date"
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"/>
             </div>
             <div class="sm:self-end">
-                <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400">
+                <button type="submit"
+                        class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 dark:bg-primary-700 hover:bg-primary-700 dark:hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-primary-400">
                     <i class="fas fa-filter mr-2"></i> Filtrele
                 </button>
             </div>
@@ -45,7 +50,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Log Seviyelerine Göre Dağılım -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-6">
         <h3 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">Seviyeye Göre Dağılım</h3>
@@ -55,7 +60,7 @@
                 var percentage = Model.TotalLogCount > 0 ? (level.Value * 100.0 / Model.TotalLogCount) : 0;
                 var colorClass = "bg-gray-500 dark:bg-gray-600";
                 var textColorClass = "text-gray-700 dark:text-gray-300";
-                
+
                 switch (level.Key)
                 {
                     case LogLevel.Debug:
@@ -79,11 +84,13 @@
                         textColorClass = "text-red-700 dark:text-red-300";
                         break;
                 }
-                
+
                 <div>
                     <div class="flex justify-between items-center mb-1">
                         <div class="@textColorClass">@level.Key</div>
-                        <div class="text-gray-700 dark:text-gray-300 font-medium">@level.Value (@percentage.ToString("0.0")%)</div>
+                        <div
+                            class="text-gray-700 dark:text-gray-300 font-medium">@level.Value (@percentage.ToString("0.0")%)
+                        </div>
                     </div>
                     <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
                         <div class="@colorClass h-2.5 rounded-full" style="width: @percentage%"></div>
@@ -92,11 +99,11 @@
             }
         </div>
     </div>
-    
+
     <!-- Grafik -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-6">
         <h3 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">Log Seviye Dağılımı</h3>
-        <div class="h-60 flex items-center justify-center" id="logLevelChart">
+        <div id="logLevelChart" class="h-60 flex items-center justify-center bg-gray-50 dark:bg-gray-900 rounded-lg">
             <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 dark:border-blue-400"></div>
         </div>
     </div>
@@ -109,77 +116,80 @@
     <div class="p-6">
         <div class="overflow-x-auto">
             <table class="w-full">
-                <thead class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 uppercase tracking-wider">
-                    <tr>
-                        <th class="px-5 py-3 text-left">Kategori</th>
-                        <th class="px-5 py-3 text-center">Debug</th>
-                        <th class="px-5 py-3 text-center">Information</th>
-                        <th class="px-5 py-3 text-center">Warning</th>
-                        <th class="px-5 py-3 text-center">Error</th>
-                        <th class="px-5 py-3 text-center">Critical</th>
-                        <th class="px-5 py-3 text-center">Toplam</th>
-                    </tr>
+                <thead
+                    class="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 uppercase tracking-wider">
+                <tr>
+                    <th class="px-5 py-3 text-left">Kategori</th>
+                    <th class="px-5 py-3 text-center">Debug</th>
+                    <th class="px-5 py-3 text-center">Information</th>
+                    <th class="px-5 py-3 text-center">Warning</th>
+                    <th class="px-5 py-3 text-center">Error</th>
+                    <th class="px-5 py-3 text-center">Critical</th>
+                    <th class="px-5 py-3 text-center">Toplam</th>
+                </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                    @foreach (var category in Model.StatisticsByCategory)
-                    {
-                        var categoryTotal = category.Value.Values.Sum();
-                        
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <td class="px-5 py-4">
-                                <a asp-action="CategoryLogs" asp-route-category="@category.Key" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
-                                    @category.Key
-                                </a>
-                            </td>
-                            <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
-                                @(category.Value.TryGetValue(LogLevel.Debug, out var debugCount) ? debugCount : 0)
-                            </td>
-                            <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
-                                @(category.Value.TryGetValue(LogLevel.Information, out var infoCount) ? infoCount : 0)
-                            </td>
-                            <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
-                                @(category.Value.TryGetValue(LogLevel.Warning, out var warnCount) ? warnCount : 0)
-                            </td>
-                            <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
-                                @(category.Value.TryGetValue(LogLevel.Error, out var errorCount) ? errorCount : 0)
-                            </td>
-                            <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
-                                @(category.Value.TryGetValue(LogLevel.Critical, out var criticalCount) ? criticalCount : 0)
-                            </td>
-                            <td class="px-5 py-4 text-center font-bold text-gray-900 dark:text-gray-200">
-                                @categoryTotal
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-                <tfoot class="bg-gray-50 dark:bg-gray-700 font-medium text-gray-700 dark:text-gray-300">
-                    <tr>
-                        <td class="px-5 py-4">Tüm Kategoriler</td>
-                        <td class="px-5 py-4 text-center">
-                            @(Model.TotalsByLevel.TryGetValue(LogLevel.Debug, out var totalDebug) ? totalDebug : 0)
+                @foreach (var category in Model.StatisticsByCategory)
+                {
+                    var categoryTotal = category.Value.Values.Sum();
+
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <td class="px-5 py-4">
+                            <a asp-action="CategoryLogs" asp-route-category="@category.Key"
+                               class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
+                                @category.Key
+                            </a>
                         </td>
-                        <td class="px-5 py-4 text-center">
-                            @(Model.TotalsByLevel.TryGetValue(LogLevel.Information, out var totalInfo) ? totalInfo : 0)
+                        <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
+                            @(category.Value.TryGetValue(LogLevel.Debug, out var debugCount) ? debugCount : 0)
                         </td>
-                        <td class="px-5 py-4 text-center">
-                            @(Model.TotalsByLevel.TryGetValue(LogLevel.Warning, out var totalWarn) ? totalWarn : 0)
+                        <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
+                            @(category.Value.TryGetValue(LogLevel.Information, out var infoCount) ? infoCount : 0)
                         </td>
-                        <td class="px-5 py-4 text-center">
-                            @(Model.TotalsByLevel.TryGetValue(LogLevel.Error, out var totalError) ? totalError : 0)
+                        <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
+                            @(category.Value.TryGetValue(LogLevel.Warning, out var warnCount) ? warnCount : 0)
                         </td>
-                        <td class="px-5 py-4 text-center">
-                            @(Model.TotalsByLevel.TryGetValue(LogLevel.Critical, out var totalCritical) ? totalCritical : 0)
+                        <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
+                            @(category.Value.TryGetValue(LogLevel.Error, out var errorCount) ? errorCount : 0)
                         </td>
-                        <td class="px-5 py-4 text-center font-bold">
-                            @Model.TotalLogCount
+                        <td class="px-5 py-4 text-center text-gray-900 dark:text-gray-300">
+                            @(category.Value.TryGetValue(LogLevel.Critical, out var criticalCount) ? criticalCount : 0)
+                        </td>
+                        <td class="px-5 py-4 text-center font-bold text-gray-900 dark:text-gray-200">
+                            @categoryTotal
                         </td>
                     </tr>
+                }
+                </tbody>
+                <tfoot class="bg-gray-50 dark:bg-gray-700 font-medium text-gray-700 dark:text-gray-300">
+                <tr>
+                    <td class="px-5 py-4">Tüm Kategoriler</td>
+                    <td class="px-5 py-4 text-center">
+                        @(Model.TotalsByLevel.TryGetValue(LogLevel.Debug, out var totalDebug) ? totalDebug : 0)
+                    </td>
+                    <td class="px-5 py-4 text-center">
+                        @(Model.TotalsByLevel.TryGetValue(LogLevel.Information, out var totalInfo) ? totalInfo : 0)
+                    </td>
+                    <td class="px-5 py-4 text-center">
+                        @(Model.TotalsByLevel.TryGetValue(LogLevel.Warning, out var totalWarn) ? totalWarn : 0)
+                    </td>
+                    <td class="px-5 py-4 text-center">
+                        @(Model.TotalsByLevel.TryGetValue(LogLevel.Error, out var totalError) ? totalError : 0)
+                    </td>
+                    <td class="px-5 py-4 text-center">
+                        @(Model.TotalsByLevel.TryGetValue(LogLevel.Critical, out var totalCritical) ? totalCritical : 0)
+                    </td>
+                    <td class="px-5 py-4 text-center font-bold">
+                        @Model.TotalLogCount
+                    </td>
+                </tr>
                 </tfoot>
             </table>
         </div>
-        
+
         <div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
-            <a asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">
+            <a asp-action="Index"
+               class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">
                 <i class="fas fa-arrow-left mr-2"></i> Log Listesine Dön
             </a>
         </div>
@@ -191,9 +201,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
     <script>
         // Log seviyelerinin grafiğini oluşturma
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             loadLogLevelChart();
-            
+
             function loadLogLevelChart() {
                 fetch('@Url.Action("GetLogCountByLevel")')
                     .then(response => response.json())
@@ -201,9 +211,11 @@
                         const ctx = document.createElement('canvas');
                         document.getElementById('logLevelChart').innerHTML = '';
                         document.getElementById('logLevelChart').appendChild(ctx);
-                        
-                        const isDarkMode = document.documentElement.classList.contains('dark');
-                        
+
+                        // Dark mode kontrolünü düzeltme
+                        const isDarkMode = document.documentElement.classList.contains('dark') ||
+                            document.body.classList.contains('dark');
+
                         const backgroundColors = [
                             'rgba(156, 163, 175, 0.5)', // Debug - gray
                             'rgba(59, 130, 246, 0.5)',  // Information - blue
@@ -211,7 +223,7 @@
                             'rgba(239, 68, 68, 0.5)',   // Error - red
                             'rgba(185, 28, 28, 0.5)'    // Critical - dark red
                         ];
-                        
+
                         const borderColors = [
                             'rgba(156, 163, 175, 1)',
                             'rgba(59, 130, 246, 1)',
@@ -219,7 +231,7 @@
                             'rgba(239, 68, 68, 1)',
                             'rgba(185, 28, 28, 1)'
                         ];
-                        
+
                         new Chart(ctx, {
                             type: 'pie',
                             data: {
@@ -239,12 +251,19 @@
                                     legend: {
                                         position: 'bottom',
                                         labels: {
-                                            color: isDarkMode ? '#e5e7eb' : '#1f2937'
+                                            // Her durumda görünür olacak şekilde sabit renkler kullan
+                                            color: isDarkMode ? '#ffffff' : '#1f2937', // Dark modda beyaz, light modda koyu gri
+                                            padding: 15,
+                                            font: {
+                                                size: 12,
+                                                weight: 'bold'
+                                            },
+                                            boxWidth: 20
                                         }
                                     },
                                     tooltip: {
                                         callbacks: {
-                                            label: function(context) {
+                                            label: function (context) {
                                                 let label = context.label || '';
                                                 let value = context.raw || 0;
                                                 let total = context.dataset.data.reduce((acc, val) => acc + val, 0);
@@ -259,15 +278,15 @@
                     })
                     .catch(error => {
                         console.error('Error fetching log data:', error);
-                        document.getElementById('logLevelChart').innerHTML = 
+                        document.getElementById('logLevelChart').innerHTML =
                             '<div class="text-red-500 dark:text-red-400 text-center"><i class="fas fa-exclamation-triangle mr-2"></i> Veri yüklenirken hata oluştu.</div>';
                     });
             }
-            
+
             // Kategori değişikliğinde yeni veri yükleme
             const categorySelect = document.getElementById('categorySelect');
             if (categorySelect) {
-                categorySelect.addEventListener('change', function() {
+                categorySelect.addEventListener('change', function () {
                     const category = this.value;
                     fetch(`@Url.Action("GetLogCountByLevel")?category=${encodeURIComponent(category)}`)
                         .then(response => response.json())
@@ -278,14 +297,14 @@
                         .catch(error => console.error('Error:', error));
                 });
             }
-            
+
             // Dark mode değiştiğinde grafiği güncelle
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', loadLogLevelChart);
-            
+
             // Özel dark mode toggle varsa dinle
             const darkModeToggle = document.querySelector('[data-toggle="dark-mode"]');
             if (darkModeToggle) {
-                darkModeToggle.addEventListener('click', function() {
+                darkModeToggle.addEventListener('click', function () {
                     setTimeout(loadLogLevelChart, 100); // Kısa bir gecikme ile grafiği güncelle
                 });
             }
