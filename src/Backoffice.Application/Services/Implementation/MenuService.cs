@@ -4,7 +4,6 @@ using Backoffice.Application.Common.Models;
 using Backoffice.Application.DTOs.Menu;
 using Backoffice.Application.Services.Interfaces;
 using Backoffice.Domain.Entities.Menu;
-using Microsoft.Extensions.Logging;
 
 namespace Backoffice.Application.Services.Implementation;
 

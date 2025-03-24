@@ -6,7 +6,6 @@ using Backoffice.Application.DTOs.Auditing;
 using Backoffice.Application.Services.Interfaces;
 using Backoffice.Domain.Constants;
 using Backoffice.Domain.Entities.Auditing;
-using Microsoft.Extensions.Logging;
 
 namespace Backoffice.Application.Services.Implementation;
 

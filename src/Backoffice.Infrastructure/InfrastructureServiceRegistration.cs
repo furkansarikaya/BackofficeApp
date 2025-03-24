@@ -60,6 +60,8 @@ public class InfrastructureServiceRegistration : IServiceRegistration
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IDateTimeService, DateTimeService>();
         services.AddScoped<MenuSeedService>();
+        services.AddSingleton<ICryptographyService, CryptographyService>();
+        services.AddScoped<ISettingsService, SettingsService>();
     }
 
     public int Order => 1;

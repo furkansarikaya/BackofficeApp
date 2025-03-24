@@ -4,6 +4,7 @@ using Backoffice.Domain.Entities.Auditing;
 using Backoffice.Domain.Entities.Logging;
 using Backoffice.Domain.Entities.Menu;
 using Backoffice.Domain.Entities.Security;
+using Backoffice.Domain.Entities.Settings;
 using Backoffice.Infrastructure.Data.Interceptors;
 using Backoffice.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -21,8 +22,7 @@ public class ApplicationDbContext(
     public DbSet<IpFilter> IpFilters { get; set; } = null!;
     public DbSet<ActivityLog> ActivityLogs { get; set; } = null!;
     public DbSet<LogEntry> LogEntries { get; set; } = null!;
-
-
+    public DbSet<Setting> Settings { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

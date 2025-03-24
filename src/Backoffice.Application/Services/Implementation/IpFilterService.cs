@@ -7,7 +7,6 @@ using Backoffice.Application.DTOs.Security;
 using Backoffice.Application.Services.Interfaces;
 using Backoffice.Domain.Entities.Security;
 using Backoffice.Domain.Enums;
-using Microsoft.Extensions.Logging;
 
 namespace Backoffice.Application.Services.Implementation;
 
