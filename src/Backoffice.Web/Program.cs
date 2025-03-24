@@ -40,6 +40,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
+app.UseRequestLogging();
+
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {

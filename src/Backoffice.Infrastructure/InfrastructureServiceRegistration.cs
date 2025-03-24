@@ -3,6 +3,7 @@ using Backoffice.Infrastructure.Data;
 using Backoffice.Infrastructure.Data.Interceptors;
 using Backoffice.Infrastructure.Data.Repositories;
 using Backoffice.Infrastructure.Identity;
+using Backoffice.Infrastructure.Logging;
 using Backoffice.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +57,7 @@ public class InfrastructureServiceRegistration : IServiceRegistration
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IDateTimeService, DateTimeService>();
+        services.AddScoped<IDbLoggerService, DbLoggerService>();
         services.AddScoped<MenuSeedService>();
     }
 
