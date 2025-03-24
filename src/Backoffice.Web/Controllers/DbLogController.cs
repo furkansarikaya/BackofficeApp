@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backoffice.Web.Controllers;
 
-public class LogController(
+public class DbLogController(
     IDbLoggerService dbLoggerService,
-    ILogger<LogController> logger)
+    ILogger<DbLogController> logger)
     : BaseController
 {
     // GET: /Log
