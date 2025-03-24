@@ -57,6 +57,9 @@ public class HomeController(ILogger<HomeController> logger, UserManager<Applicat
             RecentActivities = recentActivities
         };
         
+        var zero = 0;
+        var error = 10/zero; // This will throw a DivideByZeroException
+        
         return View(viewModel);
     }
     

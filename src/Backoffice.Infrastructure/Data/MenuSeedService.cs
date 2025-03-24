@@ -116,6 +116,16 @@ public class MenuSeedService(
                             DisplayOrder = 903,
                             RequiredPermissionCode = "ActivityLogs.View",
                             IsActive = true
+                        },
+                        new MenuItem
+                        {
+                            Name = "Loglar",
+                            Icon = "",
+                            Controller = "DbLog",
+                            Action = "Index",
+                            DisplayOrder = 904,
+                            RequiredPermissionCode = "DbLogs.View",
+                            IsActive = true
                         }
                     }
                 },
