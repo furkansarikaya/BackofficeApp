@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Backoffice.Application.Common.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Backoffice.Infrastructure.Services;
@@ -25,6 +26,11 @@ public class ScheduledTaskService(
     public async Task<Domain.Entities.ScheduledTasks.ScheduledTask> CreateTaskAsync(
         string taskType, Dictionary<string, string>? parameters = null)
     {
+        //Task daha önce var mı kontrol et
+        var existingTask = await unitOfWork.Repository<Domain.Entities.ScheduledTasks.ScheduledTask, int>()
+            .GetQueryable().FirstOrDefaultAsync(t => t.TaskType == taskType);
+        if (existingTask != null)
+            return existingTask;
         // Task tipini çözümle
         var taskInstance = GetTaskInstance(taskType);
         if (taskInstance == null)
